@@ -246,7 +246,7 @@ export function buildInheritedSheetGLTheme(
       fillHandleColor: modeTokens.primary,
       searchHighlight: hexToRgba(modeTokens.secondary, isDark ? 0.35 : 0.25),
       skeletonBar: modeTokens.surfaceTonalHigh,
-    },
+    } as any,
     dom: {
       toolbarBg:
         styleVariant === 'apple'

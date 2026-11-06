@@ -32,7 +32,7 @@ export function EnterprisePagesDemo() {
 
 | Template ID | Route | Features |
 | :--- | :--- | :--- |
-| `'page-login'` | `/dashboard/page-login` | **Login & Auth:** Switch between **Split-Screen Enterprise SSO** (with live system telemetry brand panel) and **Apple iCloud Centered Floating Liquid Glass** card. Includes Passkey/WebAuthn (Face ID / Touch ID), SSO buttons, and password reveal toggle. |
+| `'page-login'` | `/dashboard/page-login` | **Login & Auth:** Switch between **Split-Screen Enterprise SSO** (with live system telemetry brand panel) and **Centered Floating Liquid Glass** card. Includes Passkey/WebAuthn biometric authentication, SSO buttons, and password reveal toggle. |
 | `'page-register'` | `/dashboard/page-register` | **Register, Onboarding & 2FA:** 3-step registration wizard: Step 1 (Account + live password strength meter), Step 2 (Workspace slug + Architect/Designer/DevOps/Product role selector), Step 3 (6-digit 2FA OTP input boxes). |
 | `'page-pricing'` | `/dashboard/page-pricing` | **SaaS Pricing & Billing Plans:** Annual (20% discount) vs. Monthly `SegmentedControl`, interactive **Team Seat Calculator** (`Slider` from 1 to 50 seats), 3-tier pricing cards (`Starter`, `Pro Studio`, `Enterprise Cloud`), and FAQ `Accordion`. |
 | `'page-profile'` | `/dashboard/page-profile` | **User Profile & Portfolio:** Gradient cover banner, squircle `Avatar` with online dot, 4-KPI strip, bio & skill `Chip`s, 2FA/security `Switch` controls, active session devices, and activity `Timeline`. |

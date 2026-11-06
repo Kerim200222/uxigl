@@ -667,10 +667,10 @@ export const ThemeStudioDrawer: React.FC<ThemeStudioDrawerProps> = ({
             </div>
           </div>
 
-          {/* 3. Google Fonts Family Pairing & Global Font Size Scale */}
+          {/* 3. Typography Family Pairing & Global Font Size Scale */}
           <div className="uxu-studio-section">
             <div className="uxu-studio-section__header">
-              <span>Google Fonts Yazı Tipi Ailesi</span>
+              <span>Tipografi &amp; Yazı Tipi Ailesi</span>
               <Badge tone="primary" size="xs">
                 {
                   availableFontPresets.find(
@@ -732,10 +732,10 @@ export const ThemeStudioDrawer: React.FC<ThemeStudioDrawerProps> = ({
             </div>
           </div>
 
-          {/* 3B. Google Material Symbols Variable Font Icons */}
+          {/* 3B. Variable Font Icons */}
           <div className="uxu-studio-section">
             <div className="uxu-studio-section__header">
-              <span>Google Material Symbols (Font İkonlar)</span>
+              <span>Değişken Vektör Font İkonlar</span>
               <Badge tone="info" size="xs">
                 {(preferences.iconStyle ?? 'rounded').toUpperCase()} • wght:{' '}
                 {preferences.iconWeight ?? 400}
@@ -763,7 +763,7 @@ export const ThemeStudioDrawer: React.FC<ThemeStudioDrawerProps> = ({
             />
             <Switch
               label="Dolgulu İkon Modu (FILL: 1)"
-              description="Google Material Symbols FILL eksenini 0 ile 1 arasında değiştirir"
+              description="Değişken font ikonlarının FILL eksenini 0 ile 1 arasında değiştirir"
               value={Boolean(preferences.iconFilled)}
               onChange={setIconFilled}
               size="sm"

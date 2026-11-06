@@ -1,6 +1,6 @@
 # uxiGL Mimari ve SOLID Tasarım Dokümantasyonu
 
-Bu belge, **uxiGL Design System** projesinin klasör yapısını, **SOLID** yazılım mühendisliği prensiplerinin TypeScript ortamında nasıl uygulandığını ve **Liquid Glass × Google Material You** token mimarisini açıklar.
+Bu belge, **uxiGL Design System** projesinin klasör yapısını, **SOLID** yazılım mühendisliği prensiplerinin TypeScript ortamında nasıl uygulandığını ve **Liquid Glass × Dinamik Tonal** token mimarisini açıklar.
 
 ---
 
@@ -32,7 +32,7 @@ src/
 ├── features/
 │   ├── catalog/                # Bileşen kataloğu ve API dokümantasyon veri kaynağı
 │   ├── playground/             # Canlı Prop Denetleyicisi, Sahne ve Kod Üretici
-│   ├── showcase/               # Apple × Google Canlı Ekosistem Dashboard Uygulaması
+│   ├── showcase/               # Canlı Kurumsal Ekosistem Dashboard Uygulaması
 │   ├── docs/                   # Etkileşimli SOLID & Token Dokümantasyon Görünümü
 │   └── theme-studio/           # Canlı Tema, Geometri, Yoğunluk ve Cam Stüdyosu
 └── styles/

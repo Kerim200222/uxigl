@@ -275,7 +275,7 @@ export const ComponentDocCard: React.FC<ComponentDocCardProps> = ({
               letterSpacing: '0.05em',
             }}
           >
-            {isTR ? 'MİMARİ ROL & ERİŞİLEBİLİRLİK (HIG / ARIA)' : 'ARCHITECTURAL ROLE & A11Y'}
+            {isTR ? 'MİMARİ ROL & ERİŞİLEBİLİRLİK (ARIA)' : 'ARCHITECTURAL ROLE & A11Y'}
           </div>
           <div
             style={{
@@ -666,7 +666,7 @@ const SwitchCheckboxSliderLiveMiniDemo: React.FC = () => {
         />
       </div>
       <Slider
-        label="macOS Control Center Çıkış Seviyesi (<Slider />)"
+        label="Kontrol Merkezi Çıkış Seviyesi (<Slider />)"
         value={sld}
         onChange={setSld}
         min={0}
@@ -729,7 +729,7 @@ const CardSurfaceLiveMiniDemo: React.FC = () => {
           glowOnHover={v === 'glass'}
           eyebrow={v.toUpperCase()}
           title={`variant="${v}"`}
-          subtitle="Apple HIG × Material 3"
+          subtitle="Liquid Glass × Dinamik Ton"
         >
           <div style={{ fontSize: '0.76rem', color: 'var(--uxu-text-secondary)' }}>
             Çok katmanlı yüzey kartı
@@ -750,8 +750,8 @@ const SegmentedTabsAccordionLiveMiniDemo: React.FC = () => {
         onChange={setSeg}
         fullWidth
         options={[
-          { value: 'glass', label: 'Liquid Glass', badge: 'HIG' },
-          { value: 'tonal', label: 'Material You Tonal', badge: 'M3' },
+          { value: 'glass', label: 'Liquid Glass', badge: '8pt' },
+          { value: 'tonal', label: 'Dinamik Tonal', badge: 'Tonal' },
           { value: 'hybrid', label: 'uxiGL Hibrit Sentez' },
         ]}
       />
@@ -927,7 +927,7 @@ const BadgesChipsAvatarsLiveMiniDemo: React.FC = () => {
         <Badge tone="danger" variant="filled">
           Kritik (2)
         </Badge>
-        {['Liquid Glass', 'Material 3', 'SheetGL 120Hz'].map((c) => (
+        {['Liquid Glass', 'Dinamik Ton', 'SheetGL 120Hz'].map((c) => (
           <Chip
             key={c}
             selected={selectedChip === c}
@@ -1054,9 +1054,9 @@ export const FORM_CONTROL_GUIDES: DocComponentGuideItem[] = [
     playgroundId: 'button',
     importStatement: "import { Button, type ButtonVariant } from 'truncgil-uxigl';",
     architectureNoteTr:
-      'Apple HIG yay (spring) basış fiziği + Material 3 tonal/filled yüzeyler. toggleable modda aria-pressed, collapsible modda aria-expanded üretir.',
+      'Akıcı yay (spring) basış fiziği + dinamik tonal/filled yüzeyler. toggleable modda aria-pressed, collapsible modda aria-expanded üretir.',
     architectureNoteEn:
-      'Apple HIG spring press physics + Material 3 tonal/filled surfaces. Automatically binds aria-pressed and aria-expanded.',
+      'Spring press physics + adaptive tonal/filled surfaces. Automatically binds aria-pressed and aria-expanded.',
     summaryTr:
       '8 görsel varyant (filled, tonal, glass, outlined, ghost, success, warning, danger), Switch/Toggle durumu, Collapse/Expand aç-kapa modu, Split (bölünmüş açılır menülü) aksiyon ve Icon-Only kare buton yeteneklerini tek bileşende sunar.',
     summaryEn:
@@ -1086,7 +1086,7 @@ export const FORM_CONTROL_GUIDES: DocComponentGuideItem[] = [
         name: 'size',
         type: "'xs' | 'sm' | 'md' | 'lg'",
         defaultValue: "'md'",
-        description: 'Apple HIG 8pt ızgarasına uyumlu buton yüksekliği ve iç dolgusu.',
+        description: '8pt uzamsal ızgaraya uyumlu buton yüksekliği ve iç dolgusu.',
       },
       {
         name: 'toggleable / pressed / onToggle',
@@ -1429,9 +1429,9 @@ export const FORM_CONTROL_GUIDES: DocComponentGuideItem[] = [
     playgroundId: 'switch',
     importStatement: "import { Switch, Checkbox, Slider } from 'truncgil-uxigl';",
     architectureNoteTr:
-      'Apple HIG kılavuzuna uygun olarak Switch ve Slider etkileşim anında geçici Liquid Glass kapsülüne dönüşür.',
+      'Switch ve Slider kontrol başlıkları etkileşim anında geçici Liquid Glass kapsülüne dönüşür.',
     architectureNoteEn:
-      'Per Apple HIG, Switch and Slider thumbs morph into transient Liquid Glass lenses during interaction.',
+      'Switch and Slider thumbs morph into transient Liquid Glass lenses during interaction.',
     summaryTr:
       'Boolean ayarlar için <Switch />, tekli/kısmi (indeterminate) seçimler için <Checkbox /> ve sayısal aralıklar için adım noktalı (showTicks) <Slider /> bileşenleri.',
     summaryEn:
@@ -1465,8 +1465,8 @@ export const FORM_CONTROL_GUIDES: DocComponentGuideItem[] = [
   {
     id: 'brand-icons',
     tag: '<UXILogo /> & <GoogleIcon />',
-    titleTr: '3D Liquid-Glass Monogram & Değişken Google Material Symbols',
-    titleEn: '3D Liquid-Glass Emblem & Variable Google Material Symbols',
+    titleTr: '3D Liquid-Glass Monogram & Değişken Vektör Font İkonlar',
+    titleEn: '3D Liquid-Glass Emblem & Variable Vector Font Icons',
     categoryLabelTr: 'Marka & İkonografi',
     categoryLabelEn: 'Brand & Iconography',
     importStatement: "import { UXILogo, GoogleIcon } from 'truncgil-uxigl';",
@@ -1487,7 +1487,7 @@ export const FORM_CONTROL_GUIDES: DocComponentGuideItem[] = [
         type: 'string',
         defaultValue: 'zorunlu',
         required: true,
-        description: 'Google Material Symbols ligatür adı (örn: "dashboard", "lock", "table_chart").',
+        description: 'Vektör ikon ligatür adı (örn: "dashboard", "lock", "table_chart").',
       },
       {
         name: 'iconStyle / filled / weight',
@@ -1517,9 +1517,9 @@ export const SURFACE_NAVIGATION_GUIDES: DocComponentGuideItem[] = [
     playgroundId: 'card',
     importStatement: "import { Card, type SurfaceVariant } from 'truncgil-uxigl';",
     architectureNoteTr:
-      'Apple Standart Materyalleri (ultraThin..thick) ve Material 3 Surface Container katmanlarını tek bileşende birleştirir.',
+      'Standart yüzey materyalleri (ultraThin..thick) ve dinamik tonal konteyner katmanlarını tek bileşende birleştirir.',
     architectureNoteEn:
-      'Unites Apple Standard Materials and Material 3 Surface Containers with structured header/footer slots.',
+      'Unites standard surface materials and dynamic tonal surface containers with structured header/footer slots.',
     summaryTr:
       'Üst kaş (eyebrow), başlık, alt başlık, sol ikon, sağ aksiyon rozeti ve altbilgi (footer) yuvalarını hazır prop olarak sunan temel içerik kapsayıcısı.',
     summaryEn:
@@ -1584,8 +1584,8 @@ export const SURFACE_NAVIGATION_GUIDES: DocComponentGuideItem[] = [
   value={mode}
   onChange={setMode}
   options={[
-    { value: 'glass', label: 'Liquid Glass', badge: 'HIG' },
-    { value: 'tonal', label: 'Material Tonal', badge: 'M3' },
+    { value: 'glass', label: 'Liquid Glass', badge: '8pt' },
+    { value: 'tonal', label: 'Dynamic Tonal', badge: 'Tonal' },
   ]}
 />
 <Tabs activeId={tab} onChange={setTab} variant="pill" items={tabItems} />
@@ -1671,9 +1671,9 @@ export const SURFACE_NAVIGATION_GUIDES: DocComponentGuideItem[] = [
     architectureNoteEn:
       'Supports ESC key dismissal, glass backdrop blur, and WAI-ARIA role="dialog" semantics.',
     summaryTr:
-      'macOS trafik ışıklı 6 diyalog arketipi sunan <Modal />, sağ/sol/alt yönlerden kayan <Drawer />, satır içi <Alert /> bandı ve global <CommandPalette /> (⌘K).',
+      'Pencere kontrollü 6 diyalog arketipi sunan <Modal />, sağ/sol/alt yönlerden kayan <Drawer />, satır içi <Alert /> bandı ve global <CommandPalette /> (⌘K).',
     summaryEn:
-      'macOS-styled <Modal /> with 6 archetypes, 3-direction slide-over <Drawer />, inline <Alert />, and <CommandPalette />.',
+      'Window-styled <Modal /> with 6 archetypes, 3-direction slide-over <Drawer />, inline <Alert />, and <CommandPalette />.',
     code: `<Modal
   open={open}
   onClose={() => setOpen(false)}
@@ -1719,9 +1719,9 @@ export const DATA_FEEDBACK_WEBGL_GUIDES: DocComponentGuideItem[] = [
     importStatement:
       "import { Badge, Chip, Avatar, AvatarGroup, Progress, Skeleton, Tooltip } from 'truncgil-uxigl';",
     architectureNoteTr:
-      'Avatar bileşeni Apple squircle (süper-elips) maskesi ve çevrimiçi durum rozeti içerir; Progress ve Skeleton animasyon hızı (speed) özelleştirilebilir.',
+      'Avatar bileşeni squircle (süper-elips) maskesi ve çevrimiçi durum rozeti içerir; Progress ve Skeleton animasyon hızı (speed) özelleştirilebilir.',
     architectureNoteEn:
-      'Avatar supports Apple squircle geometry and presence dots; Progress and Skeleton support configurable animation speed.',
+      'Avatar supports squircle geometry and presence dots; Progress and Skeleton support configurable animation speed.',
     summaryTr:
       'Canlı sinyalli <Badge />, seçilebilir <Chip />, grup yığınlı <AvatarGroup />, dairesel/doğrusal <Progress />, shimmer <Skeleton /> ve kısayol rozetli <Tooltip />.',
     summaryEn:
@@ -1743,7 +1743,7 @@ export const DATA_FEEDBACK_WEBGL_GUIDES: DocComponentGuideItem[] = [
         name: 'shape / status (Avatar)',
         type: "'squircle' | 'circle' / 'online' | 'busy' | 'away' | 'offline'",
         defaultValue: "'squircle' / undefined",
-        description: 'Apple squircle veya tam daire kesim ve sağ alt durum sinyali.',
+        description: 'Squircle veya tam daire kesim ve sağ alt durum sinyali.',
       },
       {
         name: 'variant / value / indeterminate / speed (Progress)',

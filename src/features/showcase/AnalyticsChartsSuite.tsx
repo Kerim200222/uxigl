@@ -284,11 +284,11 @@ export const DEVICE_ANALYTICS = [
 ];
 
 export const BROWSER_DISTRIBUTION = [
-  { name: 'Google Chrome', version: 'v130+', share: 58.4, color: '#2997FF' },
-  { name: 'Safari WebKit', version: 'v18.1', share: 22.1, color: '#2FF58E' },
-  { name: 'Microsoft Edge', version: 'v130', share: 10.6, color: '#818CF8' },
-  { name: 'Mozilla Firefox', version: 'v132', share: 6.2, color: '#F59E0B' },
-  { name: 'Brave / Arc', version: 'Chromium', share: 2.7, color: '#EC4899' },
+  { name: 'Chromium Engine', version: 'v130+', share: 58.4, color: '#2997FF' },
+  { name: 'WebKit Engine', version: 'v18.1', share: 22.1, color: '#2FF58E' },
+  { name: 'Blink Desktop', version: 'v130', share: 10.6, color: '#818CF8' },
+  { name: 'Gecko Quantum', version: 'v132', share: 6.2, color: '#F59E0B' },
+  { name: 'Diğer Modern', version: 'WebGL2', share: 2.7, color: '#EC4899' },
 ];
 
 export const USER_BEHAVIOR_FLOW = [

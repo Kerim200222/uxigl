@@ -190,8 +190,8 @@ export default function App() {
         },
         {
           icon: '🎨',
-          title: 'Google Material You (M3) & 0–32px Border Radius',
-          desc: '6 hazır tohum renk paleti (Cupertino Blue, Material Iris, Emerald Mint, Sunset Coral, Amber Gold, Graphite Mono) ve 0px ile 32px arasında anlık ayarlanabilir köşe geometrisi.',
+          title: 'Dinamik Tonlama (Dynamic Tonal) & 0–32px Border Radius',
+          desc: '6 hazır tohum renk paleti (Sapphire Blue, Royal Iris, Emerald Mint, Solar Coral, Amber Gold, Titanium Mono) ve 0px ile 32px arasında anlık ayarlanabilir köşe geometrisi.',
         },
         {
           icon: '📊',
@@ -222,7 +222,7 @@ export default function App() {
         },
         {
           icon: '🎨',
-          title: 'Google Material You (M3) & 0–32px Border Radius',
+          title: 'Dynamic Tonal Engine & 0–32px Border Radius',
           desc: '6 seed color palettes with automatic dark/light tonal adaptation and a live 0px–32px border-radius engine persisted in localStorage.',
         },
         {
@@ -812,7 +812,7 @@ export default function App() {
                   WebkitTextFillColor: 'transparent',
                 }}
               >
-                Liquid Glass × Material 3
+                Liquid Glass × Dinamik Tonlama
               </span>{' '}
               Tasarım Sistemi
             </>
@@ -827,7 +827,7 @@ export default function App() {
                   WebkitTextFillColor: 'transparent',
                 }}
               >
-                Liquid Glass × Material 3
+                Liquid Glass × Dynamic Tonal
               </span>{' '}
               Design System
             </>
@@ -845,8 +845,8 @@ export default function App() {
           }}
         >
           {isTR
-            ? 'UX, UI ve WebGL dünyasını tek bir mimaride birleştiren uxiGL; Liquid Glass & Standart Yüzey Malzemeleri, Google Material You tohum paletleri, 0–32px canlı Border Radius motoru, SheetGL WebGL DataGrid ve FileManGL WebGL2 dosya yöneticisiyle eksiksiz bir kurumsal ekosistem sunar.'
-            : 'Uniting UX, UI, and WebGL in a single architecture: Liquid Glass & Standard Materials, Google Material You tonal palettes, a live 0–32px Border Radius engine, SheetGL WebGL DataGrid, and FileManGL WebGL2 Virtual File System.'}
+            ? 'UX, UI ve WebGL dünyasını tek bir mimaride birleştiren uxiGL; Liquid Glass & Standart Yüzey Malzemeleri, dinamik tohum renk paletleri, 0–32px canlı Border Radius motoru, SheetGL WebGL DataGrid ve FileManGL WebGL2 dosya yöneticisiyle eksiksiz bir kurumsal ekosistem sunar.'
+            : 'Uniting UX, UI, and WebGL in a single architecture: Liquid Glass & Standard Materials, dynamic tonal palettes, a live 0–32px Border Radius engine, SheetGL WebGL DataGrid, and FileManGL WebGL2 Virtual File System.'}
         </p>
 
         {/* PRIMARY CTA BUTTONS (All with Real Route Hrefs) */}
@@ -1137,14 +1137,14 @@ export default function App() {
             {
               icon: <Sparkles size={16} color="#2FF58E" />,
               title: 'Liquid Glass Yüzeyler',
-              tag: 'HIG',
+              tag: '8pt Grid',
               href: '/components/surfaces/card',
               sec: 'components-surfaces',
               sub: 'card',
             },
             {
               icon: <Sliders size={16} color="#00C8FF" />,
-              title: 'Material 3 & Radius',
+              title: 'Dinamik Ton & Radius',
               tag: '0–32px',
               href: '/docs/theming-tokens',
               sec: 'docs-guide',
@@ -1282,7 +1282,7 @@ export default function App() {
               <div className="uxu-stage-grid-2">
                 <Card
                   variant="glass"
-                  eyebrow="LIQUID GLASS × MATERIAL 3"
+                  eyebrow="LIQUID GLASS × DİNAMİK TONLAMA"
                   title="Canlı Tema, Renk Paleti & Border Radius"
                   subtitle="Değişiklikler tüm uxiGL bileşenlerine ve localStorage’a anında uygulanır"
                 >
@@ -1334,7 +1334,7 @@ export default function App() {
 
                     <div>
                       <div className="uxu-field__label" style={{ marginBottom: 6 }}>
-                        Google Fonts Tipografi Ailesi
+                        Tipografi &amp; Yazı Tipi Ailesi
                       </div>
                       <div className="uxu-stage-row">
                         {availableFontPresets.map((fp) => (
@@ -1360,9 +1360,9 @@ export default function App() {
 
                 <Card
                   variant="tonal"
-                  eyebrow="GOOGLE MATERIAL SYMBOLS & UXIGL PRIMITIVES"
-                  title="Değişken Google Font İkonları & Bileşenler"
-                  subtitle="Google Material Symbols (Rounded / Outlined / Sharp • FILL / wght), ilerleme halkaları ve tablo"
+                  eyebrow="VARIABLE FONT ICONS & UXIGL PRIMITIVES"
+                  title="Değişken Vektör Font İkonları & Bileşenler"
+                  subtitle="Değişken eksenli ikonlar (Rounded / Outlined / Sharp • FILL / wght), ilerleme halkaları ve tablo"
                 >
                   <div className="uxu-stack-md">
                     <div
@@ -1441,7 +1441,7 @@ export default function App() {
                         {
                           id: '1',
                           pkg: 'truncgil-uxigl',
-                          arch: 'Liquid Glass × Material 3 UI',
+                          arch: 'Liquid Glass × Dinamik Tonal UI',
                           tag: `v${__UXIGL_VERSION__}`,
                         },
                         {

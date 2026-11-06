@@ -136,7 +136,7 @@ export function QuickWorkspaceCard() {
     <Card
       variant="glass"
       title="uxiGL Çalışma Alanına Bağlan"
-      subtitle="Liquid Glass Cam Yüzeyi × Google Material You Tonal Kontroller"
+      subtitle="Liquid Glass Cam Yüzeyi × Dinamik Tonal Kontroller"
       headerAction={<Badge tone="success" pulse>Hazır</Badge>}
     >
       <div className="uxu-stack-md">
@@ -430,9 +430,9 @@ export const ArchitectureDocsView: React.FC<ArchitectureDocsViewProps> = ({
         titleTr: '5. 5 Farklı Sidebar Mimarisi & Kurumsal Yerleşim',
         titleEn: '5. 5 Sidebar Architectures & Enterprise Layout Shell',
         subtitleTr:
-          'Stacked Vertical, Standard Accordion, Mini-Rail, Dual-Column ve Drawer (Off-Canvas) gezinme modelleri ve 8pt Apple HIG uzamsal ızgara.',
+          'Stacked Vertical, Standard Accordion, Mini-Rail, Dual-Column ve Drawer (Off-Canvas) gezinme modelleri ve 8pt uzamsal ızgara sistemi.',
         subtitleEn:
-          'Stacked Vertical, Standard Accordion, Mini-Rail, Dual-Column, and Drawer navigation architectures on an 8pt Apple HIG spatial grid.',
+          'Stacked Vertical, Standard Accordion, Mini-Rail, Dual-Column, and Drawer navigation architectures on an 8pt spatial grid.',
         icon: <Layout size={15} />,
         subItems: [
           { id: 'doc-sec-grid-classes', labelTr: 'Hazır Responsive Grid Sınıfları', labelEn: 'Responsive Grid CSS Classes' },
@@ -455,8 +455,8 @@ export const ArchitectureDocsView: React.FC<ArchitectureDocsViewProps> = ({
         subItems: [
           {
             id: 'doc-tpl-Stage',
-            labelTr: 'Login & Auth (Split-Screen + iCloud)',
-            labelEn: 'Login & Auth (Split-Screen + iCloud)',
+            labelTr: 'Login & Auth (Split-Screen + Yüzen Cam)',
+            labelEn: 'Login & Auth (Split-Screen + Floating Glass)',
             onSelect: () => setDocsPageTemplate('page-login'),
           },
           {
@@ -500,19 +500,19 @@ export const ArchitectureDocsView: React.FC<ArchitectureDocsViewProps> = ({
       {
         id: 'theming-tokens',
         step: '7',
-        badgeTr: 'BÖLÜM 7 • TEMA MOTORU, APPLE HIG & CSS TOKENLARI',
-        badgeEn: 'CHAPTER 7 • THEME ENGINE, APPLE HIG & CSS TOKENS',
-        titleTr: '7. Tema Motoru, Apple HIG Materyalleri & CSS Tokenları',
-        titleEn: '7. Theme Engine, Apple HIG Materials & CSS Design Tokens',
+        badgeTr: 'BÖLÜM 7 • TEMA MOTORU, YÜZEY MATERYALLERİ & CSS TOKENLARI',
+        badgeEn: 'CHAPTER 7 • THEME ENGINE, SURFACE MATERIALS & CSS TOKENS',
+        titleTr: '7. Tema Motoru, Yüzey Materyalleri & CSS Tokenları',
+        titleEn: '7. Theme Engine, Surface Materials & CSS Design Tokens',
         subtitleTr:
-          'useTheme() kancası, 6 tohum renk paleti, 0–32px canlı Border Radius, Google Fonts tipografi ölçekleme ve --uxu-* CSS değişkenleri.',
+          'useTheme() kancası, 6 tohum renk paleti, 0–32px canlı Border Radius, tipografi ölçekleme ve --uxu-* CSS değişkenleri.',
         subtitleEn:
-          'useTheme() hook API, 6 seed palettes, live 0–32px Border Radius, Google Fonts typography scaling, and --uxu-* CSS custom properties.',
+          'useTheme() hook API, 6 seed palettes, live 0–32px Border Radius, typography scaling, and --uxu-* CSS custom properties.',
         icon: <Palette size={15} />,
         subItems: [
           { id: 'doc-sec-theme-lab', labelTr: 'Canlı Tema & Radius Laboratuvarı', labelEn: 'Live Theme & Radius Lab' },
           { id: 'doc-sec-theme-tokens', labelTr: 'Aktif CSS Token Denetçisi', labelEn: 'Live CSS Token Inspector' },
-          { id: 'doc-sec-fonts-icons', labelTr: 'Google Fonts & Material Symbols', labelEn: 'Google Fonts & Material Symbols' },
+          { id: 'doc-sec-fonts-icons', labelTr: 'Tipografi & Değişken İkonlar', labelEn: 'Typography & Variable Icons' },
         ],
       },
       {
@@ -1044,8 +1044,8 @@ export const ArchitectureDocsView: React.FC<ArchitectureDocsViewProps> = ({
                 }
                 subtitle={
                   isTR
-                    ? 'SOLID prensipleri, Apple HIG 8pt uzamsal ızgara ve WebGL motor entegrasyonu'
-                    : 'SOLID principles, Apple HIG 8pt spatial grid, and WebGL engine integration'
+                    ? 'SOLID prensipleri, 8pt uzamsal ızgara ve WebGL motor entegrasyonu'
+                    : 'SOLID principles, 8pt spatial grid, and WebGL engine integration'
                 }
               >
                 <div id="doc-sec-solid" className="uxu-props-table-scroll">
@@ -1251,7 +1251,7 @@ export const ArchitectureDocsView: React.FC<ArchitectureDocsViewProps> = ({
               <div className="uxu-stage-grid-2">
                 <Card
                   variant="glass"
-                  title="7 Hazır Kurumsal Sayfa Şablonu (Apple HIG × Material 3)"
+                  title="7 Hazır Kurumsal Sayfa Şablonu (Liquid Glass × Dinamik Ton)"
                   subtitle="Login, Register/2FA, Pricing, Profile, B2B e-Fatura, Kanban ve 404/Status"
                   headerIcon={<Layers size={19} />}
                 >
@@ -1276,7 +1276,7 @@ export const ArchitectureDocsView: React.FC<ArchitectureDocsViewProps> = ({
                           {
                             id: 'page-login' as PageTemplateId,
                             title: '1. Login & Auth',
-                            desc: 'Split-screen SSO, Passkey & iCloud Glass',
+                            desc: 'Split-screen SSO, Passkey & Yüzen Cam',
                             route: '/dashboard/page-login',
                           },
                           {
@@ -1455,7 +1455,7 @@ export function EnterprisePagesRouter() {
 
                     <div>
                       <div className="uxu-field__label" style={{ marginBottom: 6 }}>
-                        2. Material You Tohum Renk Paleti (Seed Palette):
+                        2. Dinamik Tohum Renk Paleti (Seed Palette):
                       </div>
                       <div className="uxu-palette-picker-grid">
                         {availablePalettes.map((p) => {
@@ -1639,18 +1639,18 @@ export function EnterprisePagesRouter() {
                 </Card>
               </div>
 
-              {/* Google Fonts & Material Symbols Card */}
+              {/* Typography & Variable Font Icons Card */}
               <Card
                 variant="glass"
                 padding="md"
-                eyebrow="GOOGLE FONTS & GOOGLE MATERIAL SYMBOLS"
-                title="Tipografi Aileleri & Değişken Google Font İkonları"
-                subtitle="5 hazır Google Font kombinasyonu ve değişken eksenli (FILL, wght, Rounded/Outlined/Sharp) GoogleIcon bileşeni"
+                eyebrow="TYPOGRAPHY & VARIABLE FONT ICONS"
+                title="Tipografi Aileleri & Değişken Vektör Font İkonları"
+                subtitle="5 hazır yazı tipi kombinasyonu ve değişken eksenli (FILL, wght, Rounded/Outlined/Sharp) GoogleIcon bileşeni"
               >
                 <div className="uxu-stage-grid-2" id="doc-sec-fonts-icons">
                   <div className="uxu-stack-md">
                     <div className="uxu-field__label">
-                      1. Google Font Ailesi Seçin (Anında Uygulanır):
+                      1. Yazı Tipi Ailesi Seçin (Anında Uygulanır):
                     </div>
                     <div className="uxu-stack-sm">
                       {availableFontPresets.map((fp) => {
@@ -1708,7 +1708,7 @@ export function EnterprisePagesRouter() {
 
                   <div className="uxu-stack-md">
                     <div className="uxu-field__label">
-                      2. Google Material Symbols Stil &amp; Eksen Kontrolleri:
+                      2. Değişken Vektör İkon Stil &amp; Eksen Kontrolleri:
                     </div>
                     <SegmentedControl<GoogleIconStyle>
                       size="sm"
@@ -1725,7 +1725,7 @@ export function EnterprisePagesRouter() {
                     <Switch
                       size="sm"
                       label="İkon İç Dolgusu (FILL: 1)"
-                      description="Google Material Symbols FILL eksenini 0 ve 1 arasında değiştirir"
+                      description="Değişken font ikonlarının FILL eksenini 0 ve 1 arasında değiştirir"
                       value={preferences.iconFilled ?? false}
                       onChange={setIconFilled}
                     />

@@ -381,7 +381,7 @@ notify({
             selected: true,
             disabled: isDisabled || undefined,
           },
-          childrenCode: 'Liquid Glass & Material 3',
+          childrenCode: 'Liquid Glass & Dinamik Ton',
         });
       case 'progress-avatar':
         return CodeGeneratorService.generateSnippet({
@@ -441,7 +441,7 @@ notify({
                 ? 'lg'
                 : 'md',
             title: 'Frankfurt M4 Ultra Node',
-            subtitle: 'Liquid Glass × Google Material 3 Surface',
+            subtitle: 'Liquid Glass × Dinamik Tonal Yüzey',
             interactive: true,
             glowOnHover: true,
           },
@@ -1307,7 +1307,7 @@ export function CloudFileManagerExample() {
                   />
                   <Switch
                     label="Dinamik Tohum Renk Uyumu"
-                    description="Material You tonal palet motorunu etkinleştir"
+                    description="Adaptif tonal palet motorunu etkinleştir"
                     value={!switchChecked}
                     onChange={(v) => setSwitchChecked(!v)}
                     tone="success"
@@ -1356,7 +1356,7 @@ export function CloudFileManagerExample() {
               <Card
                 variant="glass"
                 padding="md"
-                title="macOS Control Center Kaydırıcı"
+                title="Kontrol Merkezi Kaydırıcı"
               >
                 <div className="uxu-stack-md">
                   <Slider
@@ -1426,9 +1426,9 @@ export function CloudFileManagerExample() {
                 },
                 {
                   value: 'tonal',
-                  label: 'Google Material Tonal',
+                  label: 'Dinamik Tonal Yüzey',
                   icon: <Layers size={15} />,
-                  badge: 'M3',
+                  badge: 'Tonal',
                 },
                 {
                   value: 'adaptive',
@@ -2200,7 +2200,7 @@ export function CloudFileManagerExample() {
                   ? 'Hızlı Denetim & Filtre Çekmecesi (Sheet)'
                   : 'Sunucu Kümesi Yapılandırma Onayı'
               }
-              subtitle={`Varyant: ${modalVariant.toUpperCase()} • Liquid Glass + Material 3 Dialog`}
+              subtitle={`Varyant: ${modalVariant.toUpperCase()} • Liquid Glass + Dinamik Tonal Diyalog`}
               footer={
                 <div className="uxu-modal-footer-actions">
                   <Button

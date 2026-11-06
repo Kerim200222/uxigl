@@ -33,7 +33,7 @@ const INITIAL_NOTIFICATIONS: HeaderNotificationItem[] = [
   {
     id: 'n-1',
     title: 'SheetGL v1.0.21 Tema Senkronu',
-    description: 'Tüm aktif grid hücreleri yeni Material You paletine bağlandı.',
+    description: 'Tüm aktif grid hücreleri yeni dinamik renk paletine bağlandı.',
     time: '2 dk önce',
     category: 'sistem',
     unread: true,

@@ -438,7 +438,7 @@ export const COMPONENT_CATALOG: ComponentCatalogEntry[] = [
       {
         id: 'slider-examples',
         title: '1. İkonlu ve Adım Noktalı (Ticks) Kaydırıcılar',
-        description: 'macOS Control Center ve Material 3 tarzı kaydırıcılar.',
+        description: 'Kontrol merkezi ve dinamik tonal tarzı kaydırıcılar.',
         code: `<div className="uxu-stack-md">
   <Slider
     label="Ekran Parlaklığı"
@@ -822,12 +822,12 @@ export const COMPONENT_CATALOG: ComponentCatalogEntry[] = [
     turkishTitle: 'Hazır Kurumsal Sayfa Tasarımları (Login, Register/2FA, Pricing, Profile, e-Fatura, Kanban, Status)',
     category: 'surfaces',
     summary:
-      'Apple HIG 8pt uzamsal ızgara ve Liquid Glass materyalleriyle tasarlanmış 7 hazır tam sayfa şablonu: Split-Screen & iCloud Login, 3 Adımlı Kayıt & 2FA OTP, SaaS Fiyatlandırma, Kullanıcı Profili, B2B e-Fatura & Checkout, Kanban Sprint Panosu ve 404/500/SLA Sistem Durumu.',
+      '8pt uzamsal ızgara ve Liquid Glass materyalleriyle tasarlanmış 7 hazır tam sayfa şablonu: Split-Screen & Yüzen Cam Login, 3 Adımlı Kayıt & 2FA OTP, SaaS Fiyatlandırma, Kullanıcı Profili, B2B e-Fatura & Checkout, Kanban Sprint Panosu ve 404/500/SLA Sistem Durumu.',
     importPath: 'truncgil-uxigl',
     importStatement:
       "import { PageTemplatesShowcaseView, type PageTemplateId } from 'truncgil-uxigl';",
     dos: [
-      'Kurumsal B2B girişlerde sol marka/telemetri vitrinli Split-Screen Login şablonunu, tüketici odaklı uygulamalarda Apple iCloud Floating Glass Login şablonunu tercih edin.',
+      'Kurumsal B2B girişlerde sol marka/telemetri vitrinli Split-Screen Login şablonunu, son kullanıcı odaklı uygulamalarda Merkezi Yüzen Cam (Floating Glass) Login şablonunu tercih edin.',
       'Kayıt (Register) akışlarını bilişsel yükü azaltmak için Hesap -> Çalışma Alanı Rolü -> 6 Haneli 2FA OTP adımlarına bölün.',
       'Fiyatlandırma (Pricing) sayfasında Yıllık/Aylık SegmentedControl ve canlı koltuk (seat) Slider hesaplayıcısını birlikte sunun.',
       'B2B tahsilat ekranlarında yazdırılabilir GİB e-Fatura kalem tablosu ile canlı kredi kartı önizlemesini yan yana konumlandırın.',
@@ -843,9 +843,9 @@ export const COMPONENT_CATALOG: ComponentCatalogEntry[] = [
     examples: [
       {
         id: 'page-login-template-example',
-        title: '1. Kurumsal Split-Screen & Apple iCloud Login Sayfası',
+        title: '1. Kurumsal Split-Screen & Yüzen Cam Login Sayfası',
         description:
-          'E-posta/parola doğrulama, WebAuthn Passkey (Face ID / Touch ID) ve SSO sağlayıcılarıyla tam hazır giriş ekranı.',
+          'E-posta/parola doğrulama, WebAuthn Biyometrik Passkey ve SSO sağlayıcılarıyla tam hazır giriş ekranı.',
         code: `import { useState } from 'react';
 import { Card, Input, Button, Checkbox, Badge, UXILogo } from 'truncgil-uxigl';
 import { Mail, Lock, Fingerprint, ArrowRight } from 'lucide-react';
@@ -937,7 +937,7 @@ export function ReadyPagesDemo() {
     importStatement:
       "import { Modal, Drawer, CommandPalette } from '@/components/composites';\nimport { Alert } from '@/components/primitives';\nimport { useToast } from '@/providers/ToastProvider';",
     dos: [
-      'macOS görünümü için showMacTrafficLights aktif edin; yıkıcı işlemlerde variant="danger" Modal kullanın.',
+      'Masaüstü pencere görünümü için showMacTrafficLights aktif edin; yıkıcı işlemlerde variant="danger" Modal kullanın.',
       'Toast bildirimlerinde ekran yönünü placement="top-right | top-left | bottom-right | bottom-left | top-center" ile belirleyin.',
       'Sayfa içi kalıcı durum duyurularında <Alert tone="success | warning | danger | info | glass" /> kullanın.',
     ],
@@ -1007,7 +1007,7 @@ notify({
         name: 'showMacTrafficLights (Modal)',
         type: 'boolean',
         defaultValue: 'false',
-        description: 'Sol üst köşeye macOS kırmızı/sarı/yeşil pencere kontrollerini ekler.',
+        description: 'Sol üst köşeye kırmızı/sarı/yeşil pencere kontrollerini ekler.',
       },
       {
         name: 'actions (CommandPalette)',
@@ -1217,9 +1217,9 @@ notify({
       },
       {
         name: 'theme (SheetGL)',
-        type: "'apple-dark' | 'apple-light' | 'google-dark' | 'google-light' | IGridThemeTokens",
-        defaultValue: "'apple-dark'",
-        description: 'Liquid Glass veya Google Material You WebGL/Canvas tema şablonu.',
+        type: 'IGridThemeTokens',
+        defaultValue: 'Otomatik uxiGL teması',
+        description: 'Liquid Glass veya Dinamik Tonal WebGL/Canvas tema şablonu.',
       },
       {
         name: 'batchEditMode / showFormulaBar',

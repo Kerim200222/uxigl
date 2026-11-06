@@ -123,9 +123,9 @@ import {
 | :--- | :--- | :--- |
 | `<Select />` | `value`, `onChange`, `options: { value, label, description?, badge? }[]`, `surface` | Dropdown selector with per-option badge and subtitle |
 | `<Textarea />` | `value`, `onChange`, `rows`, `maxLength`, `showCharacterCount`, `quickTemplates: string[]` | Multi-line text field with quick-insert template pills |
-| `<Switch />` | `value: boolean`, `onChange: (next: boolean) => void`, `label`, `description`, `tone`, `size` | Apple HIG spring thumb with transient Liquid Glass lens |
+| `<Switch />` | `value: boolean`, `onChange: (next: boolean) => void`, `label`, `description`, `tone`, `size` | Fluid spring thumb with transient Liquid Glass lens |
 | `<Checkbox />` | `value: boolean`, `indeterminate?: boolean`, `onChange`, `label`, `description`, `tone` | Animated SVG checkmark and partial (`-`) selection state |
-| `<Slider />` | `value: number`, `onChange: (next: number) => void`, `min`, `max`, `step`, `showTicks`, `valueSuffix` | macOS Control Center slider with tick marks |
+| `<Slider />` | `value: number`, `onChange: (next: number) => void`, `min`, `max`, `step`, `showTicks`, `valueSuffix` | Control Center slider with tick marks |
 
 ---
 
@@ -144,7 +144,7 @@ import { UXILogo, GoogleIcon } from 'truncgil-uxigl';
 
 | Component | Key Props | Description |
 | :--- | :--- | :--- |
-| `<Card />` | `variant: 'glass' \| 'tonal' \| 'elevated' \| 'outlined'`, `padding`, `eyebrow`, `title`, `subtitle`, `headerIcon`, `headerAction`, `footer`, `interactive`, `glowOnHover` | Multi-layered Apple HIG × Material 3 surface container |
+| `<Card />` | `variant: 'glass' \| 'tonal' \| 'elevated' \| 'outlined'`, `padding`, `eyebrow`, `title`, `subtitle`, `headerIcon`, `headerAction`, `footer`, `interactive`, `glowOnHover` | Multi-layered Liquid Glass × Dynamic Tonal surface container |
 | `<SegmentedControl<T> />` | `value: T`, `onChange: (next: T) => void`, `options: { value, label, icon?, badge?, href? }[]`, `fullWidth`, `size` | Sliding pill switcher with semantic `<a>` link support |
 | `<Tabs />` | `activeId`, `onChange`, `variant: 'underline' \| 'pill'`, `items: { id, label, icon?, count? }[]` | Horizontal tab bar with counters |
 | `<Accordion />` | `items: { id, title, subtitle?, icon?, content }[]`, `allowMultiple`, `defaultExpandedIds`, `variant` | Single or multi-expand collapsible disclosure panels |
@@ -164,7 +164,7 @@ import { UXILogo, GoogleIcon } from 'truncgil-uxigl';
 | Component | Key Props | Description |
 | :--- | :--- | :--- |
 | `<Badge />` | `tone`, `variant: 'filled' \| 'tonal' \| 'glass' \| 'outlined'`, `pulse`, `size`, `pill` | Status indicator badge with live pulsing dot |
-| `<Chip />` | `selected`, `onClick`, `onRemove`, `tone`, `size`, `leadingIcon` | Material 3 interactive filter & selection chip |
+| `<Chip />` | `selected`, `onClick`, `onRemove`, `tone`, `size`, `leadingIcon` | Interactive filter & selection chip |
 | `<Avatar />` & `<AvatarGroup />` | `name`, `src`, `shape: 'squircle' \| 'circle'`, `status: 'online' \| 'busy' \| 'away' \| 'offline'`, `max` | Squircle/circle user avatar and stacked overflow group |
 | `<Progress />` | `variant: 'linear' \| 'circular'`, `value`, `indeterminate`, `speed`, `tone`, `size` | Linear bar and circular SVG progress ring |
 | `<Skeleton />` | `variant: 'text' \| 'circular' \| 'rectangular' \| 'squircle'`, `width`, `height`, `animated`, `speed` | Shimmer loading placeholder |

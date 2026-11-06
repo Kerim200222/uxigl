@@ -804,7 +804,7 @@ export const App: React.FC = () => {
       {
         id: 'view-page-login',
         title: 'Login & Auth — Kurumsal Giriş Sayfası Tasarımları',
-        subtitle: 'Split-screen SSO, Passkey ve Apple iCloud yüzen cam giriş ekranları',
+        subtitle: 'Split-screen SSO, Passkey ve merkezi yüzen cam giriş ekranları',
         category: 'Hazır Sayfa Şablonları',
         icon: <GoogleIcon name="lock" size={16} />,
         shortcut: 'P L',

@@ -68,7 +68,7 @@ export interface SeedPaletteModeTokens {
 export interface SeedPaletteDefinition {
   id: SeedPaletteId;
   name: string;
-  inspiration: 'Liquid Glass' | 'Google Material You' | 'Hybrid Fusion';
+  inspiration: 'Liquid Glass' | 'Dynamic Tonal' | 'Hybrid Fusion';
   description: string;
   auroraColors: {
     colorA: [number, number, number];

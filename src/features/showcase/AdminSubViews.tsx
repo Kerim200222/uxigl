@@ -134,7 +134,7 @@ const MESSAGES_DATA = [
     role: 'Design Systems Lead',
     time: '10:42',
     unread: true,
-    subject: 'Yeni Liquid Glass × Material 3 Grafikleri Onaylandı',
+    subject: 'Yeni Liquid Glass × Dinamik Ton Grafikleri Onaylandı',
     preview:
       'Analytics sayfasındaki yeni Spline Area ve Donut grafiklerinin kontrast testleri tamamlandı.',
     body: 'Merhaba ekip, Analytics Dashboard üzerindeki yeni çok modlu gelir grafiği (Spline Area / Bar / Combo), Trafik Kaynakları Donut halkası ve Kullanıcı Davranış Akışı (Funnel) bileşenleri hem karanlık hem aydınlık temada WCAG AAA kontrast testlerinden başarıyla geçti.',

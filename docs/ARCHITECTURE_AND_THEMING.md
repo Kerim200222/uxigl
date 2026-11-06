@@ -1,10 +1,10 @@
-# uxiGL Architecture, Apple HIG Spatial Grid & Theming Guide
+# uxiGL Architecture, 8pt Spatial Grid & Theming Guide
 
-`truncgil-uxigl` is engineered around **SOLID principles**, **Apple Human Interface Guidelines (HIG) 8pt spatial metrics**, **Liquid Glass & Standard Materials**, and **Google Material You (M3) dynamic tonal color generation**.
+`truncgil-uxigl` is engineered around **SOLID principles**, **8pt spatial metrics**, **Liquid Glass & Standard Materials**, and **dynamic tonal color generation**.
 
 ---
 
-## 1. Apple HIG 8pt Spatial Grid & Touch Target Standards
+## 1. 8pt Spatial Grid & Touch Target Standards
 
 Every container, card, sidebar rail, and interactive control adheres to the 8pt spatial grid:
 
@@ -12,7 +12,7 @@ Every container, card, sidebar rail, and interactive control adheres to the 8pt 
   - `--uxu-space-1`: `4px` (0.5x micro gap)
   - `--uxu-space-2`: `8px` (1x base unit)
   - `--uxu-space-3`: `12px` (1.5x compact inset)
-  - `--uxu-space-4`: `16px` (2x standard Apple iOS/macOS margin & card padding)
+  - `--uxu-space-4`: `16px` (2x standard margin & card padding)
   - `--uxu-space-5`: `24px` (3x standard desktop card & viewport padding)
   - `--uxu-space-6`: `32px` (4x major section separation)
 - **Minimum Hit Target (`44px × 44px`):**
@@ -20,9 +20,9 @@ Every container, card, sidebar rail, and interactive control adheres to the 8pt 
 
 ---
 
-## 2. Apple HIG Materials: Liquid Glass vs. Standard Materials
+## 2. Surface Materials: Liquid Glass vs. Standard Materials
 
-Following Apple's Human Interface Guidelines on Materials:
+Following a layered optical material hierarchy:
 
 1. **Liquid Glass (`Regular` & `Clear`):**
    - Reserved strictly for the **floating navigation and transient control layer** (`Sidebar`, `TopHeader`, `CommandPalette`, `SegmentedControl` sliding thumb, and active `Slider`/`Switch` thumbs).
@@ -32,15 +32,15 @@ Following Apple's Human Interface Guidelines on Materials:
 
 ---
 
-## 3. Google Material You (M3) & Live Theme Engine (`useTheme()`)
+## 3. Dynamic Tonal Palettes & Live Theme Engine (`useTheme()`)
 
 ### 6 Built-In Seed Color Palettes
-1. `cupertino-blue` — Apple iOS/macOS System Blue (`#0284C7` / `#38BDF8`)
-2. `material-iris` — Google Material 3 Indigo/Violet (`#4F46E5` / `#818CF8`)
+1. `cupertino-blue` — Sapphire Blue (`#0284C7` / `#38BDF8`)
+2. `material-violet` — Royal Iris (`#4F46E5` / `#818CF8`)
 3. `emerald-mint` — FinTech & Sustainability Emerald (`#059669` / `#34D399`)
-4. `sunset-coral` — Warm Creative Coral (`#E11D48` / `#FB7185`)
+4. `sunset-coral` — Solar Coral (`#E11D48` / `#FB7185`)
 5. `amber-gold` — Industrial Telemetry Amber (`#D97706` / `#FBBF24`)
-6. `graphite-mono` — Pro Studio Neutral Monochrome (`#475569` / `#94A3B8`)
+6. `graphite-mono` — Titanium Monochrome (`#475569` / `#94A3B8`)
 
 ### `useTheme()` Hook API
 

@@ -116,15 +116,15 @@ const INITIAL_DEPLOYMENTS: DeploymentRow[] = [
     id: 'dep-1',
     service: 'uxigl-glass-compositor',
     owner: 'Deniz Kaya',
-    environment: 'visionOS Spatial Edge',
+    environment: 'Spatial 3D Edge',
     health: 99,
     status: 'Healthy',
   },
   {
     id: 'dep-2',
-    service: 'material-tonal-engine',
+    service: 'adaptive-tonal-engine',
     owner: 'Selin Yılmaz',
-    environment: 'Android 15 Dynamic Cloud',
+    environment: 'Dynamic Tonal Cloud',
     health: 94,
     status: 'Canary',
   },
@@ -138,9 +138,9 @@ const INITIAL_DEPLOYMENTS: DeploymentRow[] = [
   },
   {
     id: 'dep-4',
-    service: 'spotlight-neural-index',
+    service: 'command-neural-index',
     owner: 'Zeynep Ak',
-    environment: 'macOS Sequoia Core',
+    environment: 'Desktop Core Cluster',
     health: 100,
     status: 'Healthy',
   },
@@ -217,7 +217,7 @@ const INITIAL_INVOICES: InvoiceSummaryRow[] = [
   {
     id: 'inv-1',
     invoiceNo: 'INV-2026-0841',
-    customer: 'Cupertino Cloud Systems',
+    customer: 'Nexus Cloud Systems',
     plan: 'Enterprise Unlimited',
     amount: '$48,500.00',
     billingDate: '22 Eki 2026',
@@ -226,7 +226,7 @@ const INITIAL_INVOICES: InvoiceSummaryRow[] = [
   {
     id: 'inv-2',
     invoiceNo: 'INV-2026-0842',
-    customer: 'Google DeepMind Labs',
+    customer: 'Quantum Neural Labs',
     plan: 'AI Cluster Pro',
     amount: '$64,200.00',
     billingDate: '21 Eki 2026',
@@ -362,7 +362,7 @@ export const AppleGoogleAppShowcase: React.FC<AppleGoogleAppShowcaseProps> = ({
   const [newTaskTitle, setNewTaskTitle] = useState('');
   const [activeTags, setActiveTags] = useState<string[]>([
     'Liquid Glass',
-    'Material You',
+    'Dinamik Ton',
     'Responsive',
   ]);
 
@@ -429,7 +429,7 @@ export const AppleGoogleAppShowcase: React.FC<AppleGoogleAppShowcaseProps> = ({
             {activeSubView === 'analytics'
               ? 'Comprehensive insights and performance metrics — Gelir, Trafik Kaynakları, Dönüşüm Hunisi, Coğrafi ve Cihaz Analitiği'
               : activeSubView?.startsWith('page-')
-                ? 'Apple HIG 8pt uzamsal grid ve Liquid Glass materyalleriyle hazırlanmış kopyalanabilir tam sayfa şablonları'
+                ? '8pt uzamsal grid ve Liquid Glass yüzey materyalleriyle hazırlanmış kopyalanabilir tam sayfa şablonları'
                 : 'Gerçek zamanlı sistem metrikleri, etkileşimli grafikler, SheetGL tablo ve FileManGL VFS paneli'}
           </span>
         </div>
@@ -667,7 +667,7 @@ export const AppleGoogleAppShowcase: React.FC<AppleGoogleAppShowcaseProps> = ({
         </Card>
       )}
 
-      {/* 4. 3-Column Bento Grid: Apple Spatial Audio + Material Climate + LSP Control Center */}
+      {/* 4. 3-Column Bento Grid: Spatial Audio + Smart Climate + LSP Control Center */}
       {(activeSubView === 'overview' || activeSubView === 'smart-cluster') && (
         <div className="uxu-bento-grid">
           {/* Card 1: Spatial Audio & Control Center */}
@@ -681,7 +681,7 @@ export const AppleGoogleAppShowcase: React.FC<AppleGoogleAppShowcaseProps> = ({
             headerIcon={<Headphones size={20} />}
             headerAction={
               <Badge tone="success" pulse size="sm">
-                AirPods Max Ultra
+                Studio Spatial Pro
               </Badge>
             }
           >
@@ -694,7 +694,7 @@ export const AppleGoogleAppShowcase: React.FC<AppleGoogleAppShowcaseProps> = ({
                 <div className="uxu-media-player__orb" />
                 <div className="uxu-media-player__meta">
                   <span className="uxu-media-player__track">
-                    Solaris Symphony (Dolby Atmos)
+                    Solaris Symphony (360° Spatial)
                   </span>
                   <span className="uxu-media-player__artist">
                     Liquid Glass (Clear) •{' '}
@@ -745,7 +745,7 @@ export const AppleGoogleAppShowcase: React.FC<AppleGoogleAppShowcaseProps> = ({
               <Switch
                 size="sm"
                 label="Clear Liquid Glass %35 Karartma Katmanı"
-                description="Parlak medya arka planlarında okunabilirliği korur (HIG: Glass.clear)"
+                description="Parlak medya arka planlarında okunabilirliği korur (Glass.clear)"
                 value={clearGlassDimmed}
                 onChange={setClearGlassDimmed}
               />
@@ -784,11 +784,11 @@ export const AppleGoogleAppShowcase: React.FC<AppleGoogleAppShowcaseProps> = ({
             </div>
           </Card>
 
-          {/* Card 2: Google Material You Smart Climate & Workspace Hub */}
+          {/* Card 2: Adaptive Tonal Smart Climate & Workspace Hub */}
           <Card
             variant="tonal"
             glowOnHover
-            eyebrow="GOOGLE MATERIAL YOU (M3)"
+            eyebrow="DİNAMİK TONAL SİSTEM"
             title="Akıllı İklim & Çalışma Alanı"
             subtitle="Dinamik Tonal Konteyner & Filtre Çipleri"
             headerIcon={<Thermometer size={20} />}
@@ -863,12 +863,12 @@ export const AppleGoogleAppShowcase: React.FC<AppleGoogleAppShowcaseProps> = ({
 
               <div>
                 <div className="uxu-field__label" style={{ marginBottom: 8 }}>
-                  Aktif Ortam Senaryoları (Material 3 Filter Chips)
+                  Aktif Ortam Senaryoları (Dinamik Filtre Çipleri)
                 </div>
                 <div className="uxu-stage-row">
                   {[
                     'Liquid Glass',
-                    'Material You',
+                    'Dinamik Ton',
                     'Responsive',
                     'Odak Modu',
                     'Düşük Güç',
@@ -948,7 +948,7 @@ export const AppleGoogleAppShowcase: React.FC<AppleGoogleAppShowcaseProps> = ({
                 tone="primary"
               />
               <BooleanControlComponent
-                label="Material You Tohum Renk Senkronu"
+                label="Dinamik Tohum Renk Senkronu"
                 description="Duvar kağıdı ve sistem vurgu rengini otomatik türet"
                 value={settingsState.dynamicSeedSync}
                 onChange={(val) =>
@@ -1304,11 +1304,11 @@ export const AppleGoogleAppShowcase: React.FC<AppleGoogleAppShowcaseProps> = ({
               value={selectedPlatformGuide}
               onChange={setSelectedPlatformGuide}
               options={[
-                { value: 'ios', label: 'iOS / iPadOS' },
-                { value: 'macos', label: 'macOS' },
-                { value: 'tvos', label: 'tvOS' },
-                { value: 'visionos', label: 'visionOS' },
-                { value: 'watchos', label: 'watchOS' },
+                { value: 'ios', label: 'Mobil & Tablet' },
+                { value: 'macos', label: 'Masaüstü' },
+                { value: 'tvos', label: 'Geniş Ekran' },
+                { value: 'visionos', label: 'Uzamsal 3B' },
+                { value: 'watchos', label: 'Kompakt' },
               ]}
             />
           }
@@ -1447,31 +1447,31 @@ export const AppleGoogleAppShowcase: React.FC<AppleGoogleAppShowcaseProps> = ({
             >
               {selectedPlatformGuide === 'ios' && (
                 <>
-                  <strong className="uxu-vibrancy-label">iOS & iPadOS Kılavuzu:</strong>{' '}
+                  <strong className="uxu-vibrancy-label">Mobil &amp; Tablet Katman Kılavuzu:</strong>{' '}
                   İçerik katmanında <code>ultraThin</code>, <code>thin</code>, <code>regular</code> ve <code>thick</code> standart malzemeleri kullanılır; <code>quaternaryLabel</code> düşük kontrast nedeniyle <code>thin</code> ve <code>ultraThin</code> üzerinde otomatik olarak <code>tertiaryLabel</code> seviyesine yükseltilir. Kaydırıcılar (<code>Slider</code>) ve geçiş düğmeleri (<code>Switch</code>) etkinleştirildiğinde geçici olarak <strong>Liquid Glass</strong> görünümünü alır.
                 </>
               )}
               {selectedPlatformGuide === 'macos' && (
                 <>
-                  <strong className="uxu-vibrancy-label">macOS Kılavuzu:</strong>{' '}
-                  <code>NSVisualEffectView.Material</code> ile pencere arkası (<em>behindWindow</em>) ve pencere içi (<em>withinWindow</em>) karıştırma modlarını destekler; sistem renklerinin canlı (vibrant) sürümleriyle metin okunabilirliğini korur.
+                  <strong className="uxu-vibrancy-label">Masaüstü Pencere Katman Kılavuzu:</strong>{' '}
+                  Pencere arkası (<em>behindWindow</em>) ve pencere içi (<em>withinWindow</em>) optik karıştırma modlarını destekler; sistem renklerinin canlı (vibrant) sürümleriyle metin okunabilirliğini korur.
                 </>
               )}
               {selectedPlatformGuide === 'tvos' && (
                 <>
-                  <strong className="uxu-vibrancy-label">tvOS Kılavuzu:</strong>{' '}
-                  Liquid Glass, Top Shelf ve Control Center gibi gezinme öğelerinde ve odaklanan (focused) düğmelerde kullanılır; içerik katmanında ise <code>ultraThin</code> (açık şema tam ekran), <code>thin</code>, <code>regular</code> ve <code>thick</code> (koyu şema bindirme) yapı sağlar.
+                  <strong className="uxu-vibrancy-label">Geniş Ekran &amp; Medya Kılavuzu:</strong>{' '}
+                  Liquid Glass, üst vitrin ve kontrol merkezi gibi gezinme öğelerinde ve odaklanan (focused) düğmelerde kullanılır; içerik katmanında ise <code>ultraThin</code> (açık şema tam ekran), <code>thin</code>, <code>regular</code> ve <code>thick</code> (koyu şema bindirme) yapı sağlar.
                 </>
               )}
               {selectedPlatformGuide === 'visionos' && (
                 <>
-                  <strong className="uxu-vibrancy-label">visionOS Kılavuzu:</strong>{' '}
+                  <strong className="uxu-vibrancy-label">Uzamsal 3B (Spatial) Kılavuzu:</strong>{' '}
                   Pencereler fiziksel ve sanal ortamın ışığına dinamik uyum sağlayan uyarlanabilir <strong>Glass</strong> kullanır; etkileşimli öğeler için <code>thin</code>, bölüm ayrımı için <code>regular</code>, kontrastlı koyu alanlar için <code>thick</code> ve 3 canlılık seviyesi (<code>label</code>, <code>secondaryLabel</code>, <code>tertiaryLabel</code>) uygulanır.
                 </>
               )}
               {selectedPlatformGuide === 'watchos' && (
                 <>
-                  <strong className="uxu-vibrancy-label">watchOS Kılavuzu:</strong>{' '}
+                  <strong className="uxu-vibrancy-label">Kompakt Arayüz Kılavuzu:</strong>{' '}
                   Tam ekran modal görünümlerde bağlamı korumak ve kontrolleri içerikten ayırmak için varsayılan materyal arka planları korunur.
                 </>
               )}
@@ -1487,7 +1487,7 @@ export const AppleGoogleAppShowcase: React.FC<AppleGoogleAppShowcaseProps> = ({
           padding="md"
           eyebrow="HAZIR KURUMSAL SAYFA TASARIMLARI • 7 CANLI DEMO"
           title="Hazır Sayfa Şablonları Galerisi (Page Templates Suite)"
-          subtitle="Apple HIG 8pt ızgara ve Liquid Glass ile tasarlanmış tam ekran etkileşimli sayfa demoları"
+          subtitle="8pt uzamsal ızgara ve Liquid Glass ile tasarlanmış tam ekran etkileşimli sayfa demoları"
           headerIcon={<Sparkles size={18} />}
           headerAction={
             <div style={{ display: 'flex', gap: 8 }}>
@@ -1522,7 +1522,7 @@ export const AppleGoogleAppShowcase: React.FC<AppleGoogleAppShowcaseProps> = ({
                   title: 'Login & Auth',
                   badge: 'SSO + Passkey',
                   tone: 'primary' as const,
-                  desc: 'Split-screen kurumsal SSO ve Apple iCloud yüzen cam giriş ekranları.',
+                  desc: 'Split-screen kurumsal SSO ve merkezi yüzen cam giriş ekranları.',
                   route: '/dashboard/page-login',
                 },
                 {

@@ -155,16 +155,16 @@ const COMPLIANCE_TAGS = [
 ];
 
 const COMPANIES = [
-  'Cupertino Cloud Systems',
-  'Google DeepMind Labs',
+  'Nexus Cloud Systems',
+  'Quantum Neural Labs',
   'Truncgil Teknoloji A.Ş.',
-  'Stripe Global Treasury',
-  'Linear Workspace Inc.',
-  'Vercel Edge Network',
-  'Figma Design Systems',
-  'Anthropic Safety Corp',
-  'Databricks Lakehouse',
-  'Cloudflare ZeroTrust',
+  'Global FinTech Treasury',
+  'Orion Workspace Inc.',
+  'HyperEdge Network',
+  'Prism Design Systems',
+  'Aegis Safety Corp',
+  'Helios Lakehouse',
+  'Vanguard ZeroTrust',
 ];
 
 const TAX_RATE_BY_CITY: Record<string, number> = {
@@ -235,7 +235,7 @@ const MICROSERVICES = [
 // --- Scenario 3: HR & Payroll Options ---
 const DEPARTMENTS = [
   { value: 'Engineering', label: 'Platform Mühendisliği' },
-  { value: 'Design', label: 'Design Systems (HIG/M3)' },
+  { value: 'Design', label: 'Tasarım Sistemleri (UX/UI)' },
   { value: 'AI_Research', label: 'Yapay Zeka & GPU' },
   { value: 'Security', label: 'Siber Güvenlik (SecOps)' },
   { value: 'Product', label: 'Ürün Yönetimi' },
@@ -318,10 +318,10 @@ const EMPLOYEE_NAMES = [
 
 // --- Scenario 4: Inventory & Supply Chain Options ---
 const HARDWARE_CATEGORIES = [
-  { value: 'GPU_Node', label: 'H200 / Blackwell GPU Kümesi' },
-  { value: 'Apple_Silicon', label: 'M4 Max / Ultra İş İstasyonu' },
+  { value: 'GPU_Node', label: 'Yüksek Yoğunluklu GPU Kümesi' },
+  { value: 'Apple_Silicon', label: 'ARM64 Ultra İş İstasyonu' },
   { value: 'NVMe_Array', label: 'Kurumsal Gen5 NVMe Depolama' },
-  { value: 'Optical_Switch', label: '800G InfiniBand Optik Ağ' },
+  { value: 'Optical_Switch', label: '800G Optik Ağ Anahtarı' },
 ];
 
 const STOCK_STATUS_OPTIONS = [
@@ -1208,7 +1208,7 @@ export const SheetGLGridAdapter: React.FC<SheetGLGridAdapterProps> = ({
                 }`}
                 onClick={() => setPresetStyle('google')}
               >
-                <Layers size={11} /> Google M3
+                <Layers size={11} /> Dinamik Ton
               </button>
             </div>
 

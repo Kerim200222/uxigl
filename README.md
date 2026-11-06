@@ -1,4 +1,4 @@
-# uxiGL — Modular Liquid Glass × Google Material You Design System
+# uxiGL — Modular Liquid Glass × Dynamic Tonal Design System
 
 > **Uniting User Experience (UX), User Interface (UI), and Hardware-Accelerated WebGL (`SheetGL` + `FileManGL`) into a Single Enterprise Architecture.**
 
@@ -24,8 +24,8 @@ The [`UXILogo`](src/components/brand/UXILogo.tsx) emblem reduces the three lette
 1. **Liquid Glass & Standard Materials:**
    - **Liquid Glass (`Regular` & `Clear`):** Reserved strictly for the floating navigation and transient control layer (`Sidebar`, `TopHeader`, `CommandPalette`, `SegmentedControl`, `Slider` & `Switch` thumbs).
    - **Standard Materials (`UltraThin`, `Thin`, `Regular`, `Thick`):** Applied to the content layer (`Card`, `DataTable`, KPI panels) with 4-tier **Vibrancy** (`label-primary`, `label-secondary`, `label-tertiary`, `fill-vibrant`).
-2. **Google Material You (M3) & Live `0px–32px` Border Radius Engine:**
-   - **6 Seed Color Palettes:** *Cupertino Blue, Material Iris, Emerald Mint, Sunset Coral, Amber Gold, Graphite Mono* with automatic dark/light tonal adaptation.
+2. **Dynamic Tonal Engine & Live `0px–32px` Border Radius Engine:**
+   - **6 Seed Color Palettes:** *Sapphire Blue, Royal Iris, Emerald Mint, Solar Coral, Amber Gold, Titanium Mono* with automatic dark/light tonal adaptation.
    - **Live Corner Geometry (`0px–32px`):** Switch between `Sharp (4px)`, `Squircle (12px)`, `Pill (22px)`, or fine-tune any pixel radius (`0px–32px`) from the TopHeader (`R- | R:12px | R+`), Component Playground, or Theme Studio Drawer.
    - **Global Font Scale (`80%–125%`):** Real-time root `rem` scaling persisted in `localStorage`.
 3. **Dual Data Table Architecture (`SheetGL` + Native `<DataTable />`):**
@@ -39,7 +39,7 @@ The [`UXILogo`](src/components/brand/UXILogo.tsx) emblem reduces the three lette
    - Single-Active-Engine policy ensures only one heavy canvas (`SheetGL` or `FileManGL`) is mounted per view.
    - Strict Dependency Inversion (`ThemeEngineService`, `StorageService`, `RouteService`) and Open/Closed component contracts.
 7. **7 Ready-Made Enterprise Page Templates (`PageTemplatesShowcaseView`):**
-   - **Login & Auth (`page-login`):** Split-Screen Enterprise SSO + Apple iCloud Centered Floating Liquid Glass card, Passkey/WebAuthn & password visibility toggle.
+   - **Login & Auth (`page-login`):** Split-Screen Enterprise SSO + Centered Floating Liquid Glass card, Passkey/WebAuthn & password visibility toggle.
    - **Register & 2FA (`page-register`):** 3-step onboarding (Account -> Workspace Role -> 6-digit OTP verification) with live password strength meter.
    - **SaaS Pricing (`page-pricing`):** Annual/Monthly billing toggle, interactive Team Seat Calculator (`Slider`), 3-tier pricing cards & FAQ `Accordion`.
    - **User Profile (`page-profile`):** Cover banner, online `Avatar`, 4-KPI strip, skill chips, 2FA/security switches, connected devices & activity timeline.
@@ -58,7 +58,7 @@ The [`UXILogo`](src/components/brand/UXILogo.tsx) emblem reduces the three lette
 | `/dashboard/analytics` | `AppleGoogleAppShowcase` | Live Analytics & Regional Performance Matrix |
 | `/dashboard/crm-orders` | `SheetGLGridAdapter` | Full-page SheetGL (4 enterprise presets) + Native `<DataTable />` comparison |
 | `/dashboard/file-manager` | `FileManGLExplorerAdapter` | Full-page FileManGL WebGL2 Virtual File System Explorer |
-| `/dashboard/page-login` | `PageTemplatesShowcaseView` | Enterprise Split-Screen SSO & Apple iCloud Floating Glass Login Demo |
+| `/dashboard/page-login` | `PageTemplatesShowcaseView` | Enterprise Split-Screen SSO & Centered Floating Glass Login Demo |
 | `/dashboard/page-register` | `PageTemplatesShowcaseView` | 3-Step Registration, Role Onboarding & 6-Digit 2FA OTP Verification Demo |
 | `/dashboard/page-pricing` | `PageTemplatesShowcaseView` | SaaS Pricing Plans, Annual Discount Switcher & Interactive Team Seat Calculator |
 | `/dashboard/page-profile` | `PageTemplatesShowcaseView` | Developer Portfolio, Security Switches, Connected Devices & Activity Timeline |

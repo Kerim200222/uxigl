@@ -83,7 +83,7 @@ interface KanbanTask {
 const INITIAL_KANBAN_TASKS: KanbanTask[] = [
   {
     id: 'UXI-101',
-    title: 'Apple HIG 8pt Grid & Liquid Glass Sidebar Standardizasyonu',
+    title: '8pt Uzamsal Grid & Liquid Glass Sidebar Standardizasyonu',
     tag: 'Design System',
     tagTone: 'primary',
     priority: 'High',
@@ -138,7 +138,7 @@ const INITIAL_KANBAN_TASKS: KanbanTask[] = [
   },
   {
     id: 'UXI-119',
-    title: 'visionOS Spatial Ornaments için Derinlik Gölgeleri',
+    title: '3B Uzamsal Paneller için Optik Derinlik Gölgeleri',
     tag: 'Design System',
     tagTone: 'primary',
     priority: 'Low',
@@ -163,7 +163,7 @@ const PAGE_TEMPLATE_META: Record<
     label: 'Login & Kimlik Doğrulama',
     shortLabel: 'Login',
     icon: 'lock',
-    subtitle: 'Split-Screen Enterprise SSO, Apple Passkey ve Yüzen Liquid Glass Giriş Ekranları',
+    subtitle: 'Split-Screen Kurumsal SSO, Biyometrik Passkey ve Yüzen Liquid Glass Giriş Ekranları',
     badge: 'Auth UI',
   },
   'page-register': {
@@ -242,13 +242,13 @@ export const PageTemplatesShowcaseView: React.FC<PageTemplatesShowcaseViewProps>
 
   // --- 4. PROFILE STATE ---
   const [profileBio, setProfileBio] = useState(
-    'Apple HIG ve Google Material You tasarım sistemleri, WebGL2 veri sanallaştırma motorları (SheetGL, FileManGL) ve yüksek performanslı bulut mimarileri üzerine çalışıyorum.'
+    'Modüler tasarım sistemleri, 8pt uzamsal grid mimarisi, WebGL2 veri sanallaştırma motorları (SheetGL, FileManGL) ve yüksek performanslı bulut mimarileri üzerine çalışıyorum.'
   );
   const [profilePublic, setProfilePublic] = useState(true);
   const [twoFactorActive, setTwoFactorActive] = useState(true);
 
   // --- 5. INVOICE STATE ---
-  const [paymentMethod, setPaymentMethod] = useState<'card' | 'wire' | 'applepay'>('card');
+  const [paymentMethod, setPaymentMethod] = useState<'card' | 'wire' | 'wallet'>('card');
   const [cardHolder, setCardHolder] = useState('ÜMİT UZ');
   const [cardNumber, setCardNumber] = useState('4543 8910 2234 8892');
   const [cardCvv, setCardCvv] = useState('842');
@@ -588,7 +588,7 @@ export function EnterprisePageTemplate() {
               onChange={setLoginStyle}
               options={[
                 { value: 'split', label: 'Split-Screen Kurumsal (2 Kolon)' },
-                { value: 'centered', label: 'Apple iCloud Yüzen Cam (Merkezi)' },
+                { value: 'centered', label: 'Merkezi Yüzen Cam (Floating Glass)' },
               ]}
             />
           </div>
@@ -626,7 +626,7 @@ export function EnterprisePageTemplate() {
                       uxiGL Enterprise
                     </div>
                     <div style={{ fontSize: '0.73rem', color: 'var(--uxu-text-secondary)' }}>
-                      Apple HIG × Google Material You
+                      Liquid Glass × Dinamik Tonlama Sistemi
                     </div>
                   </div>
                 </div>
@@ -742,7 +742,7 @@ export function EnterprisePageTemplate() {
                   <Avatar name="Ümit Uz" size="sm" status="online" shape="squircle" />
                   <div style={{ fontSize: '0.76rem', lineHeight: 1.4 }}>
                     <div style={{ fontWeight: 600, color: 'var(--uxu-text-primary)' }}>
-                      "Apple akıcılığı ve Google renk uyumu tek bir kurumsal çatı altında."
+                      "Optik cam yüzey akıcılığı ve dinamik renk uyumu tek bir kurumsal çatı altında."
                     </div>
                     <div style={{ color: 'var(--uxu-text-secondary)', marginTop: 2 }}>
                       Trunçgil Teknoloji • Sistem Mimarisi Ekibi
@@ -786,8 +786,8 @@ export function EnterprisePageTemplate() {
                     leadingIcon={<Fingerprint size={15} />}
                     onClick={() =>
                       notify({
-                        title: 'Apple Passkey Doğrulaması',
-                        description: 'Touch ID / Face ID biyometrik anahtarınız doğrulandı.',
+                        title: 'Biyometrik Passkey Doğrulaması',
+                        description: 'WebAuthn biyometrik güvenlik anahtarınız doğrulandı.',
                         tone: 'info',
                       })
                     }
@@ -800,13 +800,13 @@ export function EnterprisePageTemplate() {
                     leadingIcon={<Globe size={15} />}
                     onClick={() =>
                       notify({
-                        title: 'Google Workspace SSO',
-                        description: 'Kurumsal Google OAuth 2.0 yönlendirmesi başlatıldı.',
+                        title: 'Kurumsal Tek Oturum (SSO)',
+                        description: 'Kurumsal OAuth 2.0 / SAML yönlendirmesi başlatıldı.',
                         tone: 'primary',
                       })
                     }
                   >
-                    Google SSO
+                    Kurumsal SSO
                   </Button>
                 </div>
 
@@ -939,7 +939,7 @@ export function EnterprisePageTemplate() {
               </div>
             </div>
           ) : (
-            /* Centered Apple iCloud / Lock Screen Style Floating Liquid Glass Login */
+            /* Centered Lock Screen Style Floating Liquid Glass Login */
             <div
               style={{
                 minHeight: 540,
@@ -977,7 +977,7 @@ export function EnterprisePageTemplate() {
                     uxiGL ID ile Giriş
                   </h2>
                   <p style={{ fontSize: '0.78rem', color: 'var(--uxu-text-secondary)', margin: 0 }}>
-                    Apple HIG Liquid Glass Kimlik Doğrulama
+                    Optik Liquid Glass Kimlik Doğrulama
                   </p>
                 </div>
 
@@ -1005,13 +1005,13 @@ export function EnterprisePageTemplate() {
                     leadingIcon={<Fingerprint size={16} />}
                     onClick={() =>
                       notify({
-                        title: 'Touch ID / Passkey Aktif',
+                        title: 'Biyometrik Passkey Aktif',
                         description: 'Biyometrik doğrulama başarıyla tamamlandı.',
                         tone: 'success',
                       })
                     }
                   >
-                    Touch ID / Passkey Kullan
+                    Biyometrik Passkey Kullan
                   </Button>
                 </form>
               </Card>
@@ -1159,7 +1159,7 @@ export function EnterprisePageTemplate() {
                     {
                       id: 'designer',
                       title: 'UI / UX Product Designer',
-                      desc: 'Apple HIG & Material 3 tema stüdyosu ve cam efektleri',
+                      desc: 'Canlı tema stüdyosu, dinamik renk paletleri ve cam efektleri',
                       icon: 'palette',
                     },
                     {
@@ -1320,7 +1320,7 @@ export function EnterprisePageTemplate() {
                   Ekibinizin Ölçeğine Uygun Paketi Seçin
                 </h2>
                 <p style={{ fontSize: '0.84rem', color: 'var(--uxu-text-secondary)', margin: 0 }}>
-                  Tüm paketlerde Apple HIG & Material You tema motoru ve temel bileşenler dahildir.
+                  Tüm paketlerde canlı tema motoru, dinamik tonlama ve temel bileşenler dahildir.
                 </p>
               </div>
 
@@ -1417,7 +1417,7 @@ export function EnterprisePageTemplate() {
 
                 <div className="uxu-stack-sm" style={{ fontSize: '0.8rem', paddingTop: 8 }}>
                   {[
-                    '30+ Apple HIG × Material 3 Bileşen',
+                    '36+ Modüler UI & Veri Bileşeni',
                     '6 Tohum Renk Paleti & Dark/Light Mod',
                     '5 Farklı Sidebar Varyantı',
                     'MIT Lisansı ile Ticari Kullanım',
@@ -1553,7 +1553,7 @@ export function EnterprisePageTemplate() {
                   id: 'faq-1',
                   title: 'truncgil-uxigl paketini ticari projelerde kullanabilir miyim?',
                   content:
-                    'Evet! Temel tasarım sistemi, Apple HIG ve Google Material You token mimarisi tamamen açık kaynaklıdır ve ticari SaaS projelerinizde doğrudan kullanılabilir.',
+                    'Evet! Temel tasarım sistemi, uzamsal cam materyalleri ve dinamik renk token mimarisi tamamen açık kaynaklıdır ve ticari SaaS projelerinizde doğrudan kullanılabilir.',
                 },
                 {
                   id: 'faq-2',
@@ -1685,7 +1685,7 @@ export function EnterprisePageTemplate() {
                   { label: 'Toplam Commit (2026)', val: '4,820', delta: '+18% bu ay' },
                   { label: 'Yayınlanan NPM Paketi', val: '14 Paket', delta: 'v2.8.0 aktif' },
                   { label: 'Açık Kaynak Yıldızı', val: '3.4K ★', delta: 'GitHub Trending' },
-                  { label: 'Mimari Uyum Skoru', val: '99.4%', delta: 'Apple HIG 8pt' },
+                  { label: 'Mimari Uyum Skoru', val: '99.4%', delta: '8pt Uzamsal Grid' },
                 ].map((stat) => (
                   <div
                     key={stat.label}
@@ -1743,8 +1743,8 @@ export function EnterprisePageTemplate() {
                       'TypeScript 5.8',
                       'React 19',
                       'WebGL2 Shaders',
-                      'Apple HIG',
-                      'Material You',
+                      '8pt Spatial Grid',
+                      'Dynamic Tonal',
                       'SheetGL',
                       'FileManGL',
                       'Zero-Trust IAM',
@@ -1785,12 +1785,12 @@ export function EnterprisePageTemplate() {
                 <div className="uxu-stack-sm">
                   {[
                     {
-                      device: 'MacBook Pro 16" (M4 Max • macOS Sequoia)',
+                      device: 'Workstation Pro 16" (ARM64 • Masaüstü OS)',
                       loc: 'İstanbul, TR • Mevcut Oturum',
                       active: true,
                     },
                     {
-                      device: 'iPhone 16 Pro Max (iOS 18.4 • Safari)',
+                      device: 'Mobile Pro Max (Mobil OS • WebKit Tarayıcı)',
                       loc: 'İstanbul, TR • 14 dk önce',
                       active: false,
                     },
@@ -1845,7 +1845,7 @@ export function EnterprisePageTemplate() {
                       },
                       {
                         time: '1 saat önce',
-                        text: 'Apple HIG 8pt uzamsal grid tokenları güncellendi.',
+                        text: '8pt uzamsal grid ve yüzey tokenları güncellendi.',
                         tone: 'success' as const,
                       },
                       {
@@ -2071,14 +2071,14 @@ export function EnterprisePageTemplate() {
           {/* Right: Quick Checkout & Card Payment */}
           <Card variant="glass" padding="lg" title="Hızlı Kurumsal Ödeme (Checkout)">
             <div className="uxu-stack-md">
-              <SegmentedControl<'card' | 'applepay' | 'wire'>
+              <SegmentedControl<'card' | 'wallet' | 'wire'>
                 size="sm"
                 fullWidth
                 value={paymentMethod}
                 onChange={setPaymentMethod}
                 options={[
                   { value: 'card', label: 'Kredi Kartı' },
-                  { value: 'applepay', label: 'Apple Pay' },
+                  { value: 'wallet', label: 'Dijital Cüzdan' },
                   { value: 'wire', label: 'EFT / SWIFT' },
                 ]}
               />

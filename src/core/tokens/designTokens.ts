@@ -38,12 +38,12 @@ export const DEFAULT_THEME_PREFERENCES: ThemePreferences = {
 export const SEED_PALETTES: Record<SeedPaletteId, SeedPaletteDefinition> = {
   'cupertino-blue': {
     id: 'cupertino-blue',
-    name: 'Cupertino Blue',
+    name: 'Sapphire Blue',
     inspiration: 'Liquid Glass',
     description: 'Safir mavi ve turkuaz.',
     auroraColors: {
       colorA: [0.04, 0.88, 0.72], // Arctic Aurora Emerald-Cyan
-      colorB: [0.16, 0.56, 1.0],  // Cupertino Electric Sapphire
+      colorB: [0.16, 0.56, 1.0],  // Electric Sapphire
       colorC: [0.58, 0.24, 0.98], // Deep Cosmic Violet
     },
     light: {
@@ -89,8 +89,8 @@ export const SEED_PALETTES: Record<SeedPaletteId, SeedPaletteDefinition> = {
   },
   'material-violet': {
     id: 'material-violet',
-    name: 'Material Iris',
-    inspiration: 'Google Material You',
+    name: 'Royal Iris',
+    inspiration: 'Dynamic Tonal',
     description: 'Lavanta ve kozmik mor.',
     auroraColors: {
       colorA: [0.68, 0.38, 1.0],  // Iris Violet
@@ -243,7 +243,7 @@ export const SEED_PALETTES: Record<SeedPaletteId, SeedPaletteDefinition> = {
   'amber-gold': {
     id: 'amber-gold',
     name: 'Amber Gold',
-    inspiration: 'Google Material You',
+    inspiration: 'Dynamic Tonal',
     description: 'Kehribar sarısı ve altın.',
     auroraColors: {
       colorA: [0.98, 0.75, 0.14], // Golden Ray
@@ -403,7 +403,7 @@ export const FONT_FAMILY_PRESETS: Record<
     id: 'inter-jakarta',
     name: 'Inter × Plus Jakarta',
     badge: 'Varsayılan • Hibrit UI',
-    description: 'Okunabilir Google Inter gövde metni ve geometrik Plus Jakarta Sans başlıklar.',
+    description: 'Yüksek okunabilirlikli Inter gövde metni ve geometrik Plus Jakarta Sans başlıklar.',
     sansStack:
       "'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, sans-serif",
     displayStack:
@@ -412,9 +412,9 @@ export const FONT_FAMILY_PRESETS: Record<
   },
   'outfit-material': {
     id: 'outfit-material',
-    name: 'Outfit (Google M3)',
-    badge: 'Google Material You',
-    description: 'Google Sans / Material Design 3 estetiğine en yakın modern geometrik Google Font ailesi.',
+    name: 'Outfit (Geometrik UI)',
+    badge: 'Dinamik Tonal',
+    description: 'Modern geometrik oranlara sahip yuvarlak hatlı arayüz yazı tipi ailesi.',
     sansStack:
       "'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, Roboto, sans-serif",
     displayStack:
@@ -436,7 +436,7 @@ export const FONT_FAMILY_PRESETS: Record<
     id: 'space-grotesk',
     name: 'Space Grotesk × Mono',
     badge: 'WebGL & Telemetri',
-    description: 'Teknik gösterge panelleri, finansal veri tabloları ve WebGL sahneleri için fütüristik Google Font.',
+    description: 'Teknik gösterge panelleri, finansal veri tabloları ve WebGL sahneleri için fütüristik font ailesi.',
     sansStack:
       "'Space Grotesk', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
     displayStack:

@@ -36,23 +36,34 @@ for /f "delims=" %%u in ('call npm whoami') do set "NPM_USER=%%u"
 echo [OK] NPM kullanicisi: %NPM_USER%
 echo.
 
-REM 2. Otomatik Surum Belirleme (10 patch = 1 minor, 10 minor = 1 major)
+REM 2. Otomatik Surum Belirleme [10 patch = 1 minor, 10 minor = 1 major]
 if /i "%~1"=="deploy" (
     set "NEW_VER=%CURRENT_VER%"
     echo [BILGI] Sadece sunucu deploy modu secildi. Surum: v%NEW_VER%
     goto deploy_remote
 )
 
-if not "%~1"=="" (
-    set "TARGET_VER=%~1"
-    echo [BILGI] Komut satirindan girilen surum/tip kullaniliyor: !TARGET_VER!
-    call npm version !TARGET_VER! --no-git-tag-version
-) else (
-    for /f "delims=" %%v in ('node -e "let [M,m,p]=require(\"./package.json\").version.split(\".\").map(Number);if(++p>=10){p=0;if(++m>=10){m=0;++M;}}console.log(M+\".\"+m+\".\"+p);"') do set "NEXT_VER=%%v"
-    echo [2/6] Otomatik surum artisi uygulaniyor (10 patch = 1 minor, 10 minor = 1 major):
-    echo       v%CURRENT_VER% -^> v!NEXT_VER!
-    call npm version !NEXT_VER! --no-git-tag-version
+if /i "%~1"=="--dry-run" goto auto_version
+if not "%~1"=="" goto custom_version
+
+:auto_version
+for /f "delims=" %%v in ('node -p "const v=require('./package.json').version.split('.').map(Number); v[2]++; if(v[2]>=10){v[2]=0;v[1]++;} if(v[1]>=10){v[1]=0;v[0]++;} v.join('.')"') do set "NEXT_VER=%%v"
+echo [2/6] Otomatik surum artisi uygulaniyor [10 patch = 1 minor, 10 minor = 1 major]:
+echo       v%CURRENT_VER% -^> v!NEXT_VER!
+if /i "%~1"=="--dry-run" (
+    echo [OK] Dry-run testi basarili.
+    popd
+    exit /b 0
 )
+call npm version !NEXT_VER! --no-git-tag-version
+goto version_updated
+
+:custom_version
+set "TARGET_VER=%~1"
+echo [BILGI] Komut satirindan girilen surum/tip kullaniliyor: !TARGET_VER!
+call npm version !TARGET_VER! --no-git-tag-version
+
+:version_updated
 
 if errorlevel 1 (
     echo [HATA] Surum numarasi guncellenemedi.

@@ -36,54 +36,31 @@ for /f "delims=" %%u in ('call npm whoami') do set "NPM_USER=%%u"
 echo [OK] NPM kullanicisi: %NPM_USER%
 echo.
 
-REM 2. Surum secimi
-set "BUMP_TYPE=%~1"
-if not "%BUMP_TYPE%"=="" goto apply_version
-
-echo Surum artis tipini secin:
-echo   [1] patch  - Hata duzeltmesi [Varsayilan]
-echo   [2] minor  - Yeni ozellik [orn: 2.6.0]
-echo   [3] major  - Koklu degisiklik
-echo   [4] Ozel surum numarasi gir [orn: 2.6.0]
-echo   [5] Mevcut surumu degistirmeden yayinla [v%CURRENT_VER%]
-echo   [6] Sadece uxigl.truncgil.com sunucusuna deploy et [NPM atla]
-echo.
-set "CHOICE="
-set /p "CHOICE=Seciminiz [1-6, Enter=1]: "
-
-if "%CHOICE%"=="" set "CHOICE=1"
-if "%CHOICE%"=="1" set "BUMP_TYPE=patch"
-if "%CHOICE%"=="2" set "BUMP_TYPE=minor"
-if "%CHOICE%"=="3" set "BUMP_TYPE=major"
-if "%CHOICE%"=="4" set /p "BUMP_TYPE=Yeni surum numarasini girin [orn: 2.6.0]: "
-if "%CHOICE%"=="5" set "BUMP_TYPE=none"
-if "%CHOICE%"=="6" (
+REM 2. Otomatik Surum Belirleme (10 patch = 1 minor, 10 minor = 1 major)
+if /i "%~1"=="deploy" (
     set "NEW_VER=%CURRENT_VER%"
+    echo [BILGI] Sadece sunucu deploy modu secildi. Surum: v%NEW_VER%
     goto deploy_remote
 )
 
-:apply_version
-if /i "%BUMP_TYPE%"=="deploy" (
-    set "NEW_VER=%CURRENT_VER%"
-    goto deploy_remote
+if not "%~1"=="" (
+    set "TARGET_VER=%~1"
+    echo [BILGI] Komut satirindan girilen surum/tip kullaniliyor: !TARGET_VER!
+    call npm version !TARGET_VER! --no-git-tag-version
+) else (
+    for /f "delims=" %%v in ('node -e "let [M,m,p]=require(\"./package.json\").version.split(\".\").map(Number);if(++p>=10){p=0;if(++m>=10){m=0;++M;}}console.log(M+\".\"+m+\".\"+p);"') do set "NEXT_VER=%%v"
+    echo [2/6] Otomatik surum artisi uygulaniyor (10 patch = 1 minor, 10 minor = 1 major):
+    echo       v%CURRENT_VER% -^> v!NEXT_VER!
+    call npm version !NEXT_VER! --no-git-tag-version
 )
-echo.
-if /i "%BUMP_TYPE%"=="none" goto keep_version
 
-echo [2/6] Surum guncelleniyor: %BUMP_TYPE% ...
-call npm version %BUMP_TYPE% --no-git-tag-version
 if errorlevel 1 (
     echo [HATA] Surum numarasi guncellenemedi.
     popd
     pause
     exit /b 1
 )
-goto version_ready
 
-:keep_version
-echo [2/6] Mevcut surum korunuyor: v%CURRENT_VER% ...
-
-:version_ready
 for /f "delims=" %%v in ('node -p "require('./package.json').version"') do set "NEW_VER=%%v"
 echo [OK] Yayinlanacak surum: v%NEW_VER%
 echo.

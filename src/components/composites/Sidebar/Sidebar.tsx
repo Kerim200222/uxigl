@@ -385,9 +385,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   onClick={() => setSelectedGroupId(group.id)}
                   title={group.title}
                 >
-                  {group.icon || firstItem?.icon || <GoogleIcon name="auto_awesome" size={16} />}
-                  <span style={{ fontSize: '9px', fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: 44, whiteSpace: 'nowrap' }}>
-                    {group.railLabel || group.title.slice(0, 4)}
+                  {group.icon || firstItem?.icon || <GoogleIcon name="auto_awesome" size={20} />}
+                  <span className="uxu-sidebar__dual-rail-label">
+                    {group.railLabel || group.title.slice(0, 5)}
                   </span>
                 </button>
               );

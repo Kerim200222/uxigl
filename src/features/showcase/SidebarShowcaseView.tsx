@@ -157,7 +157,7 @@ export const SidebarShowcaseView: React.FC<SidebarShowcaseViewProps> = ({
       case 'dual-column':
         return `import { Sidebar } from 'truncgil-uxigl';
 
-// 4. Çift Kolonlu Gezinme Menüsü (68px + 216px = 284px)
+// 4. Çift Kolonlu Gezinme Menüsü (78px + 222px = 300px)
 <Sidebar
   variant="dual-column"
   groups={navGroups}
@@ -502,7 +502,7 @@ const [drawerOpen, setDrawerOpen] = useState(false);
             { id: 'stacked-vertical', label: '1. Dikey Menü', width: '108px', desc: 'İkon üstte, etiket altta. Tema renginde ferah dikey gezinme.' },
             { id: 'standard', label: '2. Açık Menü', width: '256px', desc: 'Klasik yatay hiyerarşi ve akordeon açılır alt menüler.' },
             { id: 'mini-rail', label: '3. Kapalı Menü', width: '68px', desc: 'Tekil dikey ikon rayı. Maksimum veri çalışma alanı.' },
-            { id: 'dual-column', label: '4. Çift Kolon', width: '284px', desc: 'Sol ana ray + sağ detay ağacı. İki aşamalı navigasyon.' },
+            { id: 'dual-column', label: '4. Çift Kolon', width: '300px', desc: 'Sol ana ray + sağ detay ağacı. İki aşamalı navigasyon.' },
             { id: 'drawer', label: '5. Çekmece Menü', width: '280px', desc: 'Soldan kayan off-canvas panel. Tam ekran odaklanma.' },
           ] as const
         ).map((item) => {

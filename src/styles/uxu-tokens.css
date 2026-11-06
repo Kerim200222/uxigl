@@ -57,7 +57,7 @@
   --uxu-sidebar-width: 256px;
   --uxu-sidebar-stacked-width: 108px;
   --uxu-sidebar-mini-width: 72px;
-  --uxu-sidebar-dual-width: 284px;
+  --uxu-sidebar-dual-width: 300px;
 }
 
 /* DARK THEME TOKENS (Apple Pro Dark × Material You Dark Surface Container) */
@@ -1477,8 +1477,8 @@ pre {
 }
 
 .uxu-sidebar__dual-rail {
-  width: 68px;
-  min-width: 68px;
+  width: 78px;
+  min-width: 78px;
   height: 100%;
   border-right: 1px solid var(--uxu-border-subtle);
   background: var(--uxu-surface-tonal);
@@ -1486,13 +1486,14 @@ pre {
   flex-direction: column;
   align-items: center;
   padding: 12px 6px;
-  gap: 10px;
+  gap: 8px;
 }
 
 .uxu-sidebar__dual-rail-btn {
-  width: 44px;
-  height: 44px;
-  border-radius: var(--uxu-radius-md, 10px);
+  width: 62px;
+  min-height: 52px;
+  padding: 7px 4px 6px 4px;
+  border-radius: var(--uxu-radius-md, 12px);
   border: 1px solid transparent;
   outline: none !important;
   background: transparent;
@@ -1501,10 +1502,11 @@ pre {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2px;
+  gap: 3px;
   cursor: pointer;
   transition: all 150ms ease;
   position: relative;
+  box-sizing: border-box;
 }
 
 .uxu-sidebar__dual-rail-btn:focus,
@@ -1519,9 +1521,36 @@ pre {
 }
 
 .uxu-sidebar__dual-rail-btn--active {
-  background: var(--uxu-primary-container);
-  color: var(--uxu-primary);
+  background: var(--uxu-primary-container) !important;
+  color: var(--uxu-primary) !important;
   border-color: rgba(255, 255, 255, 0.08);
+}
+
+.uxu-sidebar__dual-rail-btn .uxu-google-icon {
+  font-size: 22px !important;
+  width: 22px !important;
+  height: 22px !important;
+}
+
+.uxu-sidebar__dual-rail-btn svg {
+  width: 22px !important;
+  height: 22px !important;
+}
+
+.uxu-sidebar__dual-rail-label {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 56px;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+.uxu-sidebar__dual-rail-btn--active .uxu-sidebar__dual-rail-label {
+  color: var(--uxu-primary);
+  font-weight: 700;
 }
 
 .uxu-sidebar__dual-tree {

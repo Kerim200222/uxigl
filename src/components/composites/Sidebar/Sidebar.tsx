@@ -272,7 +272,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 onSelect('landing', 'home');
               }}
             >
-              {brandLogo !== undefined ? brandLogo : <UXILogo size={36} preserveRatio glow />}
+              {brandLogo !== undefined ? brandLogo : <UXILogo size={28} preserveRatio glow />}
             </a>
           </div>
 
@@ -366,7 +366,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 onSelect('landing', 'home');
               }}
             >
-              {brandLogo !== undefined ? brandLogo : <UXILogo size={36} preserveRatio glow />}
+              {brandLogo !== undefined ? brandLogo : <UXILogo size={28} preserveRatio glow />}
             </a>
             <div style={{ width: '100%', height: 1, background: 'var(--uxu-border-subtle)', margin: '4px 0' }} />
             {groups.map((group) => {
@@ -545,7 +545,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 brandLogo
               ) : (
                 <UXILogo
-                  size={isMiniRail ? 28 : 34}
+                  size={isMiniRail ? 26 : 30}
                   preserveRatio
                   glow
                 />

@@ -487,7 +487,7 @@ export const ThemeStudioDrawer: React.FC<ThemeStudioDrawerProps> = ({
                 </div>
                 <Badge tone="primary" size="xs">
                   {sidebarVariant === 'stacked-vertical'
-                    ? (preferences.sidebarStackedWidth ?? 108)
+                    ? (preferences.sidebarStackedWidth ?? 88)
                     : (preferences.sidebarWidth ?? 256)}
                   px
                 </Badge>
@@ -496,10 +496,10 @@ export const ThemeStudioDrawer: React.FC<ThemeStudioDrawerProps> = ({
               {sidebarVariant === 'stacked-vertical' ? (
                 <>
                   <Slider
-                    min={88}
+                    min={80}
                     max={160}
                     step={2}
-                    value={preferences.sidebarStackedWidth ?? 108}
+                    value={preferences.sidebarStackedWidth ?? 88}
                     onChange={(v) => {
                       if (setSidebarStackedWidth) setSidebarStackedWidth(v);
                     }}
@@ -512,18 +512,18 @@ export const ThemeStudioDrawer: React.FC<ThemeStudioDrawerProps> = ({
                       marginTop: 2,
                     }}
                   >
-                    {[96, 108, 120, 136, 150].map((px) => (
+                    {[80, 88, 96, 108, 120].map((px) => (
                       <button
                         key={px}
                         type="button"
                         className={`uxu-btn uxu-btn--xs ${
-                          (preferences.sidebarStackedWidth ?? 108) === px
+                          (preferences.sidebarStackedWidth ?? 88) === px
                             ? 'uxu-btn--primary'
                             : 'uxu-btn--tonal'
                         }`}
                         onClick={() => setSidebarStackedWidth?.(px)}
                       >
-                        {px}px {px === 108 && '(Varsayılan)'}
+                        {px}px {px === 88 && '(Varsayılan)'}
                       </button>
                     ))}
                   </div>

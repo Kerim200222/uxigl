@@ -12,6 +12,13 @@ import type { IdentifiableProps, SemanticTone } from './ComponentContracts';
  *   extensible without modifying the Sidebar component implementation.
  */
 
+export type SidebarVariant =
+  | 'standard'
+  | 'mini-rail'
+  | 'stacked-vertical'
+  | 'dual-column'
+  | 'drawer';
+
 export interface SidebarSubMenuItem {
   id: string;
   label: string;
@@ -30,12 +37,18 @@ export interface SidebarNavItem {
   badge?: string | number;
   badgeTone?: SemanticTone;
   subItems?: SidebarSubMenuItem[];
+  /** Subtitle / status text (e.g. 'Active', 'Live', '12 online' for stacked vertical rail) */
+  subLabel?: string;
+  /** Custom accent color override for active indicator */
+  accentColor?: string;
 }
 
 export interface SidebarNavGroup {
   id: string;
   title: string;
   items: SidebarNavItem[];
+  icon?: ReactNode;
+  railLabel?: string;
 }
 
 export interface BreadcrumbItem {
@@ -56,6 +69,16 @@ export interface SidebarProps extends IdentifiableProps {
   onSelect: (itemId: string, subItemId?: string) => void;
   onOpenCommandPalette: () => void;
   onOpenThemeStudio: () => void;
+  /** Sidebar layout variant: standard (açık), mini-rail (kapalı), stacked-vertical (dikey ikon-etiket), dual-column (tam açık çift kolon), drawer (tam kapalı off-canvas) */
+  variant?: SidebarVariant;
+  /** Accent color for active indicator (e.g. '#F59E0B' for gold glow) */
+  accentColor?: string;
+  /** For 'drawer' variant: whether off-canvas drawer is visible */
+  drawerOpen?: boolean;
+  /** For 'drawer' variant: callback to close off-canvas drawer */
+  onCloseDrawer?: () => void;
+  /** Secondary navigation groups for dual-column mode */
+  secondaryGroups?: SidebarNavGroup[];
   /** Custom Brand Title (e.g. 'Qmi' or 'Stellar Qmi') */
   brandTitle?: ReactNode;
   /** Custom Brand Subtitle (e.g. 'QA / QC / QMS' or 'Enterprise Quality') */

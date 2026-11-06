@@ -16,6 +16,7 @@ export * from './components/primitives';
 
 // 3. Composites (Card, SegmentedControl, Tabs, Accordion, Modal, CommandPalette, Sidebar, TopHeader, StatCard, DataTable, SheetGLGridAdapter, FileManGLExplorerAdapter, WebGLAuroraCanvas)
 export * from './components/composites';
+export { SidebarShowcaseView } from './features/showcase/SidebarShowcaseView';
 
 // 4. Providers & Hooks
 export { ThemeProvider, useTheme } from './providers/ThemeProvider';

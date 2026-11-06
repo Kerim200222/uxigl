@@ -33,6 +33,7 @@ import { useCopyToClipboard } from '../../hooks/useCopyToClipboard';
 import { CodeGeneratorService } from '../../core/services/CodeGeneratorService';
 import { RouteService } from '../../core/services/RouteService';
 import { COMPONENT_CATALOG } from '../catalog/componentCatalog';
+import { SidebarShowcaseView } from '../showcase/SidebarShowcaseView';
 import type {
   FontFamilyPreset,
   GoogleIconStyle,
@@ -530,9 +531,9 @@ export const ArchitectureDocsView: React.FC<ArchitectureDocsViewProps> = ({
                     fullWidth
                     size="sm"
                     options={[
-                      { value: 'sharp', label: 'Keskin (4px)' },
-                      { value: 'squircle', label: 'Squircle (12px)' },
-                      { value: 'pill', label: 'Pill (22px)' },
+                      { value: 'sharp', label: 'Keskin' },
+                      { value: 'squircle', label: 'Squircle' },
+                      { value: 'pill', label: 'Kapsül' },
                     ]}
                   />
                   <SegmentedControl<UIDensity>
@@ -888,6 +889,11 @@ export function IconDemo() {
               LAYOUT_SHELL_SNIPPET
             )}
           </Card>
+
+          {/* Full Interactive Multi-Variant Sidebar Suite */}
+          <div style={{ gridColumn: '1 / -1', marginTop: 8 }}>
+            <SidebarShowcaseView />
+          </div>
         </div>
       )}
 

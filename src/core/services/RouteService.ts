@@ -21,7 +21,7 @@ export interface ResolvedRouteState {
   path: string;
 }
 
-const INPUT_COMPONENT_IDS = new Set([
+export const INPUT_COMPONENT_IDS = new Set([
   'button',
   'input',
   'switch',
@@ -29,14 +29,15 @@ const INPUT_COMPONENT_IDS = new Set([
   'slider',
 ]);
 
-const SURFACE_COMPONENT_IDS = new Set([
+export const SURFACE_COMPONENT_IDS = new Set([
   'card',
   'segmented-control',
   'tabs-accordion',
+  'sidebar',
   'modal-command',
 ]);
 
-const FEEDBACK_COMPONENT_IDS = new Set([
+export const FEEDBACK_COMPONENT_IDS = new Set([
   'chips-badges',
   'progress-avatar',
   'datatable-statcard',
@@ -57,7 +58,14 @@ export const DASHBOARD_VIEW_IDS = new Set([
   'products',
   'crm-orders',
   'forms',
+  'sidebars',
+  'sidebar-stacked',
+  'sidebar-standard',
+  'sidebar-mini',
+  'sidebar-dual',
+  'sidebar-drawer',
   'elements-overview',
+  'sidebar-showcase',
   'reports',
   'messages',
   'calendar',

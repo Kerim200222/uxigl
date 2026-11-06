@@ -695,6 +695,128 @@ export const COMPONENT_CATALOG: ComponentCatalogEntry[] = [
     ],
   },
   {
+    id: 'sidebar',
+    name: 'Sidebar & Nav Multi-Variant',
+    turkishTitle: 'Açık, Kapalı, Dikey, Çift Kolonlu & Çekmece Menü',
+    category: 'surfaces',
+    summary:
+      '5 farklı yerleşim modu sunan kurumsal gezinme omurgası: Standart Açık, Kompakt Kapalı Ray, Dikey İkon-Etiket Yığınlı, Çift Kolonlu ve Çekmece (Off-Canvas).',
+    importPath: '@/components/composites',
+    importStatement: "import { Sidebar } from '@/components/composites';",
+    dos: [
+      'Operasyonel telemetri, izleme ve kontrol panellerinde dikey ikon-etiket yığınlı (stacked-vertical) modu tercih edin.',
+      'Geniş kurumsal sistemlerde akordeon aç/kapa alt menülü standart açık modu kullanın.',
+      'Çalışma alanı ve kanal derinliği yüksek sistemlerde dual-column modunu seçin.',
+      'Mobil ve odaklı tam ekran modlarında drawer (off-canvas) varyantını kullanın.',
+    ],
+    donts: [
+      'Gereksiz yere 4 seviyeden derin alt menü hiyerarşisi oluşturmayın; bilişsel yükü artırır.',
+      'Dikey (stacked) modda etiketleri 2 kelimeden uzun tutmayın.',
+    ],
+    accessibilityNotes: [
+      'Akordeon menü başlıkları dinamik aria-expanded ve Chevron ok durumu üretir.',
+      'Ok tuşları ve Tab ile tam klavye erişilebilirliği.',
+      'Otomatik rota ve sayfa durumu senkronizasyonu.',
+    ],
+    examples: [
+      {
+        id: 'sidebar-stacked-example',
+        title: '1. Dikey Menü (İkon Üstte, Yazı Altta)',
+        description:
+          'Sol kehribar/altın vurgu çubuğu, ikon üstte, metin altta ve "Active" durum etiketi ile dikey menü.',
+        code: `<Sidebar
+  variant="stacked-vertical"
+  accentColor="#F59E0B"
+  groups={navGroups}
+  activeItemId={activeItem}
+  activeSubItemId={activeSub}
+  onSelect={(itemId, subId) => setActive(itemId, subId)}
+  brandLogo={<MyLogo size={28} glow />}
+/>`,
+      },
+      {
+        id: 'sidebar-standard-example',
+        title: '2. Açık Menü (Aç/Kapa Akordeon Alt Ağaç)',
+        description:
+          'Kullanıcının dilediği zaman açıp kapatabildiği (aç/kapa), Spotlight ⌘K ve rozet destekli klasik kurumsal menü.',
+        code: `<Sidebar
+  variant="standard"
+  collapsed={isCollapsed}
+  onToggleCollapse={() => setIsCollapsed(!isCollapsed)}
+  groups={navGroups}
+  activeItemId={activeItem}
+  activeSubItemId={activeSub}
+  onSelect={(itemId, subId) => setActive(itemId, subId)}
+  brandTitle="uxiGL"
+  brandSubtitle="Enterprise Design System"
+/>`,
+      },
+      {
+        id: 'sidebar-dual-example',
+        title: '3. Çift Kolonlu Menü (Master-Detail)',
+        description:
+          'Sol tarafta 68px birincil modül rayı, sağ tarafta o modüle ait 200px detay ağacı.',
+        code: `<Sidebar
+  variant="dual-column"
+  groups={navGroups}
+  activeItemId={activeItem}
+  activeSubItemId={activeSub}
+  onSelect={(itemId, subId) => setActive(itemId, subId)}
+/>`,
+      },
+    ],
+    propsTable: [
+      {
+        name: 'variant',
+        type: "'standard' | 'mini-rail' | 'stacked-vertical' | 'dual-column' | 'drawer'",
+        defaultValue: "'standard'",
+        description: 'Sidebar yerleşim modeli (Açık, Kapalı, Dikey, Çift Kolonlu, Çekmece).',
+      },
+      {
+        name: 'accentColor',
+        type: 'string',
+        defaultValue: "var(--uxu-primary)",
+        description: 'Aktif eleman göstergesi ve parıltısı için özel renk (örn. #F59E0B).',
+      },
+      {
+        name: 'groups',
+        type: 'SidebarNavGroup[]',
+        defaultValue: '[]',
+        description: 'Menü grupları, başlıkları, ana elemanlar ve subItems ağacı.',
+      },
+      {
+        name: 'activeItemId',
+        type: 'string',
+        defaultValue: "''",
+        description: 'Şu an aktif olan ana menü elemanı ID’si.',
+      },
+      {
+        name: 'activeSubItemId',
+        type: 'string',
+        defaultValue: "undefined",
+        description: 'Şu an aktif olan alt menü (subItem) ID’si.',
+      },
+      {
+        name: 'collapsed',
+        type: 'boolean',
+        defaultValue: 'false',
+        description: 'Standart modda sidebar’ın daraltılmış (mini-rail) olup olmadığı.',
+      },
+      {
+        name: 'drawerOpen',
+        type: 'boolean',
+        defaultValue: 'false',
+        description: 'drawer varyantında off-canvas çekmecenin açık olup olmadığı.',
+      },
+      {
+        name: 'onSelect',
+        type: '(itemId: string, subItemId?: string) => void',
+        defaultValue: 'undefined',
+        description: 'Bir menü veya alt menü elemanı seçildiğinde çağrılan fonksiyon.',
+      },
+    ],
+  },
+  {
     id: 'modal-command',
     name: 'Modal, Drawer, Alert, Toast & CommandPalette',
     turkishTitle: 'Diyalog, Yan Çekmece (Drawer), 5 Yönlü Toast, Uyarı Bandı & Komut Paleti',

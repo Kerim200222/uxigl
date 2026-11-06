@@ -37,6 +37,7 @@ import {
   COMPONENT_CATALOG,
   type ComponentCatalogEntry,
 } from '../catalog/componentCatalog';
+import { SidebarShowcaseView } from '../showcase/SidebarShowcaseView';
 import {
   Button,
   type ButtonVariant,
@@ -399,6 +400,28 @@ notify({
             size: controlSize,
           },
         });
+      case 'sidebar':
+        return `// 1. Dikey İkon-Etiket Yığınlı Menü
+<Sidebar
+  variant="stacked-vertical"
+  accentColor="#F59E0B"
+  groups={navGroups}
+  activeItemId="dashboard"
+  activeSubItemId="overview"
+  onSelect={(itemId, subId) => handleSelect(itemId, subId)}
+/>
+
+// 2. Standart Açık Hiyerarşik Menü
+// <Sidebar variant="standard" collapsed={false} ... />
+
+// 3. Kompakt Kapalı Ray Menü
+// <Sidebar variant="mini-rail" collapsed={true} ... />
+
+// 4. Çift Kolonlu Menü (Master-Detail)
+// <Sidebar variant="dual-column" ... />
+
+// 5. Tam Kapalı Çekmece Menü (Off-Canvas)
+// <Sidebar variant="drawer" drawerOpen={open} onCloseDrawer={() => setOpen(false)} ... />`;
       case 'card':
         return CodeGeneratorService.generateSnippet({
           componentName: 'Card',
@@ -2223,6 +2246,13 @@ export function CloudFileManagerExample() {
           </div>
         );
 
+      case 'sidebar':
+        return (
+          <div className="uxu-stage-showcase" style={{ width: '100%', padding: 0 }}>
+            <SidebarShowcaseView />
+          </div>
+        );
+
       case 'tabs-accordion':
         return (
           <div className="uxu-stage-showcase">
@@ -2532,31 +2562,6 @@ export function CloudFileManagerExample() {
 
   return (
     <div className="uxu-playground-main">
-      {/* Compact Horizontal Component Strip (Quick Switcher) */}
-      <div className="uxu-catalog-strip">
-        {COMPONENT_CATALOG.map((item) => {
-          const isSelected = item.id === activeEntry.id;
-          const compHref = RouteService.buildComponentPath(item.id);
-          return (
-            <a
-              key={item.id}
-              href={compHref}
-              title={compHref}
-              className={`uxu-cat-pill ${
-                isSelected ? 'uxu-cat-pill--active' : ''
-              }`}
-              onClick={(e) => {
-                if (RouteService.isModifiedClick(e)) return;
-                e.preventDefault();
-                onSelectComponent(item.id);
-              }}
-            >
-              {item.name}
-            </a>
-          );
-        })}
-      </div>
-
       {/* 1. Component Header & Copyable Import Bar */}
       <Card variant="glass" padding="md" className="uxu-component-hero">
         <div className="uxu-component-hero__top">
@@ -2748,9 +2753,9 @@ export function CloudFileManagerExample() {
                 size="sm"
                 fullWidth
                 options={[
-                  { value: 'sharp', label: 'Keskin (4px)' },
-                  { value: 'squircle', label: 'Squircle (12px)' },
-                  { value: 'pill', label: 'Pill (22px)' },
+                  { value: 'sharp', label: 'Keskin' },
+                  { value: 'squircle', label: 'Squircle' },
+                  { value: 'pill', label: 'Kapsül' },
                 ]}
               />
               <Slider

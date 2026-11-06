@@ -65,6 +65,8 @@ import {
   AdminSubViews,
   type ExtendedAdminViewId,
 } from './AdminSubViews';
+import { SidebarShowcaseView } from './SidebarShowcaseView';
+import type { SidebarVariant } from '../../core/contracts/NavigationContract';
 
 export type DashboardSubView =
   | 'overview'
@@ -73,7 +75,14 @@ export type DashboardSubView =
   | 'products'
   | 'crm-orders'
   | 'forms'
+  | 'sidebars'
+  | 'sidebar-stacked'
+  | 'sidebar-standard'
+  | 'sidebar-mini'
+  | 'sidebar-dual'
+  | 'sidebar-drawer'
   | 'elements-overview'
+  | 'sidebar-showcase'
   | 'reports'
   | 'messages'
   | 'calendar'
@@ -270,12 +279,26 @@ export interface AppleGoogleAppShowcaseProps {
   activeSubView?: DashboardSubView;
   onSubViewChange?: (subView: DashboardSubView) => void;
   onSelectComponent?: (compId: string) => void;
+  sidebarVariant?: SidebarVariant;
+  onSidebarVariantChange?: (v: SidebarVariant) => void;
+  sidebarAccent?: string;
+  onSidebarAccentChange?: (color: string) => void;
+  sidebarCollapsed?: boolean;
+  onToggleSidebarCollapse?: () => void;
+  onOpenDrawer?: () => void;
 }
 
 export const AppleGoogleAppShowcase: React.FC<AppleGoogleAppShowcaseProps> = ({
   activeSubView = 'overview',
   onSubViewChange,
   onSelectComponent,
+  sidebarVariant,
+  onSidebarVariantChange,
+  sidebarAccent,
+  onSidebarAccentChange,
+  sidebarCollapsed,
+  onToggleSidebarCollapse,
+  onOpenDrawer,
 }) => {
   const { notify } = useToast();
 
@@ -372,6 +395,10 @@ export const AppleGoogleAppShowcase: React.FC<AppleGoogleAppShowcaseProps> = ({
             {activeSubView === 'crm-orders' && 'Orders — SheetGL Sipariş & Finans'}
             {activeSubView === 'forms' && 'Forms — Kurumsal Form Stüdyosu'}
             {activeSubView === 'elements-overview' && 'Elements — UI Bileşenleri Özeti'}
+            {(activeSubView === 'sidebar-showcase' ||
+              activeSubView === 'sidebars' ||
+              activeSubView?.startsWith('sidebar-')) &&
+              'Sidebars — 5 Çeşit Sistem Menüsü (Canlı Sol Menü)'}
             {activeSubView === 'reports' && 'Reports — Raporlar & SLA Analizi'}
             {activeSubView === 'messages' && 'Messages — Mesaj Merkezi (3)'}
             {activeSubView === 'calendar' && 'Calendar — Sürüm & Operasyon Takvimi'}
@@ -431,6 +458,21 @@ export const AppleGoogleAppShowcase: React.FC<AppleGoogleAppShowcaseProps> = ({
         <AdminSubViews
           viewId={activeSubView as ExtendedAdminViewId}
           onSelectElementComponent={onSelectComponent}
+        />
+      )}
+
+      {/* Render Full Multi-Variant Sidebar Showcase */}
+      {(activeSubView === 'sidebar-showcase' ||
+        activeSubView === 'sidebars' ||
+        activeSubView?.startsWith('sidebar-')) && (
+        <SidebarShowcaseView
+          currentVariant={sidebarVariant}
+          onVariantChange={onSidebarVariantChange}
+          accentColor={sidebarAccent}
+          onAccentColorChange={onSidebarAccentChange}
+          onOpenDrawer={onOpenDrawer}
+          collapsed={sidebarCollapsed}
+          onToggleCollapse={onToggleSidebarCollapse}
         />
       )}
 

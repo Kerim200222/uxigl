@@ -633,14 +633,16 @@ export const Sidebar: React.FC<SidebarProps> = ({
               </button>
             )}
 
-            <button
-              type="button"
-              className="uxu-sidebar__collapse-btn uxu-only-mobile"
-              onClick={onCloseMobile}
-              aria-label="Menüyü Kapat"
-            >
-              <X size={18} />
-            </button>
+            {mobileOpen && (
+              <button
+                type="button"
+                className="uxu-sidebar__collapse-btn uxu-only-mobile"
+                onClick={onCloseMobile}
+                aria-label="Menüyü Kapat"
+              >
+                <X size={18} />
+              </button>
+            )}
           </div>
 
           {/* Quick Search / Spotlight Button inside Sidebar */}

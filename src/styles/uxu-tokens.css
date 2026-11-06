@@ -632,8 +632,8 @@ pre {
 
 .uxu-sidebar--collapsed .uxu-sidebar__collapse-btn {
   margin: 0 auto;
-  width: 34px;
-  height: 28px;
+  width: 36px;
+  height: 32px;
   border-radius: var(--uxu-radius-sm);
   display: flex;
   align-items: center;
@@ -641,6 +641,10 @@ pre {
   background: var(--uxu-surface-tonal);
   border: 1px solid var(--uxu-border-subtle);
   color: var(--uxu-text-secondary);
+}
+
+.uxu-sidebar--collapsed .uxu-only-mobile {
+  display: none !important;
 }
 
 .uxu-sidebar--collapsed .uxu-sidebar__collapse-btn:hover {
@@ -736,12 +740,19 @@ pre {
 }
 
 .uxu-sidebar--collapsed .uxu-sidebar__search-btn {
-  width: 44px;
-  height: 38px;
+  width: 46px;
+  height: 42px;
   margin: 0 auto;
   justify-content: center;
   padding: 0;
-  border-radius: var(--uxu-radius-md);
+  border-radius: var(--uxu-radius-md, 12px);
+}
+
+.uxu-sidebar--collapsed .uxu-sidebar__search-btn .uxu-google-icon,
+.uxu-sidebar--collapsed .uxu-sidebar__search-btn svg {
+  font-size: 20px !important;
+  width: 20px !important;
+  height: 20px !important;
 }
 
 .uxu-sidebar__search-btn:hover {
@@ -840,6 +851,7 @@ pre {
 .uxu-sidebar--collapsed .uxu-sidebar__list {
   width: 100%;
   align-items: center;
+  gap: 6px;
 }
 
 .uxu-sidebar--collapsed .uxu-sidebar__li {
@@ -850,13 +862,13 @@ pre {
 }
 
 .uxu-sidebar--collapsed .uxu-sidebar__item {
-  width: 44px;
-  height: 44px;
-  min-height: 44px;
+  width: 48px;
+  height: 48px;
+  min-height: 48px;
   padding: 0;
   justify-content: center;
   align-items: center;
-  border-radius: var(--uxu-radius-md);
+  border-radius: var(--uxu-radius-md, 12px);
   margin: 0 auto;
   position: relative;
 }
@@ -866,6 +878,17 @@ pre {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.uxu-sidebar--collapsed .uxu-sidebar__item-icon .uxu-google-icon {
+  font-size: 22px !important;
+  width: 22px !important;
+  height: 22px !important;
+}
+
+.uxu-sidebar--collapsed .uxu-sidebar__item-icon svg {
+  width: 22px !important;
+  height: 22px !important;
 }
 
 .uxu-sidebar__rail-sub-indicator {

@@ -23,6 +23,12 @@ import {
   Settings,
   Shield,
   HelpCircle,
+  Layout,
+  PanelLeft,
+  PanelLeftClose,
+  PanelLeftOpen,
+  Check,
+  Menu,
 } from 'lucide-react';
 import { GithubIcon } from './components/brand/GithubIcon';
 import { useTheme } from './providers/ThemeProvider';
@@ -32,6 +38,9 @@ import { defaultThemeStorageAdapter } from './core/services/StorageService';
 import {
   RouteService,
   DASHBOARD_VIEW_IDS,
+  INPUT_COMPONENT_IDS,
+  SURFACE_COMPONENT_IDS,
+  FEEDBACK_COMPONENT_IDS,
 } from './core/services/RouteService';
 import {
   CommandPalette,
@@ -40,9 +49,11 @@ import {
   TopHeader,
   WebGLAuroraCanvas,
 } from './components/composites';
+import { GoogleIcon } from './components/primitives';
 import type {
   BreadcrumbItem,
   SidebarNavGroup,
+  SidebarVariant,
 } from './core/contracts/NavigationContract';
 import { COMPONENT_CATALOG } from './features/catalog/componentCatalog';
 import { InteractivePlayground } from './features/playground/InteractivePlayground';
@@ -92,9 +103,36 @@ export const App: React.FC = () => {
     const saved = defaultThemeStorageAdapter.loadNavState();
     return Boolean(saved?.sidebarCollapsed);
   });
+  const [sidebarVariant, setSidebarVariant] = useState<SidebarVariant>(() => {
+    const saved = defaultThemeStorageAdapter.loadNavState();
+    return (saved?.sidebarVariant as SidebarVariant) || 'stacked-vertical';
+  });
+  const [sidebarAccent, setSidebarAccent] = useState<string>(() => {
+    const saved = defaultThemeStorageAdapter.loadNavState();
+    return saved?.sidebarAccent || '#F59E0B';
+  });
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [cmdPaletteOpen, setCmdPaletteOpen] = useState(false);
   const [themeDrawerOpen, setThemeDrawerOpen] = useState(false);
+
+  // Listen to sidebar variant changes triggered from demo or header
+  useEffect(() => {
+    const onVariantChange = (e: Event) => {
+      const custom = e as CustomEvent<{
+        variant?: SidebarVariant;
+        accentColor?: string;
+      }>;
+      if (custom.detail?.variant) {
+        setSidebarVariant(custom.detail.variant);
+      }
+      if (custom.detail?.accentColor) {
+        setSidebarAccent(custom.detail.accentColor);
+      }
+    };
+    window.addEventListener('uxu:sidebar-variant-change', onVariantChange);
+    return () =>
+      window.removeEventListener('uxu:sidebar-variant-change', onVariantChange);
+  }, []);
 
   const activeRoutePath = useMemo(
     () => RouteService.buildPath(activeSectionId, activeSubItemId),
@@ -107,6 +145,8 @@ export const App: React.FC = () => {
       activeSectionId,
       activeSubItemId,
       sidebarCollapsed,
+      sidebarVariant,
+      sidebarAccent,
     });
 
     if (window.location.pathname !== activeRoutePath) {
@@ -155,142 +195,228 @@ export const App: React.FC = () => {
   const sidebarGroups = useMemo<SidebarNavGroup[]>(
     () => [
       {
-        id: 'grp-main',
-        title: 'DASHBOARD & MODÜLLER',
+        id: 'grp-dashboard',
+        title: 'DASHBOARD & RAPORLAR',
+        railLabel: 'DASH',
+        icon: <GoogleIcon name="dashboard" size={18} />,
         items: [
           {
             id: 'overview',
             label: 'Dashboard',
             href: '/dashboard/overview',
-            icon: <LayoutDashboard size={16} />,
+            icon: <GoogleIcon name="dashboard" size={16} />,
           },
           {
             id: 'analytics',
             label: 'Analytics',
             href: '/dashboard/analytics',
-            icon: <TrendingUp size={16} />,
-            badge: 'Hot',
+            icon: <GoogleIcon name="trending_up" size={16} />,
+            badge: 'Canlı',
             badgeTone: 'info',
-          },
-          {
-            id: 'users',
-            label: 'Users',
-            href: '/dashboard/users',
-            icon: <Users size={16} />,
-          },
-          {
-            id: 'products',
-            label: 'Products',
-            href: '/dashboard/products',
-            icon: <Package size={16} />,
-          },
-          {
-            id: 'crm-orders',
-            label: 'Orders',
-            href: '/dashboard/crm-orders',
-            icon: <ShoppingBag size={16} />,
-            badge: 'SheetGL',
-            badgeTone: 'primary',
-          },
-          {
-            id: 'forms',
-            label: 'Forms',
-            href: '/dashboard/forms',
-            icon: <FileText size={16} />,
-            badge: 'New',
-            badgeTone: 'success',
-          },
-          {
-            id: 'elements',
-            label: 'Elements',
-            href: '/dashboard/elements-overview',
-            icon: <Box size={16} />,
-            badge: 'New',
-            badgeTone: 'primary',
-            subItems: [
-              {
-                id: 'elements-overview',
-                label: 'Overview',
-                href: '/dashboard/elements-overview',
-              },
-              {
-                id: 'button',
-                label: 'Buttons',
-                href: '/components/inputs/button',
-              },
-              {
-                id: 'chips-badges',
-                label: 'Badges & Chips',
-                href: '/components/feedback/chips-badges',
-              },
-              {
-                id: 'card',
-                label: 'Cards',
-                href: '/components/surfaces/card',
-              },
-              {
-                id: 'modal-command',
-                label: 'Modals & Alerts',
-                href: '/components/surfaces/modal-command',
-              },
-              {
-                id: 'input',
-                label: 'Forms (Input)',
-                href: '/components/inputs/input',
-              },
-              {
-                id: 'switch',
-                label: 'Switch & Toggle',
-                href: '/components/inputs/switch',
-              },
-              {
-                id: 'checkbox',
-                label: 'Checkbox',
-                href: '/components/inputs/checkbox',
-              },
-              {
-                id: 'slider',
-                label: 'Slider',
-                href: '/components/inputs/slider',
-              },
-              {
-                id: 'segmented-control',
-                label: 'Segmented',
-                href: '/components/surfaces/segmented-control',
-              },
-              {
-                id: 'tabs-accordion',
-                label: 'Tabs & Accordion',
-                href: '/components/surfaces/tabs-accordion',
-              },
-              {
-                id: 'progress-avatar',
-                label: 'Progress & Avatar',
-                href: '/components/feedback/progress-avatar',
-              },
-              {
-                id: 'datatable-statcard',
-                label: 'Tables (SheetGL)',
-                href: '/components/feedback/datatable-statcard',
-              },
-              {
-                id: 'filemangl-explorer',
-                label: 'FileManGL VFS',
-                href: '/components/feedback/filemangl-explorer',
-              },
-            ],
           },
           {
             id: 'reports',
             label: 'Reports',
             href: '/dashboard/reports',
-            icon: <BarChart2 size={16} />,
+            icon: <GoogleIcon name="bar_chart" size={16} />,
+            badge: 'Metrik',
+            badgeTone: 'primary',
           },
+        ],
+      },
+      {
+        id: 'grp-crm',
+        title: 'CRM & TİCARET',
+        railLabel: 'CRM',
+        icon: <GoogleIcon name="shopping_bag" size={18} />,
+        items: [
+          {
+            id: 'users',
+            label: 'Users',
+            href: '/dashboard/users',
+            icon: <GoogleIcon name="group" size={16} />,
+          },
+          {
+            id: 'products',
+            label: 'Products',
+            href: '/dashboard/products',
+            icon: <GoogleIcon name="inventory_2" size={16} />,
+          },
+          {
+            id: 'crm-orders',
+            label: 'Orders',
+            href: '/dashboard/crm-orders',
+            icon: <GoogleIcon name="shopping_bag" size={16} />,
+            badge: 'SheetGL',
+            badgeTone: 'primary',
+          },
+        ],
+      },
+      {
+        id: 'grp-forms',
+        title: 'FORM BİLEŞENLERİ',
+        railLabel: 'FORM',
+        icon: <GoogleIcon name="description" size={18} />,
+        items: [
+          {
+            id: 'forms',
+            label: 'Kurumsal Form Stüdyosu',
+            href: '/dashboard/forms',
+            icon: <GoogleIcon name="description" size={16} />,
+            badge: 'Stüdyo',
+            badgeTone: 'success',
+          },
+          {
+            id: 'input',
+            label: 'Input & Textarea',
+            href: '/components/inputs/input',
+            icon: <GoogleIcon name="edit_note" size={16} />,
+          },
+          {
+            id: 'switch',
+            label: 'Switch & Toggle',
+            href: '/components/inputs/switch',
+            icon: <GoogleIcon name="toggle_on" size={16} />,
+          },
+          {
+            id: 'checkbox',
+            label: 'Checkbox & Seçim',
+            href: '/components/inputs/checkbox',
+            icon: <GoogleIcon name="check_box" size={16} />,
+          },
+          {
+            id: 'slider',
+            label: 'Slider & Aralık',
+            href: '/components/inputs/slider',
+            icon: <GoogleIcon name="tune" size={16} />,
+          },
+          {
+            id: 'button',
+            label: 'Button Çeşitleri',
+            href: '/components/inputs/button',
+            icon: <GoogleIcon name="smart_button" size={16} />,
+          },
+        ],
+      },
+      {
+        id: 'grp-elements',
+        title: 'UI ELEMANLARI',
+        railLabel: 'UI',
+        icon: <GoogleIcon name="category" size={18} />,
+        items: [
+          {
+            id: 'elements-overview',
+            label: 'UI Genel Bakış',
+            href: '/dashboard/elements-overview',
+            icon: <GoogleIcon name="category" size={16} />,
+            badge: 'Katalog',
+            badgeTone: 'primary',
+          },
+          {
+            id: 'card',
+            label: 'Cards & Yüzeyler',
+            href: '/components/surfaces/card',
+            icon: <GoogleIcon name="layers" size={16} />,
+          },
+          {
+            id: 'chips-badges',
+            label: 'Badges & Chips',
+            href: '/components/feedback/chips-badges',
+            icon: <GoogleIcon name="verified" size={16} />,
+          },
+          {
+            id: 'modal-command',
+            label: 'Modal & Alerts',
+            href: '/components/surfaces/modal-command',
+            icon: <GoogleIcon name="chat" size={16} />,
+          },
+          {
+            id: 'segmented-control',
+            label: 'Segmented Control',
+            href: '/components/surfaces/segmented-control',
+            icon: <GoogleIcon name="view_week" size={16} />,
+          },
+          {
+            id: 'tabs-accordion',
+            label: 'Tabs & Accordion',
+            href: '/components/surfaces/tabs-accordion',
+            icon: <GoogleIcon name="tab" size={16} />,
+          },
+          {
+            id: 'progress-avatar',
+            label: 'Progress & Avatar',
+            href: '/components/feedback/progress-avatar',
+            icon: <GoogleIcon name="account_circle" size={16} />,
+          },
+          {
+            id: 'datatable-statcard',
+            label: 'SheetGL Tablo',
+            href: '/components/feedback/datatable-statcard',
+            icon: <GoogleIcon name="table_chart" size={16} />,
+            badge: 'SheetGL',
+            badgeTone: 'primary',
+          },
+          {
+            id: 'filemangl-explorer',
+            label: 'FileManGL VFS',
+            href: '/components/feedback/filemangl-explorer',
+            icon: <GoogleIcon name="folder_open" size={16} />,
+            badge: 'VFS',
+            badgeTone: 'info',
+          },
+        ],
+      },
+      {
+        id: 'grp-sidebars',
+        title: 'SİDEBAR ÇEŞİTLERİ',
+        railLabel: 'SIDE',
+        icon: <GoogleIcon name="dock_to_left" size={18} />,
+        items: [
+          {
+            id: 'sidebar-stacked',
+            label: '1. Dikey Menü',
+            href: '/dashboard/sidebars/stacked',
+            icon: <GoogleIcon name="view_sidebar" size={16} />,
+          },
+          {
+            id: 'sidebar-standard',
+            label: '2. Açık Standart',
+            href: '/dashboard/sidebars/standard',
+            icon: <GoogleIcon name="dock_to_left" size={16} />,
+          },
+          {
+            id: 'sidebar-mini',
+            label: '3. Kapalı Ray',
+            href: '/dashboard/sidebars/mini',
+            icon: <GoogleIcon name="menu_open" size={16} />,
+          },
+          {
+            id: 'sidebar-dual',
+            label: '4. Çift Kolon',
+            href: '/dashboard/sidebars/dual',
+            icon: <GoogleIcon name="splitscreen" size={16} />,
+            badge: 'Aktif',
+            badgeTone: 'primary',
+          },
+          {
+            id: 'sidebar-drawer',
+            label: '5. Çekmece Menü',
+            href: '/dashboard/sidebars/drawer',
+            icon: <GoogleIcon name="menu" size={16} />,
+          },
+        ],
+      },
+      {
+        id: 'grp-apps',
+        title: 'ARAÇLAR & İLETİŞİM',
+        railLabel: 'APPS',
+        icon: <GoogleIcon name="apps" size={18} />,
+        items: [
           {
             id: 'messages',
             label: 'Messages',
             href: '/dashboard/messages',
-            icon: <MessageSquare size={16} />,
+            icon: <GoogleIcon name="chat" size={16} />,
             badge: '3',
             badgeTone: 'danger',
           },
@@ -298,13 +424,13 @@ export const App: React.FC = () => {
             id: 'calendar',
             label: 'Calendar',
             href: '/dashboard/calendar',
-            icon: <Calendar size={16} />,
+            icon: <GoogleIcon name="calendar_month" size={16} />,
           },
           {
             id: 'file-manager',
-            label: 'Files',
+            label: 'Files (VFS)',
             href: '/dashboard/file-manager',
-            icon: <FolderOpen size={16} />,
+            icon: <GoogleIcon name="folder" size={16} />,
             badge: 'VFS',
             badgeTone: 'info',
           },
@@ -312,25 +438,27 @@ export const App: React.FC = () => {
       },
       {
         id: 'grp-admin',
-        title: 'ADMIN',
+        title: 'SİSTEM & YÖNETİM',
+        railLabel: 'ADMI',
+        icon: <GoogleIcon name="settings" size={18} />,
         items: [
           {
             id: 'settings',
             label: 'Settings',
             href: '/dashboard/settings',
-            icon: <Settings size={16} />,
+            icon: <GoogleIcon name="settings" size={16} />,
           },
           {
             id: 'security',
             label: 'Security',
             href: '/dashboard/security',
-            icon: <Shield size={16} />,
+            icon: <GoogleIcon name="shield" size={16} />,
           },
           {
             id: 'docs-guide',
             label: 'Help & Support',
             href: '/docs/getting-started',
-            icon: <HelpCircle size={16} />,
+            icon: <GoogleIcon name="help" size={16} />,
             subItems: [
               {
                 id: 'getting-started',
@@ -344,7 +472,7 @@ export const App: React.FC = () => {
               },
               {
                 id: 'layout-shell',
-                label: '3. Yerleşim',
+                label: '3. Yerleşim & Mimari',
                 href: '/docs/layout-shell',
               },
               {
@@ -358,7 +486,7 @@ export const App: React.FC = () => {
             id: 'landing',
             label: 'Tanıtım Sayfası (/)',
             href: '/',
-            icon: <Home size={16} />,
+            icon: <GoogleIcon name="home" size={16} />,
             badge: 'uxiGL',
             badgeTone: 'info',
           },
@@ -397,13 +525,68 @@ export const App: React.FC = () => {
       return;
     }
 
-    if (itemId === 'elements') {
-      if (!subItemId || subItemId === 'elements-overview') {
+    if (
+      itemId === 'sidebars' ||
+      itemId === 'sidebar-showcase' ||
+      itemId.startsWith('sidebar-')
+    ) {
+      setActiveSectionId('dashboard');
+      setActiveSubItemId('sidebars');
+
+      const targetVariantId = subItemId || itemId;
+      if (targetVariantId === 'sidebar-stacked') {
+        setSidebarVariant('stacked-vertical');
+        setSidebarCollapsed(false);
+      } else if (targetVariantId === 'sidebar-standard') {
+        setSidebarVariant('standard');
+        setSidebarCollapsed(false);
+      } else if (targetVariantId === 'sidebar-mini') {
+        setSidebarVariant('mini-rail');
+        setSidebarCollapsed(true);
+      } else if (targetVariantId === 'sidebar-dual') {
+        setSidebarVariant('dual-column');
+        setSidebarCollapsed(false);
+      } else if (targetVariantId === 'sidebar-drawer') {
+        setSidebarVariant('drawer');
+        setMobileSidebarOpen(true);
+      }
+      return;
+    }
+
+    if (itemId === 'forms') {
+      if (!subItemId || subItemId === 'forms') {
+        setActiveSectionId('dashboard');
+        setActiveSubItemId('forms');
+      } else {
+        handlePlaygroundComponentSelect(subItemId);
+      }
+      return;
+    }
+
+    if (itemId === 'elements' || itemId === 'elements-overview') {
+      if (subItemId === 'sidebar') {
+        handleSidebarSelect('sidebars');
+        return;
+      }
+      if (
+        !subItemId ||
+        subItemId === 'elements-overview' ||
+        itemId === 'elements-overview'
+      ) {
         setActiveSectionId('dashboard');
         setActiveSubItemId('elements-overview');
       } else {
         handlePlaygroundComponentSelect(subItemId);
       }
+      return;
+    }
+
+    if (
+      INPUT_COMPONENT_IDS.has(itemId) ||
+      SURFACE_COMPONENT_IDS.has(itemId) ||
+      FEEDBACK_COMPONENT_IDS.has(itemId)
+    ) {
+      handlePlaygroundComponentSelect(itemId);
       return;
     }
 
@@ -524,6 +707,15 @@ export const App: React.FC = () => {
         shortcut: 'G D',
         onSelect: () => handleSidebarSelect('dashboard', 'overview'),
       },
+      {
+        id: 'view-sidebar-showcase',
+        title: 'Sidebar Çeşitleri — 5 Farklı Gezinme Modu',
+        subtitle: 'Dikey, Standart Açık, Kapalı Ray, Çift Kolonlu ve Çekmece',
+        category: 'Bileşenler',
+        icon: <Layout size={16} />,
+        shortcut: 'S B',
+        onSelect: () => handlePlaygroundComponentSelect('sidebar'),
+      },
     ];
 
     const themeActions: CommandActionItem[] = [
@@ -589,8 +781,12 @@ export const App: React.FC = () => {
         </div>
       ) : (
         <>
-          {/* Left Classic Hierarchical Sidebar with Expandable Sub-Menus */}
+          {/* Left Main Sidebar with Active Variant Mode */}
           <Sidebar
+            variant={sidebarVariant}
+            accentColor={sidebarAccent}
+            drawerOpen={mobileSidebarOpen}
+            onCloseDrawer={() => setMobileSidebarOpen(false)}
             groups={sidebarGroups}
             activeItemId={activeSectionId}
             activeSubItemId={activeSubItemId}
@@ -608,6 +804,16 @@ export const App: React.FC = () => {
             <TopHeader
               breadcrumbs={breadcrumbs}
               activeRoutePath={activeRoutePath}
+              sidebarVariant={sidebarVariant}
+              onSidebarVariantChange={(v) => {
+                setSidebarVariant(v);
+                window.dispatchEvent(
+                  new CustomEvent('uxu:sidebar-variant-change', {
+                    detail: { variant: v, accentColor: sidebarAccent },
+                  })
+                );
+              }}
+              onOpenDrawer={() => setMobileSidebarOpen(true)}
               onOpenMobileMenu={() => setMobileSidebarOpen(true)}
               onOpenCommandPalette={() => setCmdPaletteOpen(true)}
               onOpenThemeStudio={() => setThemeDrawerOpen(true)}
@@ -632,6 +838,17 @@ export const App: React.FC = () => {
                     handleSidebarSelect('dashboard', sub)
                   }
                   onSelectComponent={handlePlaygroundComponentSelect}
+                  sidebarVariant={sidebarVariant}
+                  onSidebarVariantChange={(v) => {
+                    setSidebarVariant(v);
+                    if (v === 'mini-rail') setSidebarCollapsed(true);
+                    if (v === 'standard') setSidebarCollapsed(false);
+                  }}
+                  sidebarAccent={sidebarAccent}
+                  onSidebarAccentChange={setSidebarAccent}
+                  sidebarCollapsed={sidebarCollapsed}
+                  onToggleSidebarCollapse={() => setSidebarCollapsed((p) => !p)}
+                  onOpenDrawer={() => setMobileSidebarOpen(true)}
                 />
               )}
 
@@ -731,6 +948,19 @@ export const App: React.FC = () => {
       <ThemeStudioDrawer
         open={themeDrawerOpen}
         onClose={() => setThemeDrawerOpen(false)}
+        sidebarVariant={sidebarVariant}
+        onSidebarVariantChange={(v) => {
+          setSidebarVariant(v);
+          if (v === 'mini-rail') setSidebarCollapsed(true);
+          if (v === 'standard') setSidebarCollapsed(false);
+          window.dispatchEvent(
+            new CustomEvent('uxu:sidebar-variant-change', {
+              detail: { variant: v, accentColor: sidebarAccent },
+            })
+          );
+        }}
+        sidebarAccent={sidebarAccent}
+        onSidebarAccentChange={setSidebarAccent}
       />
     </div>
   );

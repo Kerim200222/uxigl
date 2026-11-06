@@ -3,12 +3,15 @@ import defaultLogoPng from '../../assets/logo/uxi_no_bg.png';
 
 export interface UXILogoProps {
   size?: number;
+  width?: number;
+  height?: number;
   glow?: boolean;
   className?: string;
   style?: React.CSSProperties;
   variant?: 'image' | 'svg';
   src?: string;
   alt?: string;
+  preserveRatio?: boolean;
 }
 
 /**
@@ -19,14 +22,21 @@ export interface UXILogoProps {
  */
 export const UXILogo: React.FC<UXILogoProps> = ({
   size = 32,
+  width,
+  height,
   glow = false,
   className = '',
   style,
   variant = 'image',
   src,
   alt = 'uxiGL Logo',
+  preserveRatio = false,
 }) => {
   const uid = useId().replace(/:/g, '');
+
+  const computedWidth =
+    width ?? (preserveRatio ? Math.round(size * (1024 / 582)) : size);
+  const computedHeight = height ?? size;
 
   if (variant === 'image') {
     const imgSrc = src || defaultLogoPng;
@@ -38,8 +48,8 @@ export const UXILogo: React.FC<UXILogoProps> = ({
           alignItems: 'center',
           justifyContent: 'center',
           position: 'relative',
-          width: size,
-          height: size,
+          width: computedWidth,
+          height: computedHeight,
           flexShrink: 0,
           userSelect: 'none',
           filter: glow
@@ -52,8 +62,8 @@ export const UXILogo: React.FC<UXILogoProps> = ({
         <img
           src={imgSrc}
           alt={alt}
-          width={size}
-          height={size}
+          width={computedWidth}
+          height={computedHeight}
           loading="eager"
           decoding="async"
           style={{

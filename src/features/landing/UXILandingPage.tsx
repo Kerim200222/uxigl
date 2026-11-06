@@ -332,7 +332,7 @@ export default function App() {
               flexShrink: 0,
             }}
           >
-            <UXILogo size={isMobile ? 28 : 34} glow={true} />
+            <UXILogo size={isMobile ? 28 : 34} glow={true} preserveRatio />
             <div style={{ display: 'flex', alignItems: 'baseline', gap: isMobile ? 5 : 8 }}>
               <span
                 style={{
@@ -772,7 +772,8 @@ export default function App() {
             }}
           />
           <UXILogo
-            size={isMobile ? 108 : 156}
+            width={isMobile ? 220 : 340}
+            height={isMobile ? 125 : 193}
             glow={true}
             style={{
               position: 'relative',
@@ -1300,9 +1301,9 @@ export default function App() {
                       size="sm"
                       fullWidth
                       options={[
-                        { value: 'sharp', label: 'Keskin (4px)' },
-                        { value: 'squircle', label: 'Squircle (12px)' },
-                        { value: 'pill', label: 'Pill (22px)' },
+                        { value: 'sharp', label: 'Keskin' },
+                        { value: 'squircle', label: 'Squircle' },
+                        { value: 'pill', label: 'Kapsül' },
                       ]}
                     />
 
@@ -1636,7 +1637,7 @@ export default function App() {
             marginBottom: 12,
           }}
         >
-          <UXILogo size={20} />
+          <UXILogo size={20} preserveRatio />
           <span style={{ fontWeight: 800, color: colors.text }}>
             uxi
             <span

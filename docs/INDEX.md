@@ -45,3 +45,4 @@ When running the application (`npm run dev` or at `https://uxigl.truncgil.com`),
 | `/docs/page-templates` | **6. 7 Hazır Kurumsal Sayfa Şablonu** (Interactive Login, 2FA, Pricing, Profile, Invoice, Kanban, Status) |
 | `/docs/theming-tokens` | **7. Tema Motoru, Apple HIG Materyalleri & CSS Tokenları** (Live Palette, Radius, Font & Token Lab) |
 | `/docs/cli-shortcuts` | **8. 5 Yönlü Toast Bildirim Motoru, Kısayollar & Servisler** (`useToast`, `⌘K`, `RouteService`) |
+

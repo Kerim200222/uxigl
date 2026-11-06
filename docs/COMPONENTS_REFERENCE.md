@@ -174,3 +174,4 @@ import { UXILogo, GoogleIcon } from 'truncgil-uxigl';
 | `<SheetGLGridAdapter />` | `datasetPreset: 'finance-erp' \| 'cloud-telemetry' \| 'hr-payroll' \| 'inventory-supply'`, `initialRowCount`, `height`, `showPresetSwitcher` | 120 FPS WebGL/Canvas spreadsheet & enterprise DataGrid |
 | `<FileManGLExplorerAdapter />` | `height` | WebGL2 3D Spatial & Sunburst Disk Map VFS file manager |
 | `<WebGLAuroraCanvas />` | Controlled via `useTheme()` (`webglEnabled`, `webglPreset`, `webglIntensity`) | Hardware-accelerated GLSL shader background (`aurora`, `nebula`, `cyber-grid`, `liquid-metal`) |
+

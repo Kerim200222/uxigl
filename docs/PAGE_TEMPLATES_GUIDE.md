@@ -51,3 +51,4 @@ export function EnterprisePagesDemo() {
 | `'mini-rail'` | `64px` | Maximum horizontal canvas space for wide `SheetGL` spreadsheets and `FileManGL` dual-pane explorers (`22px` centered icons) |
 | `'dual-column'` | `68px + 208px` (`276px`) | Deep multi-workspace applications: left `68px` primary module rail (`48×48px` buttons) + right `208px` sub-navigation tree |
 | `'drawer'` | `280px` (Off-Canvas) | Mobile viewports and distraction-free full-screen focus modes |
+

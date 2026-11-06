@@ -66,6 +66,10 @@ import {
   type ExtendedAdminViewId,
 } from './AdminSubViews';
 import { SidebarShowcaseView } from './SidebarShowcaseView';
+import {
+  PageTemplatesShowcaseView,
+  type PageTemplateId,
+} from './PageTemplatesShowcaseView';
 import type { SidebarVariant } from '../../core/contracts/NavigationContract';
 
 export type DashboardSubView =
@@ -89,7 +93,14 @@ export type DashboardSubView =
   | 'file-manager'
   | 'smart-cluster'
   | 'settings'
-  | 'security';
+  | 'security'
+  | 'page-login'
+  | 'page-register'
+  | 'page-pricing'
+  | 'page-profile'
+  | 'page-invoice'
+  | 'page-kanban'
+  | 'page-status';
 
 interface DeploymentRow extends Record<string, unknown> {
   id: string;
@@ -406,11 +417,20 @@ export const AppleGoogleAppShowcase: React.FC<AppleGoogleAppShowcaseProps> = ({
             {activeSubView === 'smart-cluster' && 'Cihaz & Sunucu Kümesi'}
             {activeSubView === 'settings' && 'Settings — Çalışma Alanı Ayarları'}
             {activeSubView === 'security' && 'Security — Zero-Trust & API Güvenliği'}
+            {activeSubView === 'page-login' && 'Login & Auth — Kurumsal Giriş Sayfası Tasarımları'}
+            {activeSubView === 'page-register' && 'Register & 2FA — Kayıt ve Doğrulama Şablonu'}
+            {activeSubView === 'page-pricing' && 'Pricing — SaaS Fiyatlandırma ve Lisans Paketleri'}
+            {activeSubView === 'page-profile' && 'Profile — Kullanıcı Profili ve Geliştirici Portfolyosu'}
+            {activeSubView === 'page-invoice' && 'Invoice — B2B e-Fatura ve Hızlı Ödeme Sayfası'}
+            {activeSubView === 'page-kanban' && 'Kanban — Sprint ve Proje Yönetim Panosu'}
+            {activeSubView === 'page-status' && 'Status & 404 — Hata Sayfaları ve Canlı SLA Monitörü'}
           </h1>
           <span className="uxu-dash-toolbar__subtitle">
             {activeSubView === 'analytics'
               ? 'Comprehensive insights and performance metrics — Gelir, Trafik Kaynakları, Dönüşüm Hunisi, Coğrafi ve Cihaz Analitiği'
-              : 'Gerçek zamanlı sistem metrikleri, etkileşimli grafikler, SheetGL tablo ve FileManGL VFS paneli'}
+              : activeSubView?.startsWith('page-')
+                ? 'Apple HIG 8pt uzamsal grid ve Liquid Glass materyalleriyle hazırlanmış kopyalanabilir tam sayfa şablonları'
+                : 'Gerçek zamanlı sistem metrikleri, etkileşimli grafikler, SheetGL tablo ve FileManGL VFS paneli'}
           </span>
         </div>
 
@@ -458,6 +478,15 @@ export const AppleGoogleAppShowcase: React.FC<AppleGoogleAppShowcaseProps> = ({
         <AdminSubViews
           viewId={activeSubView as ExtendedAdminViewId}
           onSelectElementComponent={onSelectComponent}
+        />
+      )}
+
+      {/* Render Ready-Made Page Templates Suite (Login, Register, Pricing, Profile, Invoice, Kanban, Status) */}
+      {activeSubView?.startsWith('page-') && (
+        <PageTemplatesShowcaseView
+          activePageId={activeSubView as PageTemplateId}
+          onPageChange={(pageId) => onSubViewChange?.(pageId)}
+          onNavigateHome={() => onSubViewChange?.('overview')}
         />
       )}
 

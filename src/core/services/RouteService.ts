@@ -73,6 +73,13 @@ export const DASHBOARD_VIEW_IDS = new Set([
   'smart-cluster',
   'settings',
   'security',
+  'page-login',
+  'page-register',
+  'page-pricing',
+  'page-profile',
+  'page-invoice',
+  'page-kanban',
+  'page-status',
 ]);
 
 export class RouteService {

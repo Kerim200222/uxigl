@@ -39,6 +39,10 @@ import {
 } from '../catalog/componentCatalog';
 import { SidebarShowcaseView } from '../showcase/SidebarShowcaseView';
 import {
+  PageTemplatesShowcaseView,
+  type PageTemplateId,
+} from '../showcase/PageTemplatesShowcaseView';
+import {
   Button,
   type ButtonVariant,
   Input,
@@ -222,6 +226,8 @@ export const InteractivePlayground: React.FC<InteractivePlaygroundProps> = ({
     useState<NativeTableVariant>('default');
   const [animDurationSec, setAnimDurationSec] = useState<number>(3.2);
   const [skeletonAnimated, setSkeletonAnimated] = useState<boolean>(true);
+  const [playgroundPageId, setPlaygroundPageId] =
+    useState<PageTemplateId>('page-login');
 
   const activeEntry: ComponentCatalogEntry =
     COMPONENT_CATALOG.find((c) => c.id === selectedComponentId) ??
@@ -2250,6 +2256,16 @@ export function CloudFileManagerExample() {
         return (
           <div className="uxu-stage-showcase" style={{ width: '100%', padding: 0 }}>
             <SidebarShowcaseView />
+          </div>
+        );
+
+      case 'page-templates':
+        return (
+          <div className="uxu-stage-showcase" style={{ width: '100%', padding: 0 }}>
+            <PageTemplatesShowcaseView
+              activePageId={playgroundPageId}
+              onPageChange={setPlaygroundPageId}
+            />
           </div>
         );
 

@@ -536,6 +536,11 @@ export const App: React.FC = () => {
                 label: 'Shortcuts & ⌘K',
                 href: '/docs/cli-shortcuts',
               },
+              {
+                id: 'page-templates',
+                label: 'Page Templates',
+                href: '/docs/page-templates',
+              },
             ],
           },
           {
@@ -771,6 +776,15 @@ export const App: React.FC = () => {
         icon: <Layout size={16} />,
         shortcut: 'S B',
         onSelect: () => handlePlaygroundComponentSelect('sidebar'),
+      },
+      {
+        id: 'view-docs-page-templates',
+        title: 'Sayfa Şablonları Rehberi — 7 Hazır Kurumsal Sayfa Demosu',
+        subtitle: 'Login, Register/2FA, Pricing, Profile, e-Fatura, Kanban ve 404/Status dokümantasyonu',
+        category: 'Başlangıç',
+        icon: <GoogleIcon name="web" size={16} />,
+        shortcut: 'G P',
+        onSelect: () => handleSidebarSelect('docs-guide', 'page-templates'),
       },
       {
         id: 'view-page-login',

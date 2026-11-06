@@ -29,6 +29,10 @@ import {
   SheetGLGridAdapter,
   FileManGLExplorerAdapter,
 } from '../../components/composites';
+import {
+  PageTemplatesShowcaseView,
+  type PageTemplateId,
+} from '../showcase/PageTemplatesShowcaseView';
 import { useTheme } from '../../providers/ThemeProvider';
 import { RouteService } from '../../core/services/RouteService';
 import type {
@@ -43,7 +47,7 @@ export interface UXILandingPageProps {
   onOpenCommandPalette: () => void;
 }
 
-type LandingPreviewTab = 'components' | 'sheetgl' | 'filemangl';
+type LandingPreviewTab = 'components' | 'pages' | 'sheetgl' | 'filemangl';
 
 export const UXILandingPage: React.FC<UXILandingPageProps> = ({
   onNavigate,
@@ -72,6 +76,8 @@ export const UXILandingPage: React.FC<UXILandingPageProps> = ({
   );
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
   const [previewTab, setPreviewTab] = useState<LandingPreviewTab>('components');
+  const [landingPageDemoId, setLandingPageDemoId] =
+    useState<PageTemplateId>('page-login');
   const [installTab, setInstallTab] = useState<
     'npm' | 'npx' | 'pnpm' | 'yarn' | 'bun'
   >('npm');
@@ -1254,6 +1260,7 @@ export default function App() {
               onChange={setPreviewTab}
               options={[
                 { value: 'components', label: isTR ? 'uxiGL Bileşen & Tema Sahnesi' : 'uxiGL Components & Theme' },
+                { value: 'pages', label: isTR ? 'Hazır Sayfa Şablonları (7 Demo)' : 'Page Templates (7 Demos)' },
                 { value: 'sheetgl', label: isTR ? 'SheetGL Tablo' : 'SheetGL Grid' },
                 { value: 'filemangl', label: 'FileManGL Dosya' },
               ]}
@@ -1459,6 +1466,14 @@ export default function App() {
                   </div>
                 </Card>
               </div>
+            )}
+
+            {previewTab === 'pages' && (
+              <PageTemplatesShowcaseView
+                activePageId={landingPageDemoId}
+                onPageChange={setLandingPageDemoId}
+                onNavigateHome={() => onNavigate('dashboard', 'overview')}
+              />
             )}
 
             {previewTab === 'sheetgl' && (

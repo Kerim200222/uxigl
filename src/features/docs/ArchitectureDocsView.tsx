@@ -34,6 +34,10 @@ import { CodeGeneratorService } from '../../core/services/CodeGeneratorService';
 import { RouteService } from '../../core/services/RouteService';
 import { COMPONENT_CATALOG } from '../catalog/componentCatalog';
 import { SidebarShowcaseView } from '../showcase/SidebarShowcaseView';
+import {
+  PageTemplatesShowcaseView,
+  type PageTemplateId,
+} from '../showcase/PageTemplatesShowcaseView';
 import type {
   FontFamilyPreset,
   GoogleIconStyle,
@@ -47,7 +51,8 @@ export type DocsTopicId =
   | 'getting-started'
   | 'theming-tokens'
   | 'layout-shell'
-  | 'cli-shortcuts';
+  | 'cli-shortcuts'
+  | 'page-templates';
 
 export interface ArchitectureDocsViewProps {
   activeTopic?: DocsTopicId;
@@ -258,6 +263,8 @@ export const ArchitectureDocsView: React.FC<ArchitectureDocsViewProps> = ({
   const [demoEmail, setDemoEmail] = useState('mimar@uxigl.dev');
   const [demoPass, setDemoPass] = useState('••••••••••••');
   const [demoRemember, setDemoRemember] = useState(true);
+  const [docsPageTemplate, setDocsPageTemplate] =
+    useState<PageTemplateId>('page-login');
 
   const activeColorSet =
     resolvedMode === 'dark' ? activePalette.dark : activePalette.light;
@@ -345,6 +352,12 @@ export const ArchitectureDocsView: React.FC<ArchitectureDocsViewProps> = ({
               label: '4. Bildirim & ⌘K',
               href: '/docs/cli-shortcuts',
               icon: <Bell size={14} />,
+            },
+            {
+              value: 'page-templates',
+              label: '5. Sayfa Şablonları',
+              href: '/docs/page-templates',
+              icon: <Layers size={14} />,
             },
           ]}
         />
@@ -1003,6 +1016,188 @@ export function IconDemo() {
               TOAST_CMD_SNIPPET
             )}
           </Card>
+        </div>
+      )}
+
+      {/* =====================================================================
+       * SECTION 5: READY-MADE ENTERPRISE PAGE TEMPLATES SUITE
+       * ===================================================================== */}
+      {currentTopic === 'page-templates' && (
+        <div className="uxu-stack-md">
+          <div className="uxu-stage-grid-2">
+            <Card
+              variant="glass"
+              title="7 Hazır Kurumsal Sayfa Şablonu (Apple HIG × Material 3)"
+              subtitle="Login, Register/2FA, Pricing, Profile, B2B e-Fatura, Kanban ve 404/Status"
+              headerIcon={<Layers size={19} />}
+            >
+              <div className="uxu-stack-md">
+                <p className="uxu-muted-p">
+                  <code>truncgil-uxigl</code>; yalnızca atomik form ve yüzey
+                  bileşenleri değil, aynı zamanda kurumsal SaaS projelerinde
+                  doğrudan kullanabileceğiniz <strong>7 adet tam etkileşimli hazır
+                  sayfa tasarımı</strong> sunar. Her şablon 8pt Apple HIG uzamsal
+                  ızgarası ve Liquid Glass cam katmanlarıyla uyumludur.
+                </p>
+
+                <div className="uxu-inspiration-box">
+                  <div className="uxu-inspiration-box__title">
+                    Hazır Sayfa Rotaları &amp; Canlı Demo Geçişi
+                  </div>
+                  <div
+                    style={{
+                      display: 'grid',
+                      gridTemplateColumns: 'repeat(auto-fit, minmax(210px, 1fr))',
+                      gap: 8,
+                      marginTop: 8,
+                    }}
+                  >
+                    {(
+                      [
+                        {
+                          id: 'page-login' as PageTemplateId,
+                          title: '1. Login & Auth',
+                          desc: 'Split-screen SSO, Passkey & iCloud Glass',
+                          route: '/dashboard/page-login',
+                        },
+                        {
+                          id: 'page-register' as PageTemplateId,
+                          title: '2. Register & 2FA',
+                          desc: '3 adımlı kayıt, rol seçimi & 6 haneli OTP',
+                          route: '/dashboard/page-register',
+                        },
+                        {
+                          id: 'page-pricing' as PageTemplateId,
+                          title: '3. SaaS Pricing',
+                          desc: 'Yıllık/Aylık planlar & koltuk hesaplayıcı',
+                          route: '/dashboard/page-pricing',
+                        },
+                        {
+                          id: 'page-profile' as PageTemplateId,
+                          title: '4. User Profile',
+                          desc: 'Kapak, KPI şeridi, cihazlar & zaman çizelgesi',
+                          route: '/dashboard/page-profile',
+                        },
+                        {
+                          id: 'page-invoice' as PageTemplateId,
+                          title: '5. B2B e-Fatura',
+                          desc: 'GİB e-Fatura tablosu & canlı kart ödeme',
+                          route: '/dashboard/page-invoice',
+                        },
+                        {
+                          id: 'page-kanban' as PageTemplateId,
+                          title: '6. Kanban Board',
+                          desc: '4 sütunlu çevik sprint & görev panosu',
+                          route: '/dashboard/page-kanban',
+                        },
+                        {
+                          id: 'page-status' as PageTemplateId,
+                          title: '7. 404 & SLA Status',
+                          desc: '404, 500 bakım & 90 günlük SLA monitörü',
+                          route: '/dashboard/page-status',
+                        },
+                      ]
+                    ).map((tpl) => {
+                      const active = docsPageTemplate === tpl.id;
+                      return (
+                        <button
+                          key={tpl.id}
+                          type="button"
+                          onClick={() => setDocsPageTemplate(tpl.id)}
+                          style={{
+                            textAlign: 'left',
+                            padding: '10px 12px',
+                            borderRadius: 'var(--uxu-radius-md)',
+                            border: active
+                              ? '1.5px solid var(--uxu-primary)'
+                              : '1px solid var(--uxu-border-subtle)',
+                            background: active
+                              ? 'var(--uxu-primary-container)'
+                              : 'var(--uxu-surface-tonal)',
+                            color: 'var(--uxu-text-primary)',
+                            cursor: 'pointer',
+                            transition: 'all 140ms ease',
+                          }}
+                        >
+                          <div
+                            style={{
+                              display: 'flex',
+                              justifyContent: 'space-between',
+                              alignItems: 'center',
+                              fontSize: '0.8rem',
+                              fontWeight: 700,
+                            }}
+                          >
+                            <span>{tpl.title}</span>
+                            <code style={{ fontSize: '0.68rem', color: 'var(--uxu-primary)' }}>
+                              {tpl.route}
+                            </code>
+                          </div>
+                          <div
+                            style={{
+                              fontSize: '0.72rem',
+                              color: 'var(--uxu-text-secondary)',
+                              marginTop: 2,
+                            }}
+                          >
+                            {tpl.desc}
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            </Card>
+
+            <Card
+              variant="tonal"
+              title="Hazır Sayfa Şablonlarını Projeye Dahil Etme"
+              subtitle="Tek bileşenle tüm şablonları veya bağımsız sayfa tasarımlarını kullanın"
+              headerIcon={<Code2 size={19} />}
+            >
+              <div className="uxu-stack-md">
+                {renderCodeBox(
+                  'PageTemplatesUsage.tsx — Hazır Şablon Kullanımı',
+                  `import { useState } from 'react';
+import {
+  PageTemplatesShowcaseView,
+  type PageTemplateId,
+} from 'truncgil-uxigl';
+
+export function EnterprisePagesRouter() {
+  // 'page-login' | 'page-register' | 'page-pricing' | 'page-profile'
+  // 'page-invoice' | 'page-kanban' | 'page-status'
+  const [activePage, setActivePage] = useState<PageTemplateId>('${docsPageTemplate}');
+
+  return (
+    <PageTemplatesShowcaseView
+      activePageId={activePage}
+      onPageChange={setActivePage}
+      onNavigateHome={() => setActivePage('page-login')}
+    />
+  );
+}`
+                )}
+                <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                  <Button
+                    variant="filled"
+                    size="sm"
+                    leadingIcon={<Sparkles size={14} />}
+                    onClick={() => onSelectComponent?.('page-templates')}
+                  >
+                    Bileşen Playground &amp; Props API’sini Aç
+                  </Button>
+                </div>
+              </div>
+            </Card>
+          </div>
+
+          {/* Live Interactive Page Templates Demo Embedded Directly in Docs */}
+          <PageTemplatesShowcaseView
+            activePageId={docsPageTemplate}
+            onPageChange={setDocsPageTemplate}
+          />
         </div>
       )}
 

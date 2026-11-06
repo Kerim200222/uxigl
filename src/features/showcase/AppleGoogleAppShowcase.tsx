@@ -1479,6 +1479,171 @@ export const AppleGoogleAppShowcase: React.FC<AppleGoogleAppShowcaseProps> = ({
           </div>
         </Card>
       )}
+
+      {/* 7. Ready-Made Enterprise Page Templates Live Demo Launcher */}
+      {(activeSubView === 'overview' || activeSubView === 'elements-overview') && (
+        <Card
+          variant="glass"
+          padding="md"
+          eyebrow="HAZIR KURUMSAL SAYFA TASARIMLARI • 7 CANLI DEMO"
+          title="Hazır Sayfa Şablonları Galerisi (Page Templates Suite)"
+          subtitle="Apple HIG 8pt ızgara ve Liquid Glass ile tasarlanmış tam ekran etkileşimli sayfa demoları"
+          headerIcon={<Sparkles size={18} />}
+          headerAction={
+            <div style={{ display: 'flex', gap: 8 }}>
+              <Button
+                variant="tonal"
+                size="xs"
+                onClick={() => onSelectComponent?.('page-templates')}
+              >
+                Dokümantasyon &amp; Props API
+              </Button>
+              <Button
+                variant="filled"
+                size="xs"
+                onClick={() => onSubViewChange?.('page-login')}
+              >
+                Tüm Şablonları Aç →
+              </Button>
+            </div>
+          }
+        >
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(230px, 1fr))',
+              gap: 12,
+            }}
+          >
+            {(
+              [
+                {
+                  id: 'page-login' as PageTemplateId,
+                  title: 'Login & Auth',
+                  badge: 'SSO + Passkey',
+                  tone: 'primary' as const,
+                  desc: 'Split-screen kurumsal SSO ve Apple iCloud yüzen cam giriş ekranları.',
+                  route: '/dashboard/page-login',
+                },
+                {
+                  id: 'page-register' as PageTemplateId,
+                  title: 'Register & 2FA',
+                  badge: '3 Adım + OTP',
+                  tone: 'success' as const,
+                  desc: 'Parola güç ölçerli kayıt, ekip rolü seçimi ve 6 haneli 2FA doğrulama.',
+                  route: '/dashboard/page-register',
+                },
+                {
+                  id: 'page-pricing' as PageTemplateId,
+                  title: 'SaaS Pricing',
+                  badge: 'Koltuk Hesaplayıcı',
+                  tone: 'info' as const,
+                  desc: 'Yıllık %20 indirim anahtarı, canlı koltuk slider’ı ve 3 lisans paketi.',
+                  route: '/dashboard/page-pricing',
+                },
+                {
+                  id: 'page-profile' as PageTemplateId,
+                  title: 'User Profile',
+                  badge: 'Portfolyo',
+                  tone: 'primary' as const,
+                  desc: 'Kapak alanı, KPI şeridi, uzmanlık etiketleri, cihazlar ve zaman çizelgesi.',
+                  route: '/dashboard/page-profile',
+                },
+                {
+                  id: 'page-invoice' as PageTemplateId,
+                  title: 'B2B e-Fatura',
+                  badge: 'Checkout',
+                  tone: 'warning' as const,
+                  desc: 'GİB uyumlu e-Fatura kalem tablosu, KDV özeti ve canlı kredi kartı ödeme.',
+                  route: '/dashboard/page-invoice',
+                },
+                {
+                  id: 'page-kanban' as PageTemplateId,
+                  title: 'Kanban Board',
+                  badge: 'Sprint',
+                  tone: 'success' as const,
+                  desc: '4 sütunlu çevik görev panosu, filtreleme ve sütunlar arası kart taşıma.',
+                  route: '/dashboard/page-kanban',
+                },
+                {
+                  id: 'page-status' as PageTemplateId,
+                  title: '404 & SLA Status',
+                  badge: '90 Gün Uptime',
+                  tone: 'danger' as const,
+                  desc: '404 Bulunamadı, 500 Bakım ekranı ve canlı küme SLA monitörü.',
+                  route: '/dashboard/page-status',
+                },
+              ]
+            ).map((tpl) => (
+              <a
+                key={tpl.id}
+                href={tpl.route}
+                onClick={(e) => {
+                  if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+                  e.preventDefault();
+                  onSubViewChange?.(tpl.id);
+                }}
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                  gap: 8,
+                  padding: 14,
+                  borderRadius: 'var(--uxu-radius-md)',
+                  background: 'var(--uxu-surface-tonal)',
+                  border: '1px solid var(--uxu-border-subtle)',
+                  textDecoration: 'none',
+                  color: 'var(--uxu-text-primary)',
+                  transition: 'all 140ms ease',
+                }}
+              >
+                <div>
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      gap: 6,
+                      marginBottom: 6,
+                    }}
+                  >
+                    <strong style={{ fontSize: '0.88rem' }}>{tpl.title}</strong>
+                    <Badge tone={tpl.tone} size="xs">
+                      {tpl.badge}
+                    </Badge>
+                  </div>
+                  <p
+                    style={{
+                      fontSize: '0.76rem',
+                      color: 'var(--uxu-text-secondary)',
+                      margin: 0,
+                      lineHeight: 1.45,
+                    }}
+                  >
+                    {tpl.desc}
+                  </p>
+                </div>
+
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    paddingTop: 8,
+                    borderTop: '1px solid var(--uxu-border-subtle)',
+                    fontSize: '0.72rem',
+                  }}
+                >
+                  <code style={{ color: 'var(--uxu-text-tertiary)' }}>{tpl.route}</code>
+                  <span style={{ color: 'var(--uxu-primary)', fontWeight: 700 }}>
+                    Demoyu Aç →
+                  </span>
+                </div>
+              </a>
+            ))}
+          </div>
+        </Card>
+      )}
     </div>
   );
 };

@@ -38,6 +38,14 @@ The [`UXILogo`](src/components/brand/UXILogo.tsx) emblem reduces the three lette
 6. **Zero Idle CPU/GPU Resource Footprint & SOLID Principles:**
    - Single-Active-Engine policy ensures only one heavy canvas (`SheetGL` or `FileManGL`) is mounted per view.
    - Strict Dependency Inversion (`ThemeEngineService`, `StorageService`, `RouteService`) and Open/Closed component contracts.
+7. **7 Ready-Made Enterprise Page Templates (`PageTemplatesShowcaseView`):**
+   - **Login & Auth (`page-login`):** Split-Screen Enterprise SSO + Apple iCloud Centered Floating Liquid Glass card, Passkey/WebAuthn & password visibility toggle.
+   - **Register & 2FA (`page-register`):** 3-step onboarding (Account -> Workspace Role -> 6-digit OTP verification) with live password strength meter.
+   - **SaaS Pricing (`page-pricing`):** Annual/Monthly billing toggle, interactive Team Seat Calculator (`Slider`), 3-tier pricing cards & FAQ `Accordion`.
+   - **User Profile (`page-profile`):** Cover banner, online `Avatar`, 4-KPI strip, skill chips, 2FA/security switches, connected devices & activity timeline.
+   - **B2B e-Fatura & Checkout (`page-invoice`):** Printable Turkish GİB e-Invoice line-item table with VAT (%20 KDV) breakdown + live interactive Credit Card preview.
+   - **Kanban Sprint Board (`page-kanban`):** 4-column agile board (`Backlog`, `In Progress`, `Code Review`, `Completed`) with instant search filter, task creation & column movement.
+   - **404, 500 & Live SLA Status (`page-status`):** 404 Not Found, 500 Planned Cluster Maintenance with Trace ID, and 90-day Uptime SLA Telemetry monitor.
 
 ---
 
@@ -50,11 +58,18 @@ The [`UXILogo`](src/components/brand/UXILogo.tsx) emblem reduces the three lette
 | `/dashboard/analytics` | `AppleGoogleAppShowcase` | Live Analytics & Regional Performance Matrix |
 | `/dashboard/crm-orders` | `SheetGLGridAdapter` | Full-page SheetGL (4 enterprise presets) + Native `<DataTable />` comparison |
 | `/dashboard/file-manager` | `FileManGLExplorerAdapter` | Full-page FileManGL WebGL2 Virtual File System Explorer |
+| `/dashboard/page-login` | `PageTemplatesShowcaseView` | Enterprise Split-Screen SSO & Apple iCloud Floating Glass Login Demo |
+| `/dashboard/page-register` | `PageTemplatesShowcaseView` | 3-Step Registration, Role Onboarding & 6-Digit 2FA OTP Verification Demo |
+| `/dashboard/page-pricing` | `PageTemplatesShowcaseView` | SaaS Pricing Plans, Annual Discount Switcher & Interactive Team Seat Calculator |
+| `/dashboard/page-profile` | `PageTemplatesShowcaseView` | Developer Portfolio, Security Switches, Connected Devices & Activity Timeline |
+| `/dashboard/page-invoice` | `PageTemplatesShowcaseView` | Printable B2B e-Fatura Table & Live Credit Card Checkout Preview |
+| `/dashboard/page-kanban` | `PageTemplatesShowcaseView` | 4-Column Agile Sprint & Task Management Board Demo |
+| `/dashboard/page-status` | `PageTemplatesShowcaseView` | 404 Not Found, 500 Cluster Maintenance & 90-Day Live Uptime SLA Monitor |
 | `/dashboard/smart-cluster` | `AppleGoogleAppShowcase` | AI Neural Engine Compilation & Hardware Cluster Controls |
 | `/components/inputs/:id` | `InteractivePlayground` | Form Controls (`button`, `input`, `switch`, `checkbox`, `slider`) |
-| `/components/surfaces/:id` | `InteractivePlayground` | Surfaces & Navigation (`card`, `segmented-control`, `tabs-accordion`, `modal-command`) |
+| `/components/surfaces/:id` | `InteractivePlayground` | Surfaces, Navigation & Page Templates (`card`, `segmented-control`, `tabs-accordion`, `sidebar`, `page-templates`, `modal-command`) |
 | `/components/feedback/:id` | `InteractivePlayground` | Data & Feedback (`chips-badges`, `progress-avatar`, `datatable-statcard`, `filemangl-explorer`) |
-| `/docs/:topic` | `ArchitectureDocsView` | Interactive Documentation (`getting-started`, `theming-tokens`, `layout-shell`, `cli-shortcuts`) |
+| `/docs/:topic` | `ArchitectureDocsView` | Interactive Documentation (`getting-started`, `theming-tokens`, `layout-shell`, `cli-shortcuts`, `page-templates`) |
 
 ---
 

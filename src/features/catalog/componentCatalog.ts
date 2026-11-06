@@ -817,6 +817,116 @@ export const COMPONENT_CATALOG: ComponentCatalogEntry[] = [
     ],
   },
   {
+    id: 'page-templates',
+    name: 'PageTemplates',
+    turkishTitle: 'Hazır Kurumsal Sayfa Tasarımları (Login, Register/2FA, Pricing, Profile, e-Fatura, Kanban, Status)',
+    category: 'surfaces',
+    summary:
+      'Apple HIG 8pt uzamsal ızgara ve Liquid Glass materyalleriyle tasarlanmış 7 hazır tam sayfa şablonu: Split-Screen & iCloud Login, 3 Adımlı Kayıt & 2FA OTP, SaaS Fiyatlandırma, Kullanıcı Profili, B2B e-Fatura & Checkout, Kanban Sprint Panosu ve 404/500/SLA Sistem Durumu.',
+    importPath: 'truncgil-uxigl',
+    importStatement:
+      "import { PageTemplatesShowcaseView, type PageTemplateId } from 'truncgil-uxigl';",
+    dos: [
+      'Kurumsal B2B girişlerde sol marka/telemetri vitrinli Split-Screen Login şablonunu, tüketici odaklı uygulamalarda Apple iCloud Floating Glass Login şablonunu tercih edin.',
+      'Kayıt (Register) akışlarını bilişsel yükü azaltmak için Hesap -> Çalışma Alanı Rolü -> 6 Haneli 2FA OTP adımlarına bölün.',
+      'Fiyatlandırma (Pricing) sayfasında Yıllık/Aylık SegmentedControl ve canlı koltuk (seat) Slider hesaplayıcısını birlikte sunun.',
+      'B2B tahsilat ekranlarında yazdırılabilir GİB e-Fatura kalem tablosu ile canlı kredi kartı önizlemesini yan yana konumlandırın.',
+    ],
+    donts: [
+      'Kimlik doğrulama formlarında gereksiz 6-7 alanı tek ekranda yığmayın; çok adımlı (multi-step) onboarding kullanın.',
+      '404 ve 500 hata sayfalarında kullanıcıyı çıkmaza sokmayın; mutlaka Ana Panele Dön, Canlı Sistem Durumu (SLA) ve ⌘K kısayol aksiyonu sunun.',
+    ],
+    accessibilityNotes: [
+      'Tüm form şablonları semantik <form>, klavye ile odaklanabilir 6 haneli OTP kutuları ve şifre görünürlük (aria-label) anahtarları içerir.',
+      'Tam ekran önizleme (isFullscreenPreview) ve tek tıkla JSX kodu kopyalama çekmecesi yerleşik olarak sunulur.',
+    ],
+    examples: [
+      {
+        id: 'page-login-template-example',
+        title: '1. Kurumsal Split-Screen & Apple iCloud Login Sayfası',
+        description:
+          'E-posta/parola doğrulama, WebAuthn Passkey (Face ID / Touch ID) ve SSO sağlayıcılarıyla tam hazır giriş ekranı.',
+        code: `import { useState } from 'react';
+import { Card, Input, Button, Checkbox, Badge, UXILogo } from 'truncgil-uxigl';
+import { Mail, Lock, Fingerprint, ArrowRight } from 'lucide-react';
+
+export function EnterpriseLoginPage() {
+  const [email, setEmail] = useState('architect@truncgil.com');
+  const [password, setPassword] = useState('');
+  const [remember, setRemember] = useState(true);
+
+  return (
+    <Card variant="glass" padding="lg" style={{ maxWidth: 420, margin: '0 auto' }}>
+      <div className="uxu-stack-md">
+        <UXILogo size={36} glow />
+        <h2>Kurumsal Hesabınıza Giriş Yapın</h2>
+        <Input label="E-Posta" value={email} onChange={setEmail} leadingIcon={<Mail size={15} />} />
+        <Input label="Parola" type="password" value={password} onChange={setPassword} leadingIcon={<Lock size={15} />} />
+        <Checkbox label="30 gün boyunca oturumu açık tut" value={remember} onChange={setRemember} />
+        <Button variant="filled" fullWidth trailingIcon={<ArrowRight size={15} />}>
+          Güvenli Oturum Aç
+        </Button>
+        <Button variant="tonal" fullWidth leadingIcon={<Fingerprint size={16} />}>
+          Passkey (Face ID / Touch ID) ile Giriş
+        </Button>
+      </div>
+    </Card>
+  );
+}`,
+      },
+      {
+        id: 'page-pricing-template-example',
+        title: '2. SaaS Fiyatlandırma & Canlı Koltuk Hesaplayıcı Şablonu',
+        description:
+          'Yıllık %20 indirim anahtarı, Slider ile koltuk sayısı hesaplama ve 3 kademeli paket kartları.',
+        code: `<PageTemplatesShowcaseView
+  activePageId="page-pricing"
+  onPageChange={(nextPage) => setActivePage(nextPage)}
+/>`,
+      },
+      {
+        id: 'page-suite-all-example',
+        title: '3. 7 Hazır Sayfa Şablonu Vitrin Bileşeni (Tüm Şablonlar)',
+        description:
+          'page-login, page-register, page-pricing, page-profile, page-invoice, page-kanban ve page-status şablonları arasında canlı geçiş.',
+        code: `import { useState } from 'react';
+import { PageTemplatesShowcaseView, type PageTemplateId } from 'truncgil-uxigl';
+
+export function ReadyPagesDemo() {
+  const [pageId, setPageId] = useState<PageTemplateId>('page-login');
+  return (
+    <PageTemplatesShowcaseView
+      activePageId={pageId}
+      onPageChange={setPageId}
+    />
+  );
+}`,
+      },
+    ],
+    propsTable: [
+      {
+        name: 'activePageId',
+        type: "'page-login' | 'page-register' | 'page-pricing' | 'page-profile' | 'page-invoice' | 'page-kanban' | 'page-status'",
+        defaultValue: "'page-login'",
+        required: true,
+        description: 'Aktif olarak görüntülenen hazır sayfa şablonu kimliği.',
+      },
+      {
+        name: 'onPageChange',
+        type: '(pageId: PageTemplateId) => void',
+        defaultValue: 'zorunlu',
+        required: true,
+        description: 'Şablon seçici sekme çubuğundan veya sayfa içi bağlantılardan başka bir şablona geçildiğinde tetiklenir.',
+      },
+      {
+        name: 'onNavigateHome',
+        type: '() => void',
+        defaultValue: 'undefined',
+        description: '404 hata sayfasındaki "Ana Panele Dön" butonuna tıklandığında çağrılan geri dönüş fonksiyonu.',
+      },
+    ],
+  },
+  {
     id: 'modal-command',
     name: 'Modal, Drawer, Alert, Toast & CommandPalette',
     turkishTitle: 'Diyalog, Yan Çekmece (Drawer), 5 Yönlü Toast, Uyarı Bandı & Komut Paleti',

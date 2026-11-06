@@ -35,6 +35,7 @@ export const SURFACE_COMPONENT_IDS = new Set([
   'tabs-accordion',
   'sidebar',
   'modal-command',
+  'page-templates',
 ]);
 
 export const FEEDBACK_COMPONENT_IDS = new Set([
@@ -49,6 +50,7 @@ const DOCS_TOPIC_IDS = new Set([
   'theming-tokens',
   'layout-shell',
   'cli-shortcuts',
+  'page-templates',
 ]);
 
 export const DASHBOARD_VIEW_IDS = new Set([

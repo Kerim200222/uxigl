@@ -25,6 +25,8 @@ export const DEFAULT_THEME_PREFERENCES: ThemePreferences = {
   iconStyle: 'rounded',
   iconFilled: false,
   iconWeight: 400,
+  sidebarWidth: 256,
+  sidebarStackedWidth: 108,
   glassIntensity: 82,
   reducedMotion: false,
   webglEnabled: false, // Strictly optional & disabled by default for zero idle GPU load

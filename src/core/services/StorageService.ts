@@ -22,6 +22,8 @@ export interface PersistedNavState {
   activeSectionId: string;
   activeSubItemId: string;
   sidebarCollapsed: boolean;
+  sidebarVariant?: string;
+  sidebarAccent?: string;
 }
 
 export class LocalStorageThemeAdapter implements IThemeStorageAdapter {

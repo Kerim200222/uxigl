@@ -98,6 +98,10 @@ export interface ThemePreferences {
   iconFilled?: boolean;
   /** Google Material Symbols variable weight axis (100 to 700, default 400) */
   iconWeight?: number;
+  /** Sidebar width in pixels (200 to 380, default 256) controlling CSS variable --uxu-sidebar-width */
+  sidebarWidth?: number;
+  /** Stacked vertical sidebar width in pixels (88 to 160, default 108) controlling CSS variable --uxu-sidebar-stacked-width */
+  sidebarStackedWidth?: number;
   glassIntensity: number; // 0 to 100
   reducedMotion: boolean;
   /** WebGL shader is strictly OPTIONAL and OFF by default to save system resources */
@@ -138,6 +142,8 @@ export interface ThemeContextContract {
   setIconFilled: (filled: boolean) => void;
   setIconWeight: (weight: number) => void;
   setGlassIntensity: (intensity: number) => void;
+  setSidebarWidth?: (width: number) => void;
+  setSidebarStackedWidth?: (width: number) => void;
   setReducedMotion: (reduced: boolean) => void;
   setWebglEnabled: (enabled: boolean) => void;
   setWebglPreset: (preset: WebGLShaderPreset) => void;

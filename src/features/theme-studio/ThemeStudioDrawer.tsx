@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Sun,
   Moon,
@@ -11,6 +11,7 @@ import {
   Check,
   Code2,
   Pipette,
+  GripHorizontal,
 } from 'lucide-react';
 import { useTheme } from '../../providers/ThemeProvider';
 import { useCopyToClipboard } from '../../hooks/useCopyToClipboard';
@@ -31,10 +32,15 @@ import type {
   UIDensity,
   WebGLShaderPreset,
 } from '../../core/contracts/ThemeContract';
+import type { SidebarVariant } from '../../core/contracts/NavigationContract';
 
 export interface ThemeStudioDrawerProps {
   open: boolean;
   onClose: () => void;
+  sidebarVariant?: SidebarVariant;
+  onSidebarVariantChange?: (variant: SidebarVariant) => void;
+  sidebarAccent?: string;
+  onSidebarAccentChange?: (accent: string) => void;
 }
 
 const BRAND_HEX_SWATCHES = [
@@ -51,6 +57,10 @@ const BRAND_HEX_SWATCHES = [
 export const ThemeStudioDrawer: React.FC<ThemeStudioDrawerProps> = ({
   open,
   onClose,
+  sidebarVariant = 'standard',
+  onSidebarVariantChange,
+  sidebarAccent = '#F59E0B',
+  onSidebarAccentChange,
 }) => {
   const {
     preferences,
@@ -69,6 +79,8 @@ export const ThemeStudioDrawer: React.FC<ThemeStudioDrawerProps> = ({
     setIconFilled,
     setIconWeight,
     setGlassIntensity,
+    setSidebarWidth,
+    setSidebarStackedWidth,
     setReducedMotion,
     setWebglEnabled,
     setWebglPreset,
@@ -79,6 +91,140 @@ export const ThemeStudioDrawer: React.FC<ThemeStudioDrawerProps> = ({
   const [exportFormat, setExportFormat] = useState<'css' | 'json'>('css');
   const { copied, copy } = useCopyToClipboard();
 
+  // Draggable & Resizable Modal Dimensions & Position State
+  const [size, setSize] = useState<{ width: number; height: number }>(() => ({
+    width: Math.min(480, typeof window !== 'undefined' ? window.innerWidth - 32 : 480),
+    height: Math.min(700, typeof window !== 'undefined' ? window.innerHeight - 80 : 700),
+  }));
+
+  const [position, setPosition] = useState<{ x: number; y: number } | null>(null);
+
+  // Initialize position to top-right on initial open
+  useEffect(() => {
+    if (open && position === null && typeof window !== 'undefined') {
+      const defaultX = Math.max(16, window.innerWidth - size.width - 24);
+      const defaultY = 72;
+      setPosition({ x: defaultX, y: defaultY });
+    }
+  }, [open, position, size.width]);
+
+  // Dragging logic
+  const isDraggingRef = useRef(false);
+  const dragStartRef = useRef<{ startX: number; startY: number; posX: number; posY: number }>({
+    startX: 0,
+    startY: 0,
+    posX: 0,
+    posY: 0,
+  });
+
+  const handleHeaderPointerDown = (e: React.PointerEvent) => {
+    if ((e.target as HTMLElement).closest('button, input, select, a')) {
+      return;
+    }
+    e.preventDefault();
+    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+    isDraggingRef.current = true;
+    const curPos = position || {
+      x: Math.max(16, window.innerWidth - size.width - 24),
+      y: 72,
+    };
+    dragStartRef.current = {
+      startX: e.clientX,
+      startY: e.clientY,
+      posX: curPos.x,
+      posY: curPos.y,
+    };
+  };
+
+  const handleHeaderPointerMove = (e: React.PointerEvent) => {
+    if (!isDraggingRef.current) return;
+    const deltaX = e.clientX - dragStartRef.current.startX;
+    const deltaY = e.clientY - dragStartRef.current.startY;
+    const maxX = Math.max(10, window.innerWidth - size.width - 10);
+    const maxY = Math.max(10, window.innerHeight - 70);
+    const newX = Math.max(10, Math.min(maxX, dragStartRef.current.posX + deltaX));
+    const newY = Math.max(10, Math.min(maxY, dragStartRef.current.posY + deltaY));
+    setPosition({ x: newX, y: newY });
+  };
+
+  const handleHeaderPointerUp = (e: React.PointerEvent) => {
+    if (isDraggingRef.current) {
+      isDraggingRef.current = false;
+      try {
+        (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
+      } catch {
+        // ignore
+      }
+    }
+  };
+
+  // Resizing logic
+  const isResizingRef = useRef(false);
+  const resizeStartRef = useRef<{ startX: number; startY: number; startW: number; startH: number }>({
+    startX: 0,
+    startY: 0,
+    startW: 0,
+    startH: 0,
+  });
+
+  const handleResizePointerDown = (e: React.PointerEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+    isResizingRef.current = true;
+    resizeStartRef.current = {
+      startX: e.clientX,
+      startY: e.clientY,
+      startW: size.width,
+      startH: size.height,
+    };
+  };
+
+  const handleResizePointerMove = (e: React.PointerEvent) => {
+    if (!isResizingRef.current) return;
+    const deltaX = e.clientX - resizeStartRef.current.startX;
+    const deltaY = e.clientY - resizeStartRef.current.startY;
+    const curX = position?.x ?? (window.innerWidth - size.width - 24);
+    const curY = position?.y ?? 72;
+    const maxW = Math.max(340, window.innerWidth - curX - 16);
+    const maxH = Math.max(340, window.innerHeight - curY - 16);
+    const newWidth = Math.max(340, Math.min(maxW, resizeStartRef.current.startW + deltaX));
+    const newHeight = Math.max(360, Math.min(maxH, resizeStartRef.current.startH + deltaY));
+    setSize({ width: newWidth, height: newHeight });
+  };
+
+  const handleResizePointerUp = (e: React.PointerEvent) => {
+    if (isResizingRef.current) {
+      isResizingRef.current = false;
+      try {
+        (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
+      } catch {
+        // ignore
+      }
+    }
+  };
+
+  const handleResetPosition = () => {
+    const defaultX = Math.max(16, window.innerWidth - 480 - 24);
+    const defaultY = 72;
+    setPosition({ x: defaultX, y: defaultY });
+    setSize({
+      width: Math.min(480, window.innerWidth - 32),
+      height: Math.min(700, window.innerHeight - 80),
+    });
+  };
+
+  useEffect(() => {
+    if (!open) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [open, onClose]);
+
   if (!open) return null;
 
   const exportCodeString =
@@ -88,34 +234,99 @@ export const ThemeStudioDrawer: React.FC<ThemeStudioDrawerProps> = ({
 
   return (
     <div
-      className="uxu-drawer-backdrop"
+      className="uxu-theme-studio-backdrop"
       onClick={onClose}
       role="presentation"
     >
-      <aside
-        className="uxu-theme-drawer"
+      <div
+        className="uxu-theme-modal"
+        style={{
+          width: size.width,
+          height: size.height,
+          ...(position
+            ? {
+                left: position.x,
+                top: position.y,
+                right: 'auto',
+                bottom: 'auto',
+              }
+            : {}),
+        }}
         onClick={(e) => e.stopPropagation()}
-        aria-label="uxiGL Tema & Görünüm Stüdyosu"
+        role="dialog"
+        aria-modal="true"
+        aria-label="uxiGL Tema & Görünüm Stüdyosu (Sürüklenebilir & Boyutlandırılabilir Yüzen Modal)"
       >
-        <div className="uxu-theme-drawer__header">
-          <div className="uxu-theme-drawer__title-group">
-            <Palette size={19} className="uxu-text-primary" />
+        <div
+          className="uxu-theme-modal__header"
+          onPointerDown={handleHeaderPointerDown}
+          onPointerMove={handleHeaderPointerMove}
+          onPointerUp={handleHeaderPointerUp}
+          onPointerCancel={handleHeaderPointerUp}
+          title="Sürüklemek için basılı tutup kaydırın"
+        >
+          <div className="uxu-theme-modal__title-group">
+            <div
+              style={{
+                width: 32,
+                height: 32,
+                borderRadius: 'var(--uxu-radius-sm, 8px)',
+                background: 'var(--uxu-primary-container)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0,
+              }}
+            >
+              <Palette size={17} className="uxu-text-primary" />
+            </div>
             <div>
-              <h3>uxiGL Tasarım &amp; Tema Stüdyosu</h3>
-              <span>Dark/Light Mod, Renk Paletleri &amp; Border Radius</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                <h3 style={{ margin: 0, fontSize: '0.94rem', fontWeight: 700 }}>
+                  uxiGL Tema Stüdyosu
+                </h3>
+                <Badge tone="primary" variant="tonal" size="xs">
+                  Sürüklenebilir
+                </Badge>
+              </div>
+              <span
+                style={{
+                  fontSize: '0.72rem',
+                  color: 'var(--uxu-text-secondary)',
+                  marginTop: 2,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 4,
+                }}
+              >
+                <GripHorizontal size={13} style={{ opacity: 0.7 }} />
+                Başlıktan sürükleyin • Sağ alttan boyutlandırın
+              </span>
             </div>
           </div>
-          <button
-            type="button"
-            className="uxu-modal__close"
-            onClick={onClose}
-            aria-label="Paneli kapat"
-          >
-            <X size={18} />
-          </button>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            <button
+              type="button"
+              className="uxu-modal__action-btn"
+              onClick={handleResetPosition}
+              title="Konum ve Boyutu Sıfırla"
+              aria-label="Konum ve Boyutu Sıfırla"
+            >
+              <RotateCcw size={13} />
+            </button>
+            <button
+              type="button"
+              className="uxu-modal__close"
+              onClick={onClose}
+              aria-label="Paneli kapat (Esc)"
+              title="Kapat (Esc)"
+            >
+              <X size={18} />
+            </button>
+          </div>
         </div>
 
-        <div className="uxu-theme-drawer__body">
+        <div className="uxu-theme-modal__body">
           {/* 1. Light / Dark / System Mode */}
           <div className="uxu-studio-section">
             <div className="uxu-studio-section__header">
@@ -147,6 +358,213 @@ export const ThemeStudioDrawer: React.FC<ThemeStudioDrawerProps> = ({
                 },
               ]}
             />
+          </div>
+
+          {/* 2. Sidebar Navigasyon Çeşitliliği & Aksan Rengi */}
+          <div className="uxu-studio-section">
+            <div className="uxu-studio-section__header">
+              <span>Sidebar Navigasyon Çeşitliliği</span>
+              <Badge tone="primary" size="xs">
+                {sidebarVariant ? sidebarVariant.toUpperCase() : 'STANDARD'}
+              </Badge>
+            </div>
+            <SegmentedControl<SidebarVariant>
+              value={sidebarVariant}
+              onChange={(v) => {
+                if (onSidebarVariantChange) onSidebarVariantChange(v);
+              }}
+              fullWidth
+              size="sm"
+              options={[
+                { value: 'stacked-vertical', label: 'Dikey' },
+                { value: 'standard', label: 'Açık' },
+                { value: 'mini-rail', label: 'Kapalı' },
+                { value: 'dual-column', label: 'Çift Kolon' },
+                { value: 'drawer', label: 'Çekmece' },
+              ]}
+            />
+            {onSidebarAccentChange && (
+              <div
+                style={{
+                  marginTop: 10,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  paddingTop: 8,
+                  borderTop: '1px solid var(--uxu-border-subtle)',
+                }}
+              >
+                <span
+                  style={{
+                    fontSize: '0.74rem',
+                    color: 'var(--uxu-text-secondary)',
+                    fontWeight: 600,
+                  }}
+                >
+                  Sidebar Aksan Işıması:
+                </span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                  {[
+                    { label: 'Amber', color: '#F59E0B' },
+                    { label: 'Cyan', color: '#06B6D4' },
+                    { label: 'Emerald', color: '#10B981' },
+                    { label: 'Indigo', color: '#6366F1' },
+                    { label: 'Rose', color: '#F43F5E' },
+                  ].map((c) => (
+                    <button
+                      key={c.color}
+                      type="button"
+                      onClick={() => onSidebarAccentChange(c.color)}
+                      style={{
+                        width: 20,
+                        height: 20,
+                        borderRadius: '50%',
+                        backgroundColor: c.color,
+                        border:
+                          sidebarAccent === c.color
+                            ? '2px solid var(--uxu-text-primary)'
+                            : '1px solid transparent',
+                        cursor: 'pointer',
+                        padding: 0,
+                        boxShadow:
+                          sidebarAccent === c.color
+                            ? `0 0 8px ${c.color}`
+                            : 'none',
+                        transform:
+                          sidebarAccent === c.color ? 'scale(1.2)' : 'none',
+                        transition: 'all 150ms ease',
+                      }}
+                      title={c.label}
+                      aria-label={c.label}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Sidebar Genişliği Ayarı (CSS Değişkenleri: --uxu-sidebar-width & --uxu-sidebar-stacked-width) */}
+            <div
+              style={{
+                marginTop: 12,
+                paddingTop: 10,
+                borderTop: '1px solid var(--uxu-border-subtle)',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 8,
+              }}
+            >
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <span
+                    style={{
+                      fontSize: '0.74rem',
+                      color: 'var(--uxu-text-secondary)',
+                      fontWeight: 600,
+                    }}
+                  >
+                    Sidebar Genişliği:
+                  </span>
+                  <code
+                    style={{
+                      fontSize: '0.68rem',
+                      padding: '1px 5px',
+                      borderRadius: 4,
+                      background: 'var(--uxu-surface-tonal)',
+                      color: 'var(--uxu-primary)',
+                      fontFamily: 'var(--uxu-font-mono)',
+                    }}
+                  >
+                    {sidebarVariant === 'stacked-vertical'
+                      ? '--uxu-sidebar-stacked-width'
+                      : '--uxu-sidebar-width'}
+                  </code>
+                </div>
+                <Badge tone="primary" size="xs">
+                  {sidebarVariant === 'stacked-vertical'
+                    ? (preferences.sidebarStackedWidth ?? 108)
+                    : (preferences.sidebarWidth ?? 256)}
+                  px
+                </Badge>
+              </div>
+
+              {sidebarVariant === 'stacked-vertical' ? (
+                <>
+                  <Slider
+                    min={88}
+                    max={160}
+                    step={2}
+                    value={preferences.sidebarStackedWidth ?? 108}
+                    onChange={(v) => {
+                      if (setSidebarStackedWidth) setSidebarStackedWidth(v);
+                    }}
+                  />
+                  <div
+                    style={{
+                      display: 'flex',
+                      gap: 6,
+                      flexWrap: 'wrap',
+                      marginTop: 2,
+                    }}
+                  >
+                    {[96, 108, 120, 136, 150].map((px) => (
+                      <button
+                        key={px}
+                        type="button"
+                        className={`uxu-btn uxu-btn--xs ${
+                          (preferences.sidebarStackedWidth ?? 108) === px
+                            ? 'uxu-btn--primary'
+                            : 'uxu-btn--tonal'
+                        }`}
+                        onClick={() => setSidebarStackedWidth?.(px)}
+                      >
+                        {px}px {px === 108 && '(Varsayılan)'}
+                      </button>
+                    ))}
+                  </div>
+                </>
+              ) : (
+                <>
+                  <Slider
+                    min={200}
+                    max={380}
+                    step={4}
+                    value={preferences.sidebarWidth ?? 256}
+                    onChange={(v) => {
+                      if (setSidebarWidth) setSidebarWidth(v);
+                    }}
+                  />
+                  <div
+                    style={{
+                      display: 'flex',
+                      gap: 6,
+                      flexWrap: 'wrap',
+                      marginTop: 2,
+                    }}
+                  >
+                    {[220, 240, 256, 280, 320].map((px) => (
+                      <button
+                        key={px}
+                        type="button"
+                        className={`uxu-btn uxu-btn--xs ${
+                          (preferences.sidebarWidth ?? 256) === px
+                            ? 'uxu-btn--primary'
+                            : 'uxu-btn--tonal'
+                        }`}
+                        onClick={() => setSidebarWidth?.(px)}
+                      >
+                        {px}px {px === 256 && '(Varsayılan)'}
+                      </button>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
           </div>
 
           {/* 2. Seed Palettes & Custom Brand HEX Color Picker */}
@@ -395,9 +813,9 @@ export const ThemeStudioDrawer: React.FC<ThemeStudioDrawerProps> = ({
               fullWidth
               size="sm"
               options={[
-                { value: 'sharp', label: 'Keskin (4px)' },
-                { value: 'squircle', label: 'Squircle (12px)' },
-                { value: 'pill', label: 'Pill (22px)' },
+                { value: 'sharp', label: 'Keskin' },
+                { value: 'squircle', label: 'Squircle' },
+                { value: 'pill', label: 'Kapsül' },
               ]}
             />
             <Slider
@@ -546,7 +964,7 @@ export const ThemeStudioDrawer: React.FC<ThemeStudioDrawerProps> = ({
           </div>
         </div>
 
-        <div className="uxu-theme-drawer__footer">
+        <div className="uxu-theme-modal__footer">
           <Button
             variant="outlined"
             size="sm"
@@ -554,10 +972,35 @@ export const ThemeStudioDrawer: React.FC<ThemeStudioDrawerProps> = ({
             leadingIcon={<RotateCcw size={15} />}
             onClick={resetPreferences}
           >
-            Varsayılan uxiGL Ayarlarına Sıfırla
+            Varsayılan Ayarlara Sıfırla
           </Button>
         </div>
-      </aside>
+
+        {/* Diagonal Corner Resizer */}
+        <div
+          className="uxu-theme-modal__resizer"
+          onPointerDown={handleResizePointerDown}
+          onPointerMove={handleResizePointerMove}
+          onPointerUp={handleResizePointerUp}
+          onPointerCancel={handleResizePointerUp}
+          title="Boyutlandırmak için sürükleyin"
+        >
+          <svg
+            width="10"
+            height="10"
+            viewBox="0 0 10 10"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M9 1L1 9M9 5L5 9M9 9L9 9.01"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+            />
+          </svg>
+        </div>
+      </div>
     </div>
   );
 };

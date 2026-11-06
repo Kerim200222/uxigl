@@ -148,6 +148,8 @@ export function generateThemeCssExport(
   --uxu-border-strong: ${t.borderStrong};
   --uxu-radius-md: ${px}px;
   --uxu-font-scale: ${((prefs.fontScale ?? 100) / 100).toFixed(2)};
+  --uxu-sidebar-width: ${prefs.sidebarWidth ?? 256}px;
+  --uxu-sidebar-stacked-width: ${prefs.sidebarStackedWidth ?? 108}px;
 }`;
 }
 
@@ -389,6 +391,7 @@ export class CssVariableThemeEngine implements IThemeEngine {
     const iconGrade = resolvedMode === 'dark' ? '-25' : '0';
 
     root.setAttribute('data-icon-style', iconStyle);
+    root.setAttribute('data-icon-fill', iconFill);
     root.style.setProperty('--uxu-icon-font-family', iconFontFamily);
     root.style.setProperty('--uxu-icon-fill', iconFill);
     root.style.setProperty('--uxu-icon-weight', iconWeight);
@@ -399,6 +402,12 @@ export class CssVariableThemeEngine implements IThemeEngine {
     const saturation = Math.round(100 + (prefs.glassIntensity / 100) * 90);
     root.style.setProperty('--uxu-glass-blur', `${blurPx}px`);
     root.style.setProperty('--uxu-glass-saturation', `${saturation}%`);
+
+    // 9. Sidebar Width Dynamic Tokens (Controllable via CSS Variables)
+    const sidebarWidth = Math.max(180, Math.min(420, prefs.sidebarWidth ?? 256));
+    const sidebarStackedWidth = Math.max(80, Math.min(180, prefs.sidebarStackedWidth ?? 108));
+    root.style.setProperty('--uxu-sidebar-width', `${sidebarWidth}px`);
+    root.style.setProperty('--uxu-sidebar-stacked-width', `${sidebarStackedWidth}px`);
   }
 }
 

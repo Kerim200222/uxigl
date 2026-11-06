@@ -236,6 +236,26 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
     [updatePrefs]
   );
 
+  const setSidebarWidth = useCallback(
+    (sidebarWidth: number) => {
+      updatePrefs((prev) => ({
+        ...prev,
+        sidebarWidth: Math.max(180, Math.min(420, sidebarWidth)),
+      }));
+    },
+    [updatePrefs]
+  );
+
+  const setSidebarStackedWidth = useCallback(
+    (sidebarStackedWidth: number) => {
+      updatePrefs((prev) => ({
+        ...prev,
+        sidebarStackedWidth: Math.max(80, Math.min(180, sidebarStackedWidth)),
+      }));
+    },
+    [updatePrefs]
+  );
+
   const setReducedMotion = useCallback(
     (reducedMotion: boolean) => {
       updatePrefs((prev) => ({ ...prev, reducedMotion }));
@@ -326,6 +346,8 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
       setIconFilled,
       setIconWeight,
       setGlassIntensity,
+      setSidebarWidth,
+      setSidebarStackedWidth,
       setReducedMotion,
       setWebglEnabled,
       setWebglPreset,
@@ -352,6 +374,8 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
       setIconFilled,
       setIconWeight,
       setGlassIntensity,
+      setSidebarWidth,
+      setSidebarStackedWidth,
       setReducedMotion,
       setWebglEnabled,
       setWebglPreset,

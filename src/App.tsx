@@ -522,9 +522,19 @@ export const App: React.FC = () => {
                 href: '/docs/getting-started',
               },
               {
-                id: 'theming-tokens',
-                label: 'Themes & Fonts',
-                href: '/docs/theming-tokens',
+                id: 'form-controls',
+                label: 'Form Controls',
+                href: '/docs/form-controls',
+              },
+              {
+                id: 'surfaces-navigation',
+                label: 'Surfaces & Modals',
+                href: '/docs/surfaces-navigation',
+              },
+              {
+                id: 'data-feedback-webgl',
+                label: 'Data & WebGL',
+                href: '/docs/data-feedback-webgl',
               },
               {
                 id: 'layout-shell',
@@ -532,14 +542,19 @@ export const App: React.FC = () => {
                 href: '/docs/layout-shell',
               },
               {
-                id: 'cli-shortcuts',
-                label: 'Shortcuts & ⌘K',
-                href: '/docs/cli-shortcuts',
-              },
-              {
                 id: 'page-templates',
                 label: 'Page Templates',
                 href: '/docs/page-templates',
+              },
+              {
+                id: 'theming-tokens',
+                label: 'Themes & Fonts',
+                href: '/docs/theming-tokens',
+              },
+              {
+                id: 'cli-shortcuts',
+                label: 'Shortcuts & ⌘K',
+                href: '/docs/cli-shortcuts',
               },
             ],
           },

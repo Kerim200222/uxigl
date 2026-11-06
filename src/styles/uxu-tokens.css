@@ -7893,6 +7893,13 @@ pre {
   color: var(--uxu-text-primary);
 }
 
+@media (max-width: 980px) {
+  .uxu-docs-portal-layout {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+
 
 
 

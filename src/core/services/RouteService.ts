@@ -47,10 +47,13 @@ export const FEEDBACK_COMPONENT_IDS = new Set([
 
 const DOCS_TOPIC_IDS = new Set([
   'getting-started',
-  'theming-tokens',
+  'form-controls',
+  'surfaces-navigation',
+  'data-feedback-webgl',
   'layout-shell',
-  'cli-shortcuts',
   'page-templates',
+  'theming-tokens',
+  'cli-shortcuts',
 ]);
 
 export const DASHBOARD_VIEW_IDS = new Set([

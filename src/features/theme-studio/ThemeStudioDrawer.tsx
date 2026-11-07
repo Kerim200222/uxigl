@@ -245,11 +245,11 @@ export const ThemeStudioDrawer: React.FC<ThemeStudioDrawerProps> = ({
           height: size.height,
           ...(position
             ? {
-                left: position.x,
-                top: position.y,
-                right: 'auto',
-                bottom: 'auto',
-              }
+              left: position.x,
+              top: position.y,
+              right: 'auto',
+              bottom: 'auto',
+            }
             : {}),
         }}
         onClick={(e) => e.stopPropagation()}
@@ -516,11 +516,10 @@ export const ThemeStudioDrawer: React.FC<ThemeStudioDrawerProps> = ({
                       <button
                         key={px}
                         type="button"
-                        className={`uxu-btn uxu-btn--xs ${
-                          (preferences.sidebarStackedWidth ?? 88) === px
+                        className={`uxu-btn uxu-btn--xs ${(preferences.sidebarStackedWidth ?? 88) === px
                             ? 'uxu-btn--primary'
                             : 'uxu-btn--tonal'
-                        }`}
+                          }`}
                         onClick={() => setSidebarStackedWidth?.(px)}
                       >
                         {px}px {px === 88 && '(Varsayılan)'}
@@ -551,11 +550,10 @@ export const ThemeStudioDrawer: React.FC<ThemeStudioDrawerProps> = ({
                       <button
                         key={px}
                         type="button"
-                        className={`uxu-btn uxu-btn--xs ${
-                          (preferences.sidebarWidth ?? 256) === px
+                        className={`uxu-btn uxu-btn--xs ${(preferences.sidebarWidth ?? 256) === px
                             ? 'uxu-btn--primary'
                             : 'uxu-btn--tonal'
-                        }`}
+                          }`}
                         onClick={() => setSidebarWidth?.(px)}
                       >
                         {px}px {px === 256 && '(Varsayılan)'}
@@ -592,9 +590,8 @@ export const ThemeStudioDrawer: React.FC<ThemeStudioDrawerProps> = ({
                       setCustomPrimaryHex(undefined);
                       setSeedPalette(palette.id);
                     }}
-                    className={`uxu-palette-card ${
-                      isSelected ? 'uxu-palette-card--active' : ''
-                    }`}
+                    className={`uxu-palette-card ${isSelected ? 'uxu-palette-card--active' : ''
+                      }`}
                   >
                     <div className="uxu-palette-card__swatches">
                       <span style={{ background: colors.primary }} />
@@ -655,9 +652,8 @@ export const ThemeStudioDrawer: React.FC<ThemeStudioDrawerProps> = ({
                       key={sw.hex}
                       type="button"
                       title={`${sw.label} (${sw.hex})`}
-                      className={`uxu-custom-hex-swatch ${
-                        active ? 'uxu-custom-hex-swatch--active' : ''
-                      }`}
+                      className={`uxu-custom-hex-swatch ${active ? 'uxu-custom-hex-swatch--active' : ''
+                        }`}
                       style={{ background: sw.hex }}
                       onClick={() => setCustomPrimaryHex(sw.hex)}
                     />
@@ -688,9 +684,8 @@ export const ThemeStudioDrawer: React.FC<ThemeStudioDrawerProps> = ({
                     key={preset.id}
                     type="button"
                     onClick={() => setFontFamilyPreset(preset.id as FontFamilyPreset)}
-                    className={`uxu-palette-card ${
-                      isSelected ? 'uxu-palette-card--active' : ''
-                    }`}
+                    className={`uxu-palette-card ${isSelected ? 'uxu-palette-card--active' : ''
+                      }`}
                     style={{ fontFamily: preset.sansStack }}
                   >
                     <div className="uxu-palette-card__info">
@@ -958,8 +953,8 @@ export const ThemeStudioDrawer: React.FC<ThemeStudioDrawerProps> = ({
               {copied
                 ? 'Tema Kodu Panoya Kopyalandı!'
                 : exportFormat === 'css'
-                ? 'CSS Token Değişkenlerini Kopyala'
-                : 'ThemeProvider JSON Yapılandırmasını Kopyala'}
+                  ? 'CSS Token Değişkenlerini Kopyala'
+                  : 'ThemeProvider JSON Yapılandırmasını Kopyala'}
             </Button>
           </div>
         </div>

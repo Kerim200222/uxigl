@@ -386,13 +386,13 @@ export function EnterprisePageTemplate() {
 
   const wrapperStyle: React.CSSProperties = isFullscreenPreview
     ? {
-        position: 'fixed',
-        inset: 0,
-        zIndex: 9999,
-        background: 'var(--uxu-bg-canvas)',
-        overflowY: 'auto',
-        padding: '24px',
-      }
+      position: 'fixed',
+      inset: 0,
+      zIndex: 9999,
+      background: 'var(--uxu-bg-canvas)',
+      overflowY: 'auto',
+      padding: '24px',
+    }
     : {};
 
   return (
@@ -1553,7 +1553,7 @@ export function EnterprisePageTemplate() {
                   id: 'faq-1',
                   title: 'truncgil-uxigl paketini ticari projelerde kullanabilir miyim?',
                   content:
-                    'Evet! Temel tasarım sistemi, uzamsal cam materyalleri ve dinamik renk token mimarisi tamamen açık kaynaklıdır ve ticari SaaS projelerinizde doğrudan kullanılabilir.',
+                  'Evet! Temel tasarım sistemi, uzamsal cam materyalleri ve dinamik renk token mimarisi tamamen açık kaynaklıdır ve ticari SaaS projelerinizde doğrudan kullanılabilir.',
                 },
                 {
                   id: 'faq-2',

@@ -99,7 +99,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
     if (flyoutCloseTimerRef.current) clearTimeout(flyoutCloseTimerRef.current);
     flyoutCloseTimerRef.current = setTimeout(() => {
       setFlyoutState(null);
-    }, 180);
+    }, 280);
   };
 
   const cancelCloseFlyout = () => {

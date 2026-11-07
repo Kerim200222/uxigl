@@ -42,5 +42,7 @@ export {
   buildInheritedSheetGLTheme,
   resolveEffectiveModeTokens,
   generateThemeCssExport,
+  hexToHSL,
+  getLogoFilterByTheme,
 } from './core/services/ThemeEngineService';
 export { defaultThemeStorageAdapter } from './core/services/StorageService';

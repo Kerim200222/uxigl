@@ -11,6 +11,7 @@
   --uxu-on-primary-container: #b8dfff;
   --uxu-secondary: #7d7aff;
   --uxu-accent-glow: rgba(41, 151, 255, 0.32);
+  --uxu-logo-filter: hue-rotate(0deg);
 
   /* Semantic Status Colors */
   --uxu-success: #10b981;
@@ -707,6 +708,13 @@ pre {
   gap: 10px;
   cursor: pointer;
   min-width: 0;
+}
+
+.uxu-brand-logo-img,
+.uxu-sidebar-brand-logo,
+.uxu-sidebar__brand img {
+  filter: var(--uxu-logo-filter, none);
+  transition: filter 0.3s ease;
 }
 
 .uxu-sidebar__brand-text {

@@ -136,6 +136,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
   useEffect(() => {
     for (const group of groups) {
       if (
+        group.id === activeItemId ||
+        group.id === activeSubItemId ||
         group.items.some(
           (it) =>
             it.id === activeItemId ||
@@ -392,31 +394,38 @@ export const Sidebar: React.FC<SidebarProps> = ({
             >
               {brandLogo !== undefined ? brandLogo : <UXILogo size={28} preserveRatio glow />}
             </a>
-            <div style={{ width: '100%', height: 1, background: 'var(--uxu-border-subtle)', margin: '4px 0' }} />
-            {groups.map((group) => {
-              const isGroupActive = selectedGroupId === group.id;
-              const firstItem = group.items[0];
-              return (
-                <button
-                  key={group.id}
-                  type="button"
-                  className={[
-                    'uxu-sidebar__dual-rail-btn',
-                    isGroupActive ? 'uxu-sidebar__dual-rail-btn--active' : '',
-                  ]
-                    .filter(Boolean)
-                    .join(' ')}
-                  onClick={() => setSelectedGroupId(group.id)}
-                  title={group.title}
-                >
-                  {group.icon || firstItem?.icon || <GoogleIcon name="auto_awesome" size={20} />}
-                  <span className="uxu-sidebar__dual-rail-label">
-                    {group.railLabel || group.title.slice(0, 5)}
-                  </span>
-                </button>
-              );
-            })}
-            <div style={{ marginTop: 'auto' }}>
+            <div style={{ width: '100%', height: 1, background: 'var(--uxu-border-subtle)', margin: '4px 0', flexShrink: 0 }} />
+            <div className="uxu-sidebar__dual-rail-items">
+              {groups.map((group) => {
+                const isGroupActive = selectedGroupId === group.id;
+                const firstItem = group.items[0];
+                return (
+                  <button
+                    key={group.id}
+                    type="button"
+                    className={[
+                      'uxu-sidebar__dual-rail-btn',
+                      isGroupActive ? 'uxu-sidebar__dual-rail-btn--active' : '',
+                    ]
+                      .filter(Boolean)
+                      .join(' ')}
+                    onClick={() => {
+                      setSelectedGroupId(group.id);
+                      if (group.items.length === 1 && (!group.items[0].subItems || group.items[0].subItems.length === 0)) {
+                        onSelect(group.items[0].id);
+                      }
+                    }}
+                    title={group.title}
+                  >
+                    {group.icon || firstItem?.icon || <GoogleIcon name="auto_awesome" size={20} />}
+                    <span className="uxu-sidebar__dual-rail-label">
+                      {group.railLabel || group.title.slice(0, 6)}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+            <div style={{ marginTop: 'auto', flexShrink: 0, paddingTop: 6 }}>
               <Avatar
                 name="Ümit Uz"
                 status="online"
@@ -451,6 +460,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   Boolean(item.subItems?.some((s) => s.id === activeSubItemId));
                 const isParentActive =
                   activeItemId === item.id ||
+                  activeSubItemId === item.id ||
                   hasMatchingSub ||
                   (!hasSub &&
                     activeItemId === 'dashboard' &&

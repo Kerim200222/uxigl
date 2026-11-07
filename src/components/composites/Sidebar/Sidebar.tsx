@@ -76,6 +76,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
       flyoutCloseTimerRef.current = null;
     }
     const rect = element.getBoundingClientRect();
+    const sidebarEl = element.closest('.uxu-sidebar');
+    const flyoutLeft = sidebarEl
+      ? Math.round(sidebarEl.getBoundingClientRect().right + 6)
+      : Math.round(rect.right + 8);
     const flyoutEstimatedHeight = Math.min(
       (item.subItems?.length || 1) * 36 + 64,
       440
@@ -87,7 +91,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
     setFlyoutState({
       item,
       top,
-      left: rect.right + 8,
+      left: flyoutLeft,
     });
   };
 
@@ -289,6 +293,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 (!hasSub &&
                   activeItemId === 'dashboard' &&
                   activeSubItemId === item.id);
+              const isFlyoutOpen = flyoutState?.item.id === item.id;
               const parentHref =
                 item.href ??
                 RouteService.buildPath(item.id, item.subItems?.[0]?.id);
@@ -300,6 +305,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   className={[
                     'uxu-sidebar__stacked-item',
                     isParentActive ? 'uxu-sidebar__stacked-item--active' : '',
+                    isFlyoutOpen ? 'uxu-sidebar__stacked-item--flyout-open' : '',
                   ]
                     .filter(Boolean)
                     .join(' ')}
@@ -308,8 +314,26 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     if (RouteService.isModifiedClick(e)) return;
                     if (parentHref.startsWith('http')) return;
                     e.preventDefault();
-                    onSelect(item.id, item.subItems?.[0]?.id);
+                    if (hasSub) {
+                      if (flyoutState?.item.id === item.id) {
+                        setFlyoutState(null);
+                      } else {
+                        openFlyout(item, e.currentTarget);
+                      }
+                      return;
+                    }
+                    onSelect(item.id);
                     onCloseMobile();
+                  }}
+                  onMouseEnter={(e) => {
+                    if (hasSub) {
+                      openFlyout(item, e.currentTarget);
+                    } else {
+                      scheduleCloseFlyout();
+                    }
+                  }}
+                  onMouseLeave={() => {
+                    scheduleCloseFlyout();
                   }}
                 >
                   <span className="uxu-sidebar__stacked-icon">
@@ -894,8 +918,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </aside>
       )}
 
-      {/* Floating Flyout Submenu for Collapsed Mini-Rail Mode */}
-      {isMiniRail &&
+      {/* Floating Flyout Submenu for Collapsed Mini-Rail & Stacked-Vertical Modes */}
+      {(isMiniRail || isStacked) &&
         flyoutState &&
         createPortal(
           <div

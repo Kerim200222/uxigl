@@ -924,6 +924,7 @@ pre {
   font-size: 20px !important;
   width: 20px !important;
   height: 20px !important;
+  overflow: hidden !important;
 }
 
 .uxu-sidebar--collapsed .uxu-sidebar__item-icon svg {
@@ -1495,6 +1496,7 @@ pre {
   font-size: 24px !important;
   width: 24px !important;
   height: 24px !important;
+  overflow: hidden !important;
 }
 
 .uxu-sidebar__stacked-icon svg {
@@ -6734,6 +6736,14 @@ pre {
 /* ============================================================================
  * PRIMITIVE: GOOGLE MATERIAL SYMBOLS VARIABLE FONT ICON (.uxu-google-icon)
  * ============================================================================ */
+/* FOUT Cloak: Web font tam olarak yüklenene kadar ligatür metinlerinin ekrana taşmasını engeller */
+html.uxu-icon-fonts-loading .uxu-google-icon,
+.uxu-icon-fonts-loading .uxu-google-icon,
+.uxu-google-icon--loading {
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+
 .uxu-google-icon {
   font-family: var(--uxu-icon-font-family, 'Material Symbols Rounded');
   font-weight: normal;
@@ -6759,10 +6769,13 @@ pre {
     'wght' var(--uxu-icon-weight, 400),
     'GRAD' var(--uxu-icon-grade, 0),
     'opsz' var(--uxu-icon-opsz, 20);
+  overflow: hidden;
+  text-overflow: clip;
   transition:
     font-variation-settings 180ms ease,
     color 160ms ease,
-    transform 160ms ease;
+    transform 160ms ease,
+    opacity 140ms ease;
 }
 
 .uxu-google-icon--primary {

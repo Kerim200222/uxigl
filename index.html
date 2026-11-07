@@ -13,6 +13,40 @@
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..800;1,9..40,400..700&family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- Google Material Symbols Variable Font Icons (Rounded, Outlined & Sharp with opsz, wght, FILL, GRAD axes) -->
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block" rel="stylesheet">
+    <style id="uxu-font-cloak">
+      /* FOUT/FOIT Cloak: Google font ikonları yüklenene kadar ham ligatür metinlerinin görünmesini engeller */
+      html.uxu-icon-fonts-loading .uxu-google-icon,
+      .uxu-icon-fonts-loading .uxu-google-icon {
+        visibility: hidden !important;
+        opacity: 0 !important;
+      }
+    </style>
+    <script>
+      (function () {
+        try {
+          if ('fonts' in document && !document.fonts.check('20px "Material Symbols Rounded"')) {
+            document.documentElement.classList.add('uxu-icon-fonts-loading');
+            Promise.all([
+              document.fonts.load('20px "Material Symbols Rounded"'),
+              document.fonts.load('20px "Material Symbols Outlined"'),
+              document.fonts.load('20px "Material Symbols Sharp"'),
+              document.fonts.ready
+            ]).then(function () {
+              document.documentElement.classList.remove('uxu-icon-fonts-loading');
+              document.documentElement.classList.add('uxu-icon-fonts-loaded');
+            }).catch(function () {
+              document.documentElement.classList.remove('uxu-icon-fonts-loading');
+            });
+            setTimeout(function () {
+              document.documentElement.classList.remove('uxu-icon-fonts-loading');
+              document.documentElement.classList.add('uxu-icon-fonts-loaded');
+            }, 1800);
+          } else {
+            document.documentElement.classList.add('uxu-icon-fonts-loaded');
+          }
+        } catch (e) {}
+      })();
+    </script>
     <script>
       (function () {
         try {

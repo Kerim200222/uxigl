@@ -52,6 +52,7 @@ import {
 } from '../../components/composites';
 import { UXILogo } from '../../components/brand/UXILogo';
 import { useToast } from '../../providers/ToastProvider';
+import { EnterpriseSettingsPage } from './EnterpriseSettingsPage';
 
 export type PageTemplateId =
   | 'page-login'
@@ -60,7 +61,8 @@ export type PageTemplateId =
   | 'page-profile'
   | 'page-invoice'
   | 'page-kanban'
-  | 'page-status';
+  | 'page-status'
+  | 'page-settings';
 
 export interface PageTemplatesShowcaseViewProps {
   activePageId: PageTemplateId;
@@ -207,6 +209,13 @@ const PAGE_TEMPLATE_META: Record<
     icon: 'monitoring',
     subtitle: '404 Bulunamadı, 500 Bakım ekranı ve gerçek zamanlı 90 günlük SLA Uptime monitörü',
     badge: 'System',
+  },
+  'page-settings': {
+    label: 'Enterprise Settings & Tercihler',
+    shortLabel: 'Settings',
+    icon: 'tune',
+    subtitle: 'Tema motoru (Appearance), kurumsal hesap profili (Account) ve bildirim kanalları (Notifications)',
+    badge: 'Preferences',
   },
 };
 
@@ -2569,6 +2578,11 @@ export function EnterprisePageTemplate() {
           )}
         </div>
       )}
+
+      {/* =====================================================================
+          8. ENTERPRISE SETTINGS & PREFERENCES TEMPLATE
+          ===================================================================== */}
+      {activePageId === 'page-settings' && <EnterpriseSettingsPage />}
     </div>
   );
 };

@@ -100,7 +100,8 @@ export type DashboardSubView =
   | 'page-profile'
   | 'page-invoice'
   | 'page-kanban'
-  | 'page-status';
+  | 'page-status'
+  | 'page-settings';
 
 interface DeploymentRow extends Record<string, unknown> {
   id: string;
@@ -424,6 +425,7 @@ export const AppleGoogleAppShowcase: React.FC<AppleGoogleAppShowcaseProps> = ({
             {activeSubView === 'page-invoice' && 'Invoice — B2B e-Fatura ve Hızlı Ödeme Sayfası'}
             {activeSubView === 'page-kanban' && 'Kanban — Sprint ve Proje Yönetim Panosu'}
             {activeSubView === 'page-status' && 'Status & 404 — Hata Sayfaları ve Canlı SLA Monitörü'}
+            {activeSubView === 'page-settings' && 'Enterprise Settings — Kurumsal Tercihler & Tema Şablonu'}
           </h1>
           <span className="uxu-dash-toolbar__subtitle">
             {activeSubView === 'analytics'

@@ -22,6 +22,7 @@ export {
   type PageTemplateId,
   type PageTemplatesShowcaseViewProps,
 } from './features/showcase/PageTemplatesShowcaseView';
+export { EnterpriseSettingsPage } from './features/showcase/EnterpriseSettingsPage';
 
 // 4. Providers & Hooks
 export { ThemeProvider, useTheme } from './providers/ThemeProvider';

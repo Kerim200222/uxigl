@@ -61,6 +61,7 @@ import {
   AppleGoogleAppShowcase,
   type DashboardSubView,
 } from './features/showcase/AppleGoogleAppShowcase';
+import { AnalyticsDashboardView } from './features/showcase/AnalyticsDashboardView';
 import {
   ArchitectureDocsView,
   type DocsTopicId,
@@ -213,6 +214,14 @@ export const App: React.FC = () => {
             icon: <GoogleIcon name="trending_up" size={16} />,
             badge: 'Live',
             badgeTone: 'info',
+          },
+          {
+            id: 'analytics-telemetry',
+            label: 'Analytics & Telemetry',
+            href: '/dashboard/analytics-telemetry',
+            icon: <GoogleIcon name="monitoring" size={16} />,
+            badge: 'SheetGL',
+            badgeTone: 'primary',
           },
           {
             id: 'reports',
@@ -991,26 +1000,30 @@ export const App: React.FC = () => {
                 />
               )}
 
-              {activeSectionId === 'dashboard' && (
-                <AppleGoogleAppShowcase
-                  activeSubView={activeSubItemId as DashboardSubView}
-                  onSubViewChange={(sub) =>
-                    handleSidebarSelect('dashboard', sub)
-                  }
-                  onSelectComponent={handlePlaygroundComponentSelect}
-                  sidebarVariant={sidebarVariant}
-                  onSidebarVariantChange={(v) => {
-                    setSidebarVariant(v);
-                    if (v === 'mini-rail') setSidebarCollapsed(true);
-                    if (v === 'standard') setSidebarCollapsed(false);
-                  }}
-                  sidebarAccent={sidebarAccent}
-                  onSidebarAccentChange={setSidebarAccent}
-                  sidebarCollapsed={sidebarCollapsed}
-                  onToggleSidebarCollapse={() => setSidebarCollapsed((p) => !p)}
-                  onOpenDrawer={() => setMobileSidebarOpen(true)}
-                />
-              )}
+              {activeSectionId === 'dashboard' &&
+                (activeSubItemId === 'analytics-telemetry' ||
+                activeSubItemId === 'dashboard/analytics-telemetry' ? (
+                  <AnalyticsDashboardView />
+                ) : (
+                  <AppleGoogleAppShowcase
+                    activeSubView={activeSubItemId as DashboardSubView}
+                    onSubViewChange={(sub) =>
+                      handleSidebarSelect('dashboard', sub)
+                    }
+                    onSelectComponent={handlePlaygroundComponentSelect}
+                    sidebarVariant={sidebarVariant}
+                    onSidebarVariantChange={(v) => {
+                      setSidebarVariant(v);
+                      if (v === 'mini-rail') setSidebarCollapsed(true);
+                      if (v === 'standard') setSidebarCollapsed(false);
+                    }}
+                    sidebarAccent={sidebarAccent}
+                    onSidebarAccentChange={setSidebarAccent}
+                    sidebarCollapsed={sidebarCollapsed}
+                    onToggleSidebarCollapse={() => setSidebarCollapsed((p) => !p)}
+                    onOpenDrawer={() => setMobileSidebarOpen(true)}
+                  />
+                ))}
 
               {(activeSectionId === 'components-inputs' ||
                 activeSectionId === 'components-surfaces' ||

@@ -15,6 +15,7 @@ export function useKeyboardShortcut(
     if (!enabled) return;
 
     const handleKeyDown = (event: KeyboardEvent) => {
+      if (!event.key || !key) return;
       const matchesKey = event.key.toLowerCase() === key.toLowerCase();
       if (!matchesKey) return;
 

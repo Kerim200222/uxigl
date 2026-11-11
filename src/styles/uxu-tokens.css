@@ -3868,10 +3868,10 @@ pre {
   overflow: hidden;
   background: color-mix(
     in srgb,
-    var(--uxu-text-primary) 11%,
-    var(--uxu-surface-tonal-high)
+    var(--uxu-text-primary) 5%,
+    var(--uxu-surface-tonal-low, rgba(0, 0, 0, 0.03))
   );
-  border: 1px solid var(--uxu-border-subtle);
+  border: 1px solid var(--uxu-border-subtle, rgba(0, 0, 0, 0.05));
   border-radius: var(--uxu-radius-md);
 }
 .uxu-skeleton--text {
@@ -3888,14 +3888,51 @@ pre {
   background: linear-gradient(
     90deg,
     transparent 0%,
-    color-mix(in srgb, var(--uxu-primary) 38%, rgba(255, 255, 255, 0.32)) 50%,
+    color-mix(in srgb, var(--uxu-primary) 8%, rgba(255, 255, 255, 0.55)) 50%,
     transparent 100%
   );
   transform: translateX(-100%);
   animation-name: uxu-shimmer-sweep;
   animation-duration: var(--uxu-shimmer-duration, 2.8s);
-  animation-timing-function: linear;
+  animation-timing-function: ease-in-out;
   animation-iteration-count: infinite;
+}
+
+@media (prefers-color-scheme: dark) {
+  .uxu-skeleton {
+    background: color-mix(
+      in srgb,
+      var(--uxu-text-primary) 7%,
+      var(--uxu-surface-tonal-high, rgba(255, 255, 255, 0.04))
+    );
+  }
+  .uxu-skeleton__shimmer {
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      color-mix(in srgb, var(--uxu-primary) 12%, rgba(255, 255, 255, 0.08)) 50%,
+      transparent 100%
+    );
+  }
+}
+
+:root[data-theme="dark"] .uxu-skeleton,
+.dark .uxu-skeleton {
+  background: color-mix(
+    in srgb,
+    var(--uxu-text-primary) 7%,
+    var(--uxu-surface-tonal-high, rgba(255, 255, 255, 0.04))
+  );
+}
+
+:root[data-theme="dark"] .uxu-skeleton__shimmer,
+.dark .uxu-skeleton__shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    color-mix(in srgb, var(--uxu-primary) 12%, rgba(255, 255, 255, 0.08)) 50%,
+    transparent 100%
+  );
 }
 
 @keyframes uxu-shimmer-sweep {

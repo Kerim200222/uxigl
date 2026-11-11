@@ -55,6 +55,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
   brandBadge,
   brandLogo,
   onBrandClick,
+  user,
+  onUserProfileClick,
 }) => {
   const isMiniRail = variant === 'mini-rail' || Boolean(collapsed);
   const isStacked = variant === 'stacked-vertical' && !isMiniRail;
@@ -355,10 +357,15 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </nav>
 
           {/* Stacked Footer */}
-          <div className="uxu-sidebar__footer">
+          <div
+            className="uxu-sidebar__footer"
+            style={onUserProfileClick ? { cursor: 'pointer' } : undefined}
+            onClick={onUserProfileClick}
+          >
             <Avatar
-              name="Ümit Uz"
-              status="online"
+              name={user?.name || 'Kullanıcı'}
+              src={user?.avatarUrl}
+              status={user?.status || 'online'}
               size="sm"
               tone="primary"
               shape="squircle"
@@ -425,10 +432,19 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 );
               })}
             </div>
-            <div style={{ marginTop: 'auto', flexShrink: 0, paddingTop: 6 }}>
+            <div
+              style={{
+                marginTop: 'auto',
+                flexShrink: 0,
+                paddingTop: 6,
+                cursor: onUserProfileClick ? 'pointer' : undefined,
+              }}
+              onClick={onUserProfileClick}
+            >
               <Avatar
-                name="Ümit Uz"
-                status="online"
+                name={user?.name || 'Kullanıcı'}
+                src={user?.avatarUrl}
+                status={user?.status || 'online'}
                 size="sm"
                 tone="primary"
                 shape="squircle"
@@ -897,21 +913,35 @@ export const Sidebar: React.FC<SidebarProps> = ({
           {/* Bottom User Profile Bar */}
           <div className="uxu-sidebar__footer">
             <div className="uxu-sidebar__user-row">
-              <Avatar
-                name="Ümit Uz"
-                status="online"
-                size="sm"
-                tone="primary"
-                shape="squircle"
-              />
-              {!isMiniRail && (
-                <div className="uxu-sidebar__user-meta">
-                  <span className="uxu-sidebar__user-name">Ümit Uz</span>
-                  <span className="uxu-sidebar__user-role">
-                    Sistem Mimarı
-                  </span>
-                </div>
-              )}
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 10,
+                  minWidth: 0,
+                  flex: 1,
+                  cursor: onUserProfileClick ? 'pointer' : undefined,
+                }}
+                onClick={onUserProfileClick}
+                title={user?.name ? `${user.name} - Profil & Bilgiler` : undefined}
+              >
+                <Avatar
+                  name={user?.name || 'Kullanıcı'}
+                  src={user?.avatarUrl}
+                  status={user?.status || 'online'}
+                  size="sm"
+                  tone="primary"
+                  shape="squircle"
+                />
+                {!isMiniRail && (
+                  <div className="uxu-sidebar__user-meta">
+                    <span className="uxu-sidebar__user-name">{user?.name || 'Kullanıcı'}</span>
+                    <span className="uxu-sidebar__user-role">
+                      {user?.role || 'Kullanıcı'}
+                    </span>
+                  </div>
+                )}
+              </div>
               {!isMiniRail && (
                 <button
                   type="button"

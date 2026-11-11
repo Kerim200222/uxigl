@@ -60,7 +60,10 @@
     "cli": "node ./bin/cli.mjs",
     "doctor": "node ./bin/cli.mjs doctor",
     "pack:check": "npm pack --dry-run",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
   },
   "peerDependencies": {
     "react": ">=18.0.0",
@@ -72,12 +75,16 @@
     "sheetgl": "^2.0.0"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^7.0.1",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "@vitejs/plugin-react": "^4.3.4",
+    "@vitest/coverage-v8": "^5.1.0",
+    "jsdom": "^31.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "typescript": "~5.7.2",
-    "vite": "^6.2.0"
+    "vite": "^6.2.0",
+    "vitest": "^5.1.0"
   }
 }

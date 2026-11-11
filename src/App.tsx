@@ -460,6 +460,14 @@ export const App: React.FC = () => {
             badge: '404',
             badgeTone: 'warning',
           },
+          {
+            id: 'page-settings',
+            label: 'Settings',
+            href: '/dashboard/page-settings',
+            icon: <GoogleIcon name="tune" size={16} />,
+            badge: 'Prefs',
+            badgeTone: 'info',
+          },
         ],
       },
       {
@@ -859,6 +867,14 @@ export const App: React.FC = () => {
         category: 'Hazır Sayfa Şablonları',
         icon: <GoogleIcon name="monitoring" size={16} />,
         onSelect: () => handleSidebarSelect('page-status'),
+      },
+      {
+        id: 'view-page-settings',
+        title: 'Enterprise Settings — Kurumsal Ayarlar ve Tercihler Şablonu',
+        subtitle: 'Appearance (Tema/Renk/Geometri), Account ve Notifications sekmeleri',
+        category: 'Hazır Sayfa Şablonları',
+        icon: <GoogleIcon name="tune" size={16} />,
+        onSelect: () => handleSidebarSelect('page-settings'),
       },
     ];
 

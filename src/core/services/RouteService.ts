@@ -85,6 +85,7 @@ export const DASHBOARD_VIEW_IDS = new Set([
   'page-invoice',
   'page-kanban',
   'page-status',
+  'page-settings',
 ]);
 
 export class RouteService {

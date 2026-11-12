@@ -29,6 +29,15 @@ describe('RouteService.buildPath', () => {
     expect(RouteService.buildPath('dashboard', 'analytics')).toBe('/dashboard/analytics');
   });
 
+  it('resolves both analytics-telemetry and dashboard/analytics-telemetry to /dashboard/analytics-telemetry', () => {
+    expect(RouteService.buildPath('dashboard', 'analytics-telemetry')).toBe(
+      '/dashboard/analytics-telemetry'
+    );
+    expect(
+      RouteService.buildPath('dashboard', 'dashboard/analytics-telemetry')
+    ).toBe('/dashboard/analytics-telemetry');
+  });
+
   it('returns /dashboard/overview for unknown dashboard view', () => {
     expect(RouteService.buildPath('dashboard', 'unknown-view')).toBe('/dashboard/overview');
   });
@@ -83,6 +92,20 @@ describe('RouteService.parsePath', () => {
     const result = RouteService.parsePath('/dashboard/users');
     expect(result?.sectionId).toBe('dashboard');
     expect(result?.subItemId).toBe('users');
+  });
+
+  it('parses /dashboard/analytics-telemetry via parsePath and parseLocation', () => {
+    const parsedPath = RouteService.parsePath('/dashboard/analytics-telemetry');
+    expect(parsedPath?.sectionId).toBe('dashboard');
+    expect(parsedPath?.subItemId).toBe('analytics-telemetry');
+    expect(parsedPath?.path).toBe('/dashboard/analytics-telemetry');
+
+    const parsedLocation = RouteService.parseLocation(
+      '/dashboard/analytics-telemetry'
+    );
+    expect(parsedLocation?.sectionId).toBe('dashboard');
+    expect(parsedLocation?.subItemId).toBe('analytics-telemetry');
+    expect(parsedLocation?.path).toBe('/dashboard/analytics-telemetry');
   });
 
   it('parses /components/inputs/switch correctly', () => {
@@ -140,6 +163,8 @@ describe('DASHBOARD_VIEW_IDS', () => {
   it('contains standard views', () => {
     expect(DASHBOARD_VIEW_IDS.has('overview')).toBe(true);
     expect(DASHBOARD_VIEW_IDS.has('analytics')).toBe(true);
+    expect(DASHBOARD_VIEW_IDS.has('analytics-telemetry')).toBe(true);
+    expect(DASHBOARD_VIEW_IDS.has('dashboard/analytics-telemetry')).toBe(true);
     expect(DASHBOARD_VIEW_IDS.has('settings')).toBe(true);
     expect(DASHBOARD_VIEW_IDS.has('file-manager')).toBe(true);
   });

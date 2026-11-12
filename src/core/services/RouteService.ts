@@ -260,6 +260,13 @@ export class RouteService {
   }
 
   /**
+   * Alias for `parsePath` — parses a pathname into a `ResolvedRouteState`.
+   */
+  public static parseLocation(pathname: string): ResolvedRouteState | null {
+    return this.parsePath(pathname);
+  }
+
+  /**
    * Standard SPA link click helper: allows Ctrl/Cmd/Shift/Middle click to open
    * in a new browser tab natively, while intercepting normal left-clicks for
    * instant SPA navigation.

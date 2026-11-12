@@ -801,6 +801,15 @@ export const App: React.FC = () => {
         onSelect: () => handleSidebarSelect('dashboard', 'overview'),
       },
       {
+        id: 'view-analytics-telemetry',
+        title: 'Analytics & Financial Telemetry — SheetGL Multi-Scenario KPI Dashboard',
+        subtitle: 'KPI StatCards, Finance & ERP, Cloud Telemetry, HR Payroll ve Supply Chain canlı veri tablosu',
+        category: 'Dashboard',
+        icon: <GoogleIcon name="monitoring" size={16} />,
+        shortcut: 'G A',
+        onSelect: () => handleSidebarSelect('dashboard', 'analytics-telemetry'),
+      },
+      {
         id: 'view-sidebar-showcase',
         title: 'Sidebar Çeşitleri — 5 Farklı Gezinme Modu',
         subtitle: 'Dikey, Standart Açık, Kapalı Ray, Çift Kolonlu ve Çekmece',

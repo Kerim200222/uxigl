@@ -23,6 +23,10 @@ export {
   type PageTemplatesShowcaseViewProps,
 } from './features/showcase/PageTemplatesShowcaseView';
 export { EnterpriseSettingsPage } from './features/showcase/EnterpriseSettingsPage';
+export {
+  AnalyticsDashboardView,
+  type AnalyticsDashboardViewProps,
+} from './features/showcase/AnalyticsDashboardView';
 
 // 4. Providers & Hooks
 export { ThemeProvider, useTheme } from './providers/ThemeProvider';

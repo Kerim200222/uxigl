@@ -11,6 +11,7 @@
   --uxu-on-primary-container: #b8dfff;
   --uxu-secondary: #7d7aff;
   --uxu-accent-glow: rgba(41, 151, 255, 0.32);
+  --uxu-logo-filter: hue-rotate(0deg);
 
   /* Semantic Status Colors */
   --uxu-success: #10b981;
@@ -707,6 +708,13 @@ pre {
   gap: 10px;
   cursor: pointer;
   min-width: 0;
+}
+
+.uxu-brand-logo-img,
+.uxu-sidebar-brand-logo,
+.uxu-sidebar__brand img {
+  filter: var(--uxu-logo-filter, none);
+  transition: filter 0.3s ease;
 }
 
 .uxu-sidebar__brand-text {
@@ -1567,12 +1575,31 @@ pre {
   align-items: center;
   padding: 10px 6px;
   gap: 6px;
+  overflow: hidden;
+}
+
+.uxu-sidebar__dual-rail-items {
+  flex: 1;
+  width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.uxu-sidebar__dual-rail-items::-webkit-scrollbar {
+  display: none;
 }
 
 .uxu-sidebar__dual-rail-btn {
   width: 60px;
   min-height: 52px;
   height: 52px;
+  flex-shrink: 0;
   padding: 6px 4px;
   border-radius: var(--uxu-radius-md, 10px);
   border: 1px solid transparent;
@@ -3841,10 +3868,10 @@ pre {
   overflow: hidden;
   background: color-mix(
     in srgb,
-    var(--uxu-text-primary) 11%,
-    var(--uxu-surface-tonal-high)
+    var(--uxu-text-primary) 5%,
+    var(--uxu-surface-tonal-low, rgba(0, 0, 0, 0.03))
   );
-  border: 1px solid var(--uxu-border-subtle);
+  border: 1px solid var(--uxu-border-subtle, rgba(0, 0, 0, 0.05));
   border-radius: var(--uxu-radius-md);
 }
 .uxu-skeleton--text {
@@ -3861,14 +3888,51 @@ pre {
   background: linear-gradient(
     90deg,
     transparent 0%,
-    color-mix(in srgb, var(--uxu-primary) 38%, rgba(255, 255, 255, 0.32)) 50%,
+    color-mix(in srgb, var(--uxu-primary) 8%, rgba(255, 255, 255, 0.55)) 50%,
     transparent 100%
   );
   transform: translateX(-100%);
   animation-name: uxu-shimmer-sweep;
   animation-duration: var(--uxu-shimmer-duration, 2.8s);
-  animation-timing-function: linear;
+  animation-timing-function: ease-in-out;
   animation-iteration-count: infinite;
+}
+
+@media (prefers-color-scheme: dark) {
+  .uxu-skeleton {
+    background: color-mix(
+      in srgb,
+      var(--uxu-text-primary) 7%,
+      var(--uxu-surface-tonal-high, rgba(255, 255, 255, 0.04))
+    );
+  }
+  .uxu-skeleton__shimmer {
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      color-mix(in srgb, var(--uxu-primary) 12%, rgba(255, 255, 255, 0.08)) 50%,
+      transparent 100%
+    );
+  }
+}
+
+:root[data-theme="dark"] .uxu-skeleton,
+.dark .uxu-skeleton {
+  background: color-mix(
+    in srgb,
+    var(--uxu-text-primary) 7%,
+    var(--uxu-surface-tonal-high, rgba(255, 255, 255, 0.04))
+  );
+}
+
+:root[data-theme="dark"] .uxu-skeleton__shimmer,
+.dark .uxu-skeleton__shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    color-mix(in srgb, var(--uxu-primary) 12%, rgba(255, 255, 255, 0.08)) 50%,
+    transparent 100%
+  );
 }
 
 @keyframes uxu-shimmer-sweep {

@@ -45,6 +45,76 @@ export function blendHexColors(baseHex: string, tintHex: string, tintWeight: num
 }
 
 /**
+ * Converts a HEX color string into HSL components.
+ */
+export function hexToHSL(hex: string): { h: number; s: number; l: number } {
+  let cleaned = hex.replace(/^#/, '').trim();
+  if (cleaned.length === 3) {
+    cleaned = cleaned.split('').map((x) => x + x).join('');
+  }
+
+  const r = parseInt(cleaned.substring(0, 2), 16) / 255;
+  const g = parseInt(cleaned.substring(2, 4), 16) / 255;
+  const b = parseInt(cleaned.substring(4, 6), 16) / 255;
+
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  let h = 0;
+  let s = 0;
+  const l = (max + min) / 2;
+
+  if (max !== min) {
+    const d = max - min;
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+    switch (max) {
+      case r:
+        h = (g - b) / d + (g < b ? 6 : 0);
+        break;
+      case g:
+        h = (b - r) / d + 2;
+        break;
+      case b:
+        h = (r - g) / d + 4;
+        break;
+    }
+    h /= 6;
+  }
+
+  return {
+    h: Math.round(h * 360),
+    s: Math.round(s * 100),
+    l: Math.round(l * 100),
+  };
+}
+
+/**
+ * Generates dynamic CSS filter value to tint base sapphire blue logo (Hue ~203deg)
+ * into target theme palette or custom synthesizer HEX color.
+ *
+ * Formula:
+ *   Delta_H = (H_target - H_base + 360) mod 360
+ */
+export function getLogoFilterByTheme(targetHex: string, baseHue = 203): string {
+  if (!targetHex || !targetHex.trim()) {
+    return 'hue-rotate(0deg)';
+  }
+
+  const { h, s, l } = hexToHSL(targetHex);
+
+  // 1. Titanium Mono or low-saturation (grayscale/white/black)
+  if (s <= 12) {
+    const brightness = l < 40 ? 1.2 : l > 80 ? 1.35 : 1.15;
+    return `grayscale(100%) brightness(${brightness})`;
+  }
+
+  // 2. Standard colored themes: Delta Hue calculation
+  const deg = (h - baseHue + 360) % 360;
+  const saturateBoost = s > 75 ? 1.05 : 1.0;
+
+  return `hue-rotate(${deg}deg) saturate(${saturateBoost})`;
+}
+
+/**
  * Resolves the effective mode tokens for a given `ThemePreferences` and `ResolvedThemeMode`.
  * If `prefs.customPrimaryHex` is provided (e.g. `#6366F1`), dynamically synthesizes a complete
  * Material You × Liquid Glass tonal surface & accent palette around that brand color.
@@ -139,6 +209,7 @@ export function generateThemeCssExport(
   --uxu-primary-container: ${t.primaryContainer};
   --uxu-on-primary-container: ${t.onPrimaryContainer};
   --uxu-secondary: ${t.secondary};
+  --uxu-logo-filter: ${getLogoFilterByTheme(t.primary, 203)};
   --uxu-bg-canvas: ${t.bgCanvas};
   --uxu-bg-elevated: ${t.bgElevated};
   --uxu-surface-glass: ${t.surfaceGlass};
@@ -299,6 +370,7 @@ export class CssVariableThemeEngine implements IThemeEngine {
     root.style.setProperty('--uxu-on-primary-container', modeTokens.onPrimaryContainer);
     root.style.setProperty('--uxu-secondary', modeTokens.secondary);
     root.style.setProperty('--uxu-accent-glow', modeTokens.accentGlow);
+    root.style.setProperty('--uxu-logo-filter', getLogoFilterByTheme(modeTokens.primary, 203));
 
     // 2. Palette-Inherited Surface, Background, Border & Text Tokens
     root.style.setProperty('--uxu-bg-canvas', modeTokens.bgCanvas);

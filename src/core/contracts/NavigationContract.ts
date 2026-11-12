@@ -89,4 +89,13 @@ export interface SidebarProps extends IdentifiableProps {
   brandLogo?: ReactNode;
   /** Custom Brand Click handler */
   onBrandClick?: () => void;
+  /** User profile info displayed in sidebar footer */
+  user?: {
+    name: string;
+    role?: string;
+    avatarUrl?: string;
+    status?: 'online' | 'busy' | 'away' | 'offline';
+  };
+  /** Callback when user profile footer is clicked */
+  onUserProfileClick?: () => void;
 }

@@ -1705,6 +1705,51 @@ export const SURFACE_NAVIGATION_GUIDES: DocComponentGuideItem[] = [
     ],
     renderLiveDemo: () => <ModalDrawerAlertLiveMiniDemo />,
   },
+  {
+    id: 'enterprise-settings-template',
+    tag: '<EnterpriseSettingsPage /> & <PageTemplatesShowcaseView />',
+    titleTr: '8 Hazır Kurumsal Sayfa Şablonu & Kalıcı Çalışma Alanı Ayarları (page-settings)',
+    titleEn: '8 Ready-Made Enterprise Page Templates & Persistent Workspace Settings (page-settings)',
+    categoryLabelTr: 'Hazır Sayfa Şablonu',
+    categoryLabelEn: 'Enterprise Page Template',
+    playgroundId: 'page-templates',
+    importStatement:
+      "import { EnterpriseSettingsPage, PageTemplatesShowcaseView, type PageTemplateId } from 'truncgil-uxigl';",
+    architectureNoteTr:
+      'Appearance, Account ve Notifications sekmelerini ThemeEngineService ve StorageService (uxigl.workspace.settings.v1) ile çift yönlü senkronize eder.',
+    architectureNoteEn:
+      'Synchronizes Appearance, Account, and Notifications tabs with ThemeEngineService and StorageService (uxigl.workspace.settings.v1).',
+    summaryTr:
+      'Kurumsal çalışma alanı yapılandırması için 3 sekmeli (Appearance, Account, Notifications) <EnterpriseSettingsPage /> ve 8 tam sayfa şablonunu (page-login..page-settings) barındıran <PageTemplatesShowcaseView />.',
+    summaryEn:
+      '3-tab <EnterpriseSettingsPage /> (Appearance, Account, Notifications) and 8-template <PageTemplatesShowcaseView /> suite.',
+    code: `import { EnterpriseSettingsPage, PageTemplatesShowcaseView } from 'truncgil-uxigl';
+
+// Doğrudan Kurumsal Ayarlar Sayfası (Appearance | Account | Notifications)
+<EnterpriseSettingsPage initialTab="appearance" />
+
+// Veya 8 Hazır Sayfa Şablonu Vitrini Üzerinden:
+<PageTemplatesShowcaseView
+  activePageId="page-settings"
+  onPageChange={setActivePage}
+/>`,
+    propsTable: [
+      {
+        name: 'initialTab (EnterpriseSettingsPage)',
+        type: "'appearance' | 'account' | 'notifications'",
+        defaultValue: "'appearance'",
+        description: 'Başlangıçta aktif olan ayar sekmesi.',
+      },
+      {
+        name: 'activePageId (PageTemplatesShowcaseView)',
+        type: "'page-login' | 'page-register' | 'page-pricing' | 'page-profile' | 'page-invoice' | 'page-kanban' | 'page-status' | 'page-settings'",
+        defaultValue: "'page-login'",
+        required: true,
+        description: '8 hazır kurumsal sayfa şablonundan hangisinin render edileceğini belirler.',
+      },
+    ],
+    renderLiveDemo: () => <CardSurfaceLiveMiniDemo />,
+  },
 ];
 
 export const DATA_FEEDBACK_WEBGL_GUIDES: DocComponentGuideItem[] = [

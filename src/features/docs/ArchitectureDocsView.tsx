@@ -443,14 +443,14 @@ export const ArchitectureDocsView: React.FC<ArchitectureDocsViewProps> = ({
       {
         id: 'page-templates',
         step: '6',
-        badgeTr: 'BÖLÜM 6 • 7 HAZIR SAYFA ŞABLONU & 14 DASHBOARD GÖRÜNÜMÜ',
-        badgeEn: 'CHAPTER 6 • 7 PAGE TEMPLATES & 14 DASHBOARD VIEWS',
-        titleTr: '6. Hazır Sayfa Şablonları (Login, 2FA, Pricing, Fatura, Kanban)',
-        titleEn: '6. Ready-Made Page Templates (Login, 2FA, Pricing, Invoice, Kanban)',
+        badgeTr: 'BÖLÜM 6 • 8 HAZIR SAYFA ŞABLONU & 14 DASHBOARD GÖRÜNÜMÜ',
+        badgeEn: 'CHAPTER 6 • 8 PAGE TEMPLATES & 14 DASHBOARD VIEWS',
+        titleTr: '6. Hazır Sayfa Şablonları (Login, 2FA, Pricing, Fatura, Kanban, Settings)',
+        titleEn: '6. Ready-Made Page Templates (Login, 2FA, Pricing, Invoice, Kanban, Settings)',
         subtitleTr:
-          'Kurumsal projelerde doğrudan kullanıma hazır 7 tam sayfa tasarımı ve 14 operasyonel Dashboard alt görünümünün dokümantasyonu ve canlı demosu.',
+          'Kurumsal projelerde doğrudan kullanıma hazır 8 tam sayfa tasarımı ve 14 operasyonel Dashboard alt görünümünün dokümantasyonu ve canlı demosu.',
         subtitleEn:
-          'Documentation and live interactive stage for all 7 ready-made enterprise page templates and 14 operational dashboard sub-views.',
+          'Documentation and live interactive stage for all 8 ready-made enterprise page templates and 14 operational dashboard sub-views.',
         icon: <FileCode2 size={15} />,
         subItems: [
           {
@@ -494,6 +494,12 @@ export const ArchitectureDocsView: React.FC<ArchitectureDocsViewProps> = ({
             labelTr: '404, 500 Bakım & Canlı SLA Monitörü',
             labelEn: '404, 500 Maintenance & Live SLA Monitor',
             onSelect: () => setDocsPageTemplate('page-status'),
+          },
+          {
+            id: 'doc-tpl-Stage',
+            labelTr: 'Enterprise Settings & Tercihler (Appearance, Account, Notifications)',
+            labelEn: 'Enterprise Settings & Preferences (Appearance, Account, Notifications)',
+            onSelect: () => setDocsPageTemplate('page-settings'),
           },
         ],
       },
@@ -648,8 +654,8 @@ export const ArchitectureDocsView: React.FC<ArchitectureDocsViewProps> = ({
         }
         subtitle={
           isTR
-            ? '8 ana bölüm, 36+ bileşen ve motor rehberi, Props API tabloları, canlı interaktif deneme alanları ve 7 hazır sayfa tasarımı.'
-            : '8 chapters, 36+ component and engine guides, Props API tables, live interactive sandboxes, and 7 ready-made page templates.'
+            ? '8 ana bölüm, 36+ bileşen ve motor rehberi, Props API tabloları, canlı interaktif deneme alanları ve 8 hazır sayfa tasarımı.'
+            : '8 chapters, 36+ component and engine guides, Props API tables, live interactive sandboxes, and 8 ready-made page templates.'
         }
         headerIcon={<BookOpen size={20} />}
         headerAction={
@@ -1244,22 +1250,22 @@ export const ArchitectureDocsView: React.FC<ArchitectureDocsViewProps> = ({
           )}
 
           {/* =================================================================
-           * CHAPTER 6: 7 READY-MADE PAGE TEMPLATES & 14 DASHBOARD VIEWS
+           * CHAPTER 6: 8 READY-MADE PAGE TEMPLATES & 14 DASHBOARD VIEWS
            * ================================================================= */}
           {currentTopic === 'page-templates' && (
             <div className="uxu-stack-md">
               <div className="uxu-stage-grid-2">
                 <Card
                   variant="glass"
-                  title="7 Hazır Kurumsal Sayfa Şablonu (Liquid Glass × Dinamik Ton)"
-                  subtitle="Login, Register/2FA, Pricing, Profile, B2B e-Fatura, Kanban ve 404/Status"
+                  title="8 Hazır Kurumsal Sayfa Şablonu (Liquid Glass × Dinamik Ton)"
+                  subtitle="Login, Register/2FA, Pricing, Profile, B2B e-Fatura, Kanban, 404/Status ve Enterprise Settings"
                   headerIcon={<Layers size={19} />}
                 >
                   <div className="uxu-stack-md">
                     <p className="uxu-muted-p">
                       <code>truncgil-uxigl</code>; kurumsal SaaS projelerinde
                       doğrudan kullanabileceğiniz{' '}
-                      <strong>7 adet tam etkileşimli hazır sayfa tasarımı</strong>{' '}
+                      <strong>8 adet tam etkileşimli hazır sayfa tasarımı</strong>{' '}
                       sunar. Aşağıdaki kartlardan herhangi birine tıklayarak
                       alt kısımdaki canlı sahnede anında test edebilirsiniz.
                     </p>
@@ -1314,6 +1320,12 @@ export const ArchitectureDocsView: React.FC<ArchitectureDocsViewProps> = ({
                             title: '7. 404 & SLA Status',
                             desc: '404, 500 bakım & 90 günlük SLA monitörü',
                             route: '/dashboard/page-status',
+                          },
+                          {
+                            id: 'page-settings' as PageTemplateId,
+                            title: '8. Enterprise Settings',
+                            desc: 'Appearance, Account & Notifications (StorageService & ThemeEngine senkron)',
+                            route: '/dashboard/page-settings',
                           },
                         ]
                       ).map((tpl) => {

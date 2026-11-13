@@ -819,18 +819,19 @@ export const COMPONENT_CATALOG: ComponentCatalogEntry[] = [
   {
     id: 'page-templates',
     name: 'PageTemplates',
-    turkishTitle: 'Hazır Kurumsal Sayfa Tasarımları (Login, Register/2FA, Pricing, Profile, e-Fatura, Kanban, Status)',
+    turkishTitle: 'Hazır Kurumsal Sayfa Tasarımları (Login, Register/2FA, Pricing, Profile, e-Fatura, Kanban, Status, Settings)',
     category: 'surfaces',
     summary:
-      '8pt uzamsal ızgara ve Liquid Glass materyalleriyle tasarlanmış 7 hazır tam sayfa şablonu: Split-Screen & Yüzen Cam Login, 3 Adımlı Kayıt & 2FA OTP, SaaS Fiyatlandırma, Kullanıcı Profili, B2B e-Fatura & Checkout, Kanban Sprint Panosu ve 404/500/SLA Sistem Durumu.',
+      '8pt uzamsal ızgara ve Liquid Glass materyalleriyle tasarlanmış 8 hazır tam sayfa şablonu: Split-Screen & Yüzen Cam Login, 3 Adımlı Kayıt & 2FA OTP, SaaS Fiyatlandırma, Kullanıcı Profili, B2B e-Fatura & Checkout, Kanban Sprint Panosu, 404/500/SLA Sistem Durumu ve Kurumsal Ayarlar & Tercihler (page-settings).',
     importPath: 'truncgil-uxigl',
     importStatement:
-      "import { PageTemplatesShowcaseView, type PageTemplateId } from 'truncgil-uxigl';",
+      "import { PageTemplatesShowcaseView, EnterpriseSettingsPage, type PageTemplateId } from 'truncgil-uxigl';",
     dos: [
       'Kurumsal B2B girişlerde sol marka/telemetri vitrinli Split-Screen Login şablonunu, son kullanıcı odaklı uygulamalarda Merkezi Yüzen Cam (Floating Glass) Login şablonunu tercih edin.',
       'Kayıt (Register) akışlarını bilişsel yükü azaltmak için Hesap -> Çalışma Alanı Rolü -> 6 Haneli 2FA OTP adımlarına bölün.',
       'Fiyatlandırma (Pricing) sayfasında Yıllık/Aylık SegmentedControl ve canlı koltuk (seat) Slider hesaplayıcısını birlikte sunun.',
       'B2B tahsilat ekranlarında yazdırılabilir GİB e-Fatura kalem tablosu ile canlı kredi kartı önizlemesini yan yana konumlandırın.',
+      'Çalışma alanı tema, hesap ve bildirim tercihlerini yönetmek için EnterpriseSettingsPage (page-settings) şablonunu kullanın.',
     ],
     donts: [
       'Kimlik doğrulama formlarında gereksiz 6-7 alanı tek ekranda yığmayın; çok adımlı (multi-step) onboarding kullanın.',
@@ -886,14 +887,18 @@ export function EnterpriseLoginPage() {
       },
       {
         id: 'page-suite-all-example',
-        title: '3. 7 Hazır Sayfa Şablonu Vitrin Bileşeni (Tüm Şablonlar)',
+        title: '3. 8 Hazır Sayfa Şablonu Vitrin Bileşeni (Tüm Şablonlar & EnterpriseSettingsPage)',
         description:
-          'page-login, page-register, page-pricing, page-profile, page-invoice, page-kanban ve page-status şablonları arasında canlı geçiş.',
+          'page-login, page-register, page-pricing, page-profile, page-invoice, page-kanban, page-status ve page-settings (EnterpriseSettingsPage) şablonları arasında canlı geçiş.',
         code: `import { useState } from 'react';
-import { PageTemplatesShowcaseView, type PageTemplateId } from 'truncgil-uxigl';
+import {
+  PageTemplatesShowcaseView,
+  EnterpriseSettingsPage,
+  type PageTemplateId,
+} from 'truncgil-uxigl';
 
 export function ReadyPagesDemo() {
-  const [pageId, setPageId] = useState<PageTemplateId>('page-login');
+  const [pageId, setPageId] = useState<PageTemplateId>('page-settings');
   return (
     <PageTemplatesShowcaseView
       activePageId={pageId}
@@ -906,10 +911,10 @@ export function ReadyPagesDemo() {
     propsTable: [
       {
         name: 'activePageId',
-        type: "'page-login' | 'page-register' | 'page-pricing' | 'page-profile' | 'page-invoice' | 'page-kanban' | 'page-status'",
+        type: "'page-login' | 'page-register' | 'page-pricing' | 'page-profile' | 'page-invoice' | 'page-kanban' | 'page-status' | 'page-settings'",
         defaultValue: "'page-login'",
         required: true,
-        description: 'Aktif olarak görüntülenen hazır sayfa şablonu kimliği.',
+        description: 'Aktif olarak görüntülenen hazır sayfa şablonu kimliği (8 kurumsal şablon).',
       },
       {
         name: 'onPageChange',
@@ -923,6 +928,12 @@ export function ReadyPagesDemo() {
         type: '() => void',
         defaultValue: 'undefined',
         description: '404 hata sayfasındaki "Ana Panele Dön" butonuna tıklandığında çağrılan geri dönüş fonksiyonu.',
+      },
+      {
+        name: 'initialTab (EnterpriseSettingsPage)',
+        type: "'appearance' | 'account' | 'notifications'",
+        defaultValue: "'appearance'",
+        description: 'EnterpriseSettingsPage doğrudan çağrıldığında başlangıçta açık olan ayar sekmesi (StorageService uxigl.workspace.settings.v1 ile kalıcı).',
       },
     ],
   },

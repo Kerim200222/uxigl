@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Palette,
   User,
@@ -42,6 +42,89 @@ import type {
  */
 
 export type SettingsTabId = 'appearance' | 'account' | 'notifications';
+
+export interface EnterpriseSettingsPageProps {
+  /** Initial active settings tab (defaults to 'appearance') */
+  initialTab?: SettingsTabId;
+  /** Optional CSS class name */
+  className?: string;
+  /** Optional inline styles */
+  style?: React.CSSProperties;
+}
+
+export const WORKSPACE_SETTINGS_STORAGE_KEY = 'uxigl.workspace.settings.v1';
+
+export interface PersistedWorkspaceSettings {
+  fullName: string;
+  email: string;
+  emailNotifications: boolean;
+  pushNotifications: boolean;
+}
+
+export const DEFAULT_WORKSPACE_SETTINGS: PersistedWorkspaceSettings = {
+  fullName: 'Kerim Demir',
+  email: 'kerim.demir@enterprise.uxigl.io',
+  emailNotifications: true,
+  pushNotifications: false,
+};
+
+export function loadWorkspaceSettings(): PersistedWorkspaceSettings {
+  try {
+    if (typeof window === 'undefined' || !window.localStorage) {
+      return DEFAULT_WORKSPACE_SETTINGS;
+    }
+    const raw = window.localStorage.getItem(WORKSPACE_SETTINGS_STORAGE_KEY);
+    if (!raw) return DEFAULT_WORKSPACE_SETTINGS;
+    const parsed = JSON.parse(raw) as Partial<PersistedWorkspaceSettings>;
+    return {
+      fullName:
+        typeof parsed.fullName === 'string'
+          ? parsed.fullName
+          : DEFAULT_WORKSPACE_SETTINGS.fullName,
+      email:
+        typeof parsed.email === 'string'
+          ? parsed.email
+          : DEFAULT_WORKSPACE_SETTINGS.email,
+      emailNotifications:
+        typeof parsed.emailNotifications === 'boolean'
+          ? parsed.emailNotifications
+          : DEFAULT_WORKSPACE_SETTINGS.emailNotifications,
+      pushNotifications:
+        typeof parsed.pushNotifications === 'boolean'
+          ? parsed.pushNotifications
+          : DEFAULT_WORKSPACE_SETTINGS.pushNotifications,
+    };
+  } catch {
+    return DEFAULT_WORKSPACE_SETTINGS;
+  }
+}
+
+export function saveWorkspaceSettings(
+  settings: PersistedWorkspaceSettings
+): void {
+  try {
+    if (typeof window === 'undefined' || !window.localStorage) {
+      return;
+    }
+    window.localStorage.setItem(
+      WORKSPACE_SETTINGS_STORAGE_KEY,
+      JSON.stringify(settings)
+    );
+  } catch {
+    // Fail gracefully in private browsing / quota exceeded
+  }
+}
+
+export function clearWorkspaceSettings(): void {
+  try {
+    if (typeof window === 'undefined' || !window.localStorage) {
+      return;
+    }
+    window.localStorage.removeItem(WORKSPACE_SETTINGS_STORAGE_KEY);
+  } catch {
+    // Ignore
+  }
+}
 
 const SETTINGS_TABS: TabItem[] = [
   {
@@ -157,7 +240,11 @@ const CORNER_RADIUS_OPTIONS: SelectOptionItem[] = [
   },
 ];
 
-export const EnterpriseSettingsPage: React.FC = () => {
+export const EnterpriseSettingsPage: React.FC<EnterpriseSettingsPageProps> = ({
+  initialTab = 'appearance',
+  className = '',
+  style,
+}) => {
   // Global Theme & Notification Context Services
   const {
     preferences,
@@ -171,16 +258,29 @@ export const EnterpriseSettingsPage: React.FC = () => {
   const { notify } = useToast();
 
   // Active tab state
-  const [activeTab, setActiveTab] = useState<SettingsTabId>('appearance');
+  const [activeTab, setActiveTab] = useState<SettingsTabId>(initialTab);
+
+  useEffect(() => {
+    setActiveTab(initialTab);
+  }, [initialTab]);
+
+  // Persisted workspace settings initialization
+  const [initialSettings] = useState<PersistedWorkspaceSettings>(() =>
+    loadWorkspaceSettings()
+  );
 
   // Account local state
-  const [fullName, setFullName] = useState<string>('Kerim Demir');
-  const [email, setEmail] = useState<string>('kerim.demir@enterprise.uxigl.io');
+  const [fullName, setFullName] = useState<string>(initialSettings.fullName);
+  const [email, setEmail] = useState<string>(initialSettings.email);
   const [accountSaved, setAccountSaved] = useState<boolean>(false);
 
   // Notifications local state
-  const [emailNotifications, setEmailNotifications] = useState<boolean>(true);
-  const [pushNotifications, setPushNotifications] = useState<boolean>(false);
+  const [emailNotifications, setEmailNotifications] = useState<boolean>(
+    initialSettings.emailNotifications
+  );
+  const [pushNotifications, setPushNotifications] = useState<boolean>(
+    initialSettings.pushNotifications
+  );
 
   const handleThemeModeChange = (nextMode: ThemeMode) => {
     setMode(nextMode);
@@ -212,6 +312,13 @@ export const EnterpriseSettingsPage: React.FC = () => {
 
   const handleResetAppearance = () => {
     resetPreferences();
+    defaultThemeStorageAdapter.clearPreferences();
+    clearWorkspaceSettings();
+    setFullName(DEFAULT_WORKSPACE_SETTINGS.fullName);
+    setEmail(DEFAULT_WORKSPACE_SETTINGS.email);
+    setEmailNotifications(DEFAULT_WORKSPACE_SETTINGS.emailNotifications);
+    setPushNotifications(DEFAULT_WORKSPACE_SETTINGS.pushNotifications);
+    setAccountSaved(false);
     notify({
       title: 'Appearance reset to defaults',
       description: 'Theme mode, seed palette, and corner radius restored.',
@@ -221,6 +328,12 @@ export const EnterpriseSettingsPage: React.FC = () => {
 
   const handleSaveAccount = (e?: React.FormEvent | React.MouseEvent) => {
     e?.preventDefault();
+    saveWorkspaceSettings({
+      fullName,
+      email,
+      emailNotifications,
+      pushNotifications,
+    });
     setAccountSaved(true);
     notify({
       title: 'Profile updated successfully',
@@ -229,9 +342,43 @@ export const EnterpriseSettingsPage: React.FC = () => {
     });
   };
 
+  const handleEmailNotificationsChange = (nextValue: boolean) => {
+    setEmailNotifications(nextValue);
+    saveWorkspaceSettings({
+      fullName,
+      email,
+      emailNotifications: nextValue,
+      pushNotifications,
+    });
+    notify({
+      title: nextValue
+        ? 'Email notifications enabled'
+        : 'Email notifications disabled',
+      description: 'Notification channel preferences persisted to workspace.',
+      tone: 'info',
+    });
+  };
+
+  const handlePushNotificationsChange = (nextValue: boolean) => {
+    setPushNotifications(nextValue);
+    saveWorkspaceSettings({
+      fullName,
+      email,
+      emailNotifications,
+      pushNotifications: nextValue,
+    });
+    notify({
+      title: nextValue
+        ? 'Push notifications enabled'
+        : 'Push notifications disabled',
+      description: 'Real-time push alert preferences persisted to workspace.',
+      tone: 'info',
+    });
+  };
+
   return (
     <div
-      className="uxu-enterprise-settings-page"
+      className={`uxu-enterprise-settings-page ${className}`.trim()}
       style={{
         display: 'flex',
         flexDirection: 'column',
@@ -240,6 +387,7 @@ export const EnterpriseSettingsPage: React.FC = () => {
         maxWidth: '960px',
         margin: '0 auto',
         padding: '1.5rem 0',
+        ...style,
       }}
     >
       {/* Main Page Header */}
@@ -476,7 +624,7 @@ export const EnterpriseSettingsPage: React.FC = () => {
             <Switch
               id="settings-notify-email"
               value={emailNotifications}
-              onChange={setEmailNotifications}
+              onChange={handleEmailNotificationsChange}
               label={
                 <span
                   style={{
@@ -495,7 +643,7 @@ export const EnterpriseSettingsPage: React.FC = () => {
             <Switch
               id="settings-notify-push"
               value={pushNotifications}
-              onChange={setPushNotifications}
+              onChange={handlePushNotificationsChange}
               label={
                 <span
                   style={{

@@ -9,23 +9,79 @@ import { useKeyboardShortcut } from '../../../hooks/useKeyboardShortcut';
  * Inspired by Apple macOS Spotlight & Raycast + Google Search Assist chips.
  */
 
+/**
+ * Action item descriptor for {@link CommandPalette}.
+ */
 export interface CommandActionItem {
+  /** Unique identifier for the command action. */
   id: string;
+  /** Primary display title of the command. */
   title: string;
+  /** Optional secondary description or keyword subtitle. */
   subtitle?: string;
+  /** Grouping category label shown on the right side of the row. */
   category: string;
+  /** Optional leading icon node. */
   icon?: React.ReactNode;
+  /** Optional keyboard shortcut badge string (e.g. `'G A'`, `'⌘K'`). */
   shortcut?: string;
+  /** Callback executed when the command is triggered via click or `Enter`. */
   onSelect: () => void;
 }
 
+/**
+ * Props contract for {@link CommandPalette}.
+ */
 export interface CommandPaletteProps {
+  /** Controls whether the command palette dialog is mounted and visible. */
   open: boolean;
+  /** Callback fired when the user dismisses the palette via backdrop, `Escape`, or command selection. */
   onClose: () => void;
+  /** List of searchable and executable command action items. */
   actions: CommandActionItem[];
+  /** Search input placeholder and accessible label. */
   placeholder?: string;
 }
 
+const CLEAR_BUTTON_STYLE: React.CSSProperties = {
+  background: 'transparent',
+  border: 'none',
+  color: 'var(--uxu-text-tertiary, #94a3b8)',
+  cursor: 'pointer',
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  padding: '4px',
+  marginRight: '6px',
+  borderRadius: '50%',
+  transition: 'all 0.15s ease',
+};
+
+/**
+ * macOS Spotlight & Raycast-inspired global `<CommandPalette />` (`⌘K` / `Ctrl+K`)
+ * with instant search filtering, WAI-ARIA `dialog` / `listbox` / `option` semantics,
+ * and keyboard navigation (`ArrowDown`, `ArrowUp`, `Enter`, `Escape`).
+ *
+ * @param props - {@link CommandPaletteProps} configuration options.
+ * @returns Rendered modal command palette or `null` when closed.
+ *
+ * @example
+ * ```tsx
+ * <CommandPalette
+ *   open={isOpen}
+ *   onClose={() => setIsOpen(false)}
+ *   actions={[
+ *     {
+ *       id: 'nav-overview',
+ *       title: 'Go to Dashboard Overview',
+ *       category: 'Navigation',
+ *       shortcut: 'G D',
+ *       onSelect: () => navigate('/dashboard/overview'),
+ *     },
+ *   ]}
+ * />
+ * ```
+ */
 export const CommandPalette: React.FC<CommandPaletteProps> = ({
   open,
   onClose,
@@ -118,6 +174,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
             onChange={(e) => setQuery(e.target.value)}
             onFocus={(e) => e.target.select()}
             placeholder={placeholder}
+            aria-label={placeholder}
             className="uxu-cmd-palette__input"
           />
           {query.trim().length > 0 && (
@@ -131,19 +188,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
               }}
               title="Aramayı Temizle"
               aria-label="Aramayı Temizle"
-              style={{
-                background: 'transparent',
-                border: 'none',
-                color: 'var(--uxu-text-tertiary, #94a3b8)',
-                cursor: 'pointer',
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                padding: '4px',
-                marginRight: '6px',
-                borderRadius: '50%',
-                transition: 'all 0.15s ease',
-              }}
+              style={CLEAR_BUTTON_STYLE}
             >
               <X size={15} />
             </button>
@@ -153,7 +198,11 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
           </kbd>
         </div>
 
-        <div className="uxu-cmd-palette__list">
+        <div
+          className="uxu-cmd-palette__list"
+          role="listbox"
+          aria-label="Komut listesi"
+        >
           {filteredActions.length === 0 ? (
             <div className="uxu-cmd-palette__empty">
               <Sparkles size={22} />
@@ -166,6 +215,8 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
                 <button
                   key={item.id}
                   type="button"
+                  role="option"
+                  aria-selected={isSelected}
                   onMouseEnter={() => setSelectedIndex(idx)}
                   onClick={() => {
                     item.onSelect();
@@ -173,7 +224,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
                   }}
                   className={`uxu-cmd-palette__item ${
                     isSelected ? 'uxu-cmd-palette__item--selected' : ''
-                  }`}
+                  }`.trim()}
                 >
                   <div className="uxu-cmd-palette__item-left">
                     {item.icon && (

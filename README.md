@@ -2,7 +2,7 @@
 
 > **Uniting User Experience (UX), User Interface (UI), and Hardware-Accelerated WebGL (`SheetGL` + `FileManGL`) into a Single Enterprise Architecture.**
 
-[![Version](https://img.shields.io/badge/version-2.8.5-0284c7.svg)](https://github.com/umitunc/uxigl)
+[![Version](https://img.shields.io/badge/version-2.8.6-0284c7.svg)](https://github.com/umitunc/uxigl)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-3178c6.svg)](https://www.typescriptlang.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-10b981.svg)](https://opensource.org/licenses/MIT)
 

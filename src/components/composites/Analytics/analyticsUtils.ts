@@ -1,5 +1,13 @@
 import type { AnalyticsDataset, AnalyticsPeriod } from './types';
 
+/**
+ * Builds the localized KPI, time-series, traffic channel, and device breakdown
+ * dataset for the given {@link AnalyticsPeriod}.
+ *
+ * @param period - Selected time window (`'24h' | '7d' | '30d' | '1y'`).
+ * @param locale - Display locale (`'tr' | 'en'`, defaults to `'tr'`).
+ * @returns Complete {@link AnalyticsDataset} for the requested period.
+ */
 export function buildAnalyticsDataset(
   period: AnalyticsPeriod,
   locale: 'tr' | 'en' = 'tr'

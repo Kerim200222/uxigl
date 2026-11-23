@@ -6,6 +6,9 @@ import { Textarea } from '../../primitives/Textarea/Textarea';
 import { Modal } from '../Modal/Modal';
 import type { KanbanColumn, KanbanPriority, KanbanTagTone, KanbanTask } from './types';
 
+/**
+ * Props contract for {@link KanbanTaskModal}.
+ */
 export interface KanbanTaskModalProps {
   open: boolean;
   locale: 'tr' | 'en';
@@ -17,6 +20,12 @@ export interface KanbanTaskModalProps {
   onDelete?: (id: string) => void;
 }
 
+/**
+ * Modal dialog for creating, editing, and deleting a {@link KanbanTask}.
+ *
+ * @param props - {@link KanbanTaskModalProps} configuration options.
+ * @returns Rendered task editor modal dialog.
+ */
 export const KanbanTaskModal: React.FC<KanbanTaskModalProps> = ({
   open,
   locale,

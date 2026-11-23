@@ -5,6 +5,9 @@ import { Card } from '../Card/Card';
 import { KanbanCard } from './KanbanCard';
 import type { KanbanColumn, KanbanTask } from './types';
 
+/**
+ * Props contract for {@link KanbanColumnView}.
+ */
 export interface KanbanColumnViewProps {
   column: KanbanColumn;
   columnIndex: number;
@@ -18,6 +21,13 @@ export interface KanbanColumnViewProps {
   onQuickAdd: (columnId: string) => void;
 }
 
+/**
+ * Single Kanban board column with HTML5 drop target handling, WIP limit warning
+ * badge, quick-add trigger, and task card list.
+ *
+ * @param props - {@link KanbanColumnViewProps} configuration options.
+ * @returns Rendered Kanban board column.
+ */
 export const KanbanColumnView: React.FC<KanbanColumnViewProps> = ({
   column,
   columnIndex,

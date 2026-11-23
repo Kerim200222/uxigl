@@ -20,6 +20,12 @@ export const KANBAN_PRIORITY_META: Record<
   low: { labelTr: 'Düşük', labelEn: 'Low', tone: 'neutral' },
 };
 
+/**
+ * Builds the default localized seed tasks for {@link Kanban}.
+ *
+ * @param locale - Display locale (`'tr' | 'en'`, defaults to `'tr'`).
+ * @returns Array of initial {@link KanbanTask} items.
+ */
 export function buildSeedKanbanTasks(locale: 'tr' | 'en' = 'tr'): KanbanTask[] {
   const isTR = locale === 'tr';
   return [
@@ -128,6 +134,14 @@ export function buildSeedKanbanTasks(locale: 'tr' | 'en' = 'tr'): KanbanTask[] {
   ];
 }
 
+/**
+ * Filters Kanban tasks by search query (title, ID, tag, assignee) and priority.
+ *
+ * @param tasks - Source task collection.
+ * @param query - Case-insensitive substring query.
+ * @param priorityFilter - Specific priority filter or `'all'`.
+ * @returns Filtered array of {@link KanbanTask} items.
+ */
 export function filterKanbanTasks(
   tasks: KanbanTask[],
   query: string,
@@ -146,6 +160,12 @@ export function filterKanbanTasks(
   });
 }
 
+/**
+ * Computes aggregate sprint counts and completion percentage across all tasks.
+ *
+ * @param tasks - Task list to summarize.
+ * @returns Summary object containing `total`, `done`, `inProgress`, `review`, and `completionPct`.
+ */
 export function computeKanbanStats(tasks: KanbanTask[]) {
   const total = tasks.length;
   const done = tasks.filter((t) => t.column === 'done').length;

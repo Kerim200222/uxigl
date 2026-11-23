@@ -239,6 +239,7 @@ export const Kanban: React.FC<KanbanProps> = ({
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, flex: 1, minWidth: 220 }}>
             <Input
+              aria-label={isTR ? 'Görev, kod veya sorumlu ara...' : 'Search task, ID or assignee...'}
               placeholder={isTR ? 'Görev, kod veya sorumlu ara...' : 'Search task, ID or assignee...'}
               value={searchQuery}
               onChange={setSearchQuery}
@@ -317,7 +318,16 @@ export const Kanban: React.FC<KanbanProps> = ({
               return (
                 <div
                   key={task.id}
+                  role="button"
+                  tabIndex={0}
                   onClick={() => handleOpenEditModal(task)}
+                  onKeyDown={(e) => {
+                    if (e.target !== e.currentTarget) return;
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      handleOpenEditModal(task);
+                    }
+                  }}
                   style={{
                     display: 'flex',
                     alignItems: 'center',

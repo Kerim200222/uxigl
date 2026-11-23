@@ -6,6 +6,9 @@ import { Progress } from '../../primitives/Progress/Progress';
 import { KANBAN_PRIORITY_META } from './kanbanUtils';
 import type { KanbanTask } from './types';
 
+/**
+ * Props contract for {@link KanbanCard}.
+ */
 export interface KanbanCardProps {
   task: KanbanTask;
   locale: 'tr' | 'en';
@@ -16,6 +19,13 @@ export interface KanbanCardProps {
   onClick: (task: KanbanTask) => void;
 }
 
+/**
+ * Draggable and keyboard-accessible Kanban task card with priority badges,
+ * progress indicator, assignee avatar, and quick column move buttons.
+ *
+ * @param props - {@link KanbanCardProps} configuration options.
+ * @returns Rendered Kanban task card.
+ */
 export const KanbanCard: React.FC<KanbanCardProps> = ({
   task,
   locale,
@@ -40,6 +50,7 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
       role="button"
       tabIndex={0}
       onKeyDown={(e) => {
+        if (e.target !== e.currentTarget) return;
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
           onClick(task);

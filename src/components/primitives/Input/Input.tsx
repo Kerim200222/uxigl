@@ -108,6 +108,8 @@ export interface InputProps
   suffixText?: string;
   /** Allows toggling password visibility when type === 'password' */
   revealablePassword?: boolean;
+  /** Accessible label when no visible label element is provided */
+  'aria-label'?: string;
 }
 
 export const Input: React.FC<InputProps> = ({
@@ -140,6 +142,7 @@ export const Input: React.FC<InputProps> = ({
   prefixText,
   suffixText,
   revealablePassword = false,
+  'aria-label': ariaLabel,
 }) => {
   const generatedId = useId();
   const inputId = id ?? generatedId;
@@ -272,6 +275,9 @@ export const Input: React.FC<InputProps> = ({
           required={required}
           maxLength={maxLength}
           placeholder={placeholder}
+          aria-label={
+            ariaLabel ?? (typeof label === 'string' ? undefined : placeholder)
+          }
           autoFocus={autoFocus}
           aria-invalid={hasError}
           onChange={handleInputChange}

@@ -30,6 +30,7 @@ export function Dock({
   onArrangeSideBySide,
   onArrangeGrid,
   onCloseAll,
+  maxVisibleApps = 12,
 }: {
   dockApps: OSWorkspaceApp[];
   allApps?: OSWorkspaceApp[];
@@ -51,12 +52,25 @@ export function Dock({
   onArrangeSideBySide: () => void;
   onArrangeGrid: () => void;
   onCloseAll: () => void;
+  maxVisibleApps?: number;
 }) {
   const runningUnpinnedApps = allApps.filter(
     (app) => !dockApps.some((d) => d.id === app.id) && windows.some((w) => w.appId === app.id)
   );
-  const mag = useDockMagnification(dockApps.length + runningUnpinnedApps.length);
+  const maxVisible = Math.max(1, maxVisibleApps);
+  const visibleDockApps = dockApps.slice(0, maxVisible);
+  const remainingSlots = Math.max(0, maxVisible - visibleDockApps.length);
+  const visibleRunningUnpinned = runningUnpinnedApps.slice(0, remainingSlots);
+  const overflowApps = [
+    ...dockApps.slice(maxVisible),
+    ...runningUnpinnedApps.slice(remainingSlots),
+  ];
+
+  const mag = useDockMagnification(
+    visibleDockApps.length + visibleRunningUnpinned.length + (overflowApps.length > 0 ? 1 : 0)
+  );
   const [dragOverDock, setDragOverDock] = useState(false);
+  const [overflowOpen, setOverflowOpen] = useState(false);
 
   const renderDockTooltip = (label: string) => (
     <span
@@ -133,7 +147,7 @@ export function Dock({
         display: 'flex', alignItems: 'flex-end', gap: 9, zIndex: 1950,
       }}
     >
-      {dockApps.map((app, idx) => {
+      {visibleDockApps.map((app, idx) => {
         const isRunning = windows.some((w) => w.appId === app.id);
         const dockSurf = resolveIconSurface(
           app, iconBgStyle, primaryColor, isDark, iconColor, iconBgColor, iconGradColor1, iconGradColor2
@@ -192,7 +206,7 @@ export function Dock({
         );
       })}
 
-      {runningUnpinnedApps.length > 0 && (
+      {visibleRunningUnpinned.length > 0 && (
         <>
           <div
             style={{
@@ -200,8 +214,8 @@ export function Dock({
               backgroundColor: useDarkDockGlass ? 'rgba(255,255,255,0.20)' : 'rgba(15,23,42,0.16)',
             }}
           />
-          {runningUnpinnedApps.map((app, offset) => {
-            const idx = dockApps.length + offset;
+          {visibleRunningUnpinned.map((app, offset) => {
+            const idx = visibleDockApps.length + offset;
             const dockSurf = resolveIconSurface(
               app, iconBgStyle, primaryColor, isDark, iconColor, iconBgColor, iconGradColor1, iconGradColor2
             );
@@ -249,6 +263,88 @@ export function Dock({
         </>
       )}
 
+      {overflowApps.length > 0 && (
+        <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+          <button
+            ref={(el) => { mag.dockItemRefs.current[visibleDockApps.length + visibleRunningUnpinned.length] = el; }}
+            type="button"
+            aria-label={`Diğer ${overflowApps.length} uygulama`}
+            onMouseEnter={() => mag.setHoveredIdx(visibleDockApps.length + visibleRunningUnpinned.length)}
+            onMouseLeave={() => mag.setHoveredIdx((prev) => (prev === visibleDockApps.length + visibleRunningUnpinned.length ? null : prev))}
+            onClick={() => setOverflowOpen((v) => !v)}
+            style={{
+              position: 'relative', width: 46, height: 46, padding: 0, borderRadius: 13,
+              border: useDarkDockGlass ? '1px solid rgba(255, 255, 255, 0.22)' : '1px solid rgba(15, 23, 42, 0.16)',
+              background: useDarkDockGlass ? 'rgba(255, 255, 255, 0.14)' : 'rgba(15, 23, 42, 0.08)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              cursor: 'pointer', color: useDarkDockGlass ? '#f8fafc' : '#0f172a',
+              fontSize: 13, fontWeight: 700, flexShrink: 0,
+              boxShadow: '0 8px 18px rgba(0,0,0,0.22), inset 0 1px 0 rgba(255,255,255,0.25)',
+              transition: 'width 0.1s ease-out, height 0.1s ease-out, border-radius 0.1s ease-out',
+            }}
+          >
+            {mag.hoveredIdx === visibleDockApps.length + visibleRunningUnpinned.length &&
+              renderDockTooltip(`+${overflowApps.length} Açık Uygulama`)}
+            +{overflowApps.length}
+          </button>
+          {overflowOpen && (
+            <div
+              style={{
+                position: 'absolute',
+                bottom: 'calc(100% + 14px)',
+                right: 0,
+                width: 240,
+                maxHeight: 320,
+                overflowY: 'auto',
+                padding: 8,
+                borderRadius: 14,
+                backgroundColor: useDarkDockGlass ? 'rgba(15, 23, 42, 0.92)' : 'rgba(255, 255, 255, 0.95)',
+                backdropFilter: glassBlur > 0 ? `blur(${glassBlur}px) saturate(165%)` : undefined,
+                WebkitBackdropFilter: glassBlur > 0 ? `blur(${glassBlur}px) saturate(165%)` : undefined,
+                border: useDarkDockGlass ? '1px solid rgba(255, 255, 255, 0.16)' : '1px solid rgba(15, 23, 42, 0.12)',
+                boxShadow: '0 18px 40px rgba(0, 0, 0, 0.36)',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 4,
+                zIndex: 2100,
+              }}
+            >
+              {overflowApps.map((app) => (
+                <button
+                  key={`overflow-${app.id}`}
+                  type="button"
+                  onClick={() => {
+                    onOpenApp(app.id);
+                    setOverflowOpen(false);
+                  }}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 8,
+                    padding: '6px 8px',
+                    borderRadius: 8,
+                    border: 'none',
+                    background: 'transparent',
+                    color: useDarkDockGlass ? '#f8fafc' : '#0f172a',
+                    fontSize: 12,
+                    fontWeight: 600,
+                    textAlign: 'left',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <span style={{ width: 18, height: 18, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    {app.iconNode ?? <GoogleIcon name={app.googleIcon} size={16} />}
+                  </span>
+                  <span style={{ flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    {app.label}
+                  </span>
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
       <div
         style={{
           width: 1, height: 28, alignSelf: 'center', margin: '0 2px',
@@ -257,7 +353,7 @@ export function Dock({
       />
 
       {utilityActions.map((action, offsetIdx) => {
-        const idx = dockApps.length + runningUnpinnedApps.length + offsetIdx;
+        const idx = visibleDockApps.length + visibleRunningUnpinned.length + (overflowApps.length > 0 ? 1 : 0) + offsetIdx;
         return (
           <button
             key={action.id}

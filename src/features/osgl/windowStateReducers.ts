@@ -1,4 +1,4 @@
-﻿import { osWasmEngine } from './osglEngine';
+import { osWasmEngine } from './osglEngine';
 import {
   CURRENT_WINDOW_MAX_VERSION,
   OS_THEME_STUDIO_APP_ID,
@@ -65,20 +65,21 @@ export function buildOpenedWindowList(params: {
   const isStudio = params.appId === OS_THEME_STUDIO_APP_ID;
   const defaultW = isStudio
     ? 820
-    : appMeta?.defaultSize?.width ?? Math.min(1120, Math.round(params.vw * 0.76));
+    : appMeta?.defaultSize?.width ?? Math.min(1920, Math.round(params.vw * 0.84));
   const defaultH = isStudio
     ? 600
     : appMeta?.defaultSize?.height ??
-      Math.min(700, Math.round((params.vh - DESKTOP_TOP_BAR_H) * 0.8));
+      Math.min(1080, Math.round((params.vh - DESKTOP_TOP_BAR_H) * 0.86));
 
   const initialBounds: WindowBounds = {
     x: savedBounds?.x ?? Math.max(24, Math.round((params.vw - defaultW) / 2) + offset - 26),
-    y: savedBounds?.y ?? 16 + offset,
-    width: isStudio ? Math.max(760, savedBounds?.width ?? defaultW) : (savedBounds?.width ?? defaultW),
-    height: isStudio ? Math.max(540, savedBounds?.height ?? defaultH) : (savedBounds?.height ?? defaultH),
+    y: savedBounds?.y ?? Math.max(16, Math.round((params.vh - DESKTOP_TOP_BAR_H - defaultH) / 2) + offset - 26),
+    width: isStudio ? Math.max(760, savedBounds?.width ?? defaultW) : Math.min(1920, savedBounds?.width ?? defaultW),
+    height: isStudio ? Math.max(540, savedBounds?.height ?? defaultH) : Math.min(1080, savedBounds?.height ?? defaultH),
   };
 
-  const startMaximized = appMeta?.defaultMaximized ?? !isStudio;
+  const isLargeScreen = params.vw > 1920 || params.vh > 1080;
+  const startMaximized = appMeta?.defaultMaximized ?? (!isStudio && !savedBounds && !isLargeScreen);
   const newWin = clampWindowToViewport(
     {
       id: `win-${params.appId}-${Date.now()}`,

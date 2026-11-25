@@ -131,15 +131,15 @@ export function FloatingWindows({
                   : isHighlighted
                     ? `2px solid ${paletteTokens.primary}`
                     : isFocused
-                      ? `1.5px solid color-mix(in srgb, ${paletteTokens.primary} 48%, ${paletteTokens.borderStrong})`
+                      ? `1px solid color-mix(in srgb, ${paletteTokens.primary} 22%, ${paletteTokens.borderSubtle})`
                       : `1px solid ${paletteTokens.borderSubtle}`,
                 boxShadow: isFullscreen
                   ? 'none'
                   : isHighlighted
-                    ? `0 0 0 4px color-mix(in srgb, ${paletteTokens.primary} 32%, transparent), 0 28px 80px rgba(0,0,0,0.42)`
+                    ? `0 0 0 3px color-mix(in srgb, ${paletteTokens.primary} 28%, transparent), 0 28px 80px rgba(0,0,0,0.48)`
                     : isFocused
-                      ? `0 22px 60px rgba(0, 0, 0, 0.36), inset 0 1px 0 ${paletteTokens.surfaceTonal}`
-                      : `0 14px 36px rgba(0, 0, 0, 0.22)`,
+                      ? `0 28px 70px rgba(0, 0, 0, 0.45), 0 8px 24px rgba(0, 0, 0, 0.24), inset 0 1px 0 ${paletteTokens.surfaceTonal}`
+                      : `0 16px 40px rgba(0, 0, 0, 0.28), 0 4px 12px rgba(0, 0, 0, 0.14)`,
                 transition: 'border-color 0.18s ease, box-shadow 0.22s ease',
                 contain: 'layout style',
                 display: 'flex',

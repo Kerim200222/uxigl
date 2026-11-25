@@ -287,8 +287,10 @@ export function useDesktopState({
     setWidgetPositions(computeDefaultWidgetPositions(widgets, viewportSize.w));
     setWidgetSizes(buildDefaultWidgetSizes());
   };
-  const resetIconSlots = () =>
-    setIconSlots(buildResetDesktopSlots(apps, foldersAndDock.folders));
+  const resetIconSlots = () => {
+    const nextFolders = foldersAndDock.resetFoldersToDefault();
+    setIconSlots(buildResetDesktopSlots(apps, nextFolders));
+  };
 
   return {
     desktopApps: apps, allApps, theme, locale, setLocale, isDark, paletteTokens, canvasRef, useWebGLAurora,

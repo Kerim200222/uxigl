@@ -1,4 +1,5 @@
 ﻿import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { buildResetDesktopSlots } from './desktopGridUtils';
 import {
   createDesktopFolderState,
   dissolveDesktopFolderState,
@@ -56,16 +57,25 @@ export function useFoldersAndDockState({
       ? sanitizePersistedFolders(savedState.folders, allowedSet)
       : sanitizePersistedFolders(defaultFolders, allowedSet)
   );
-  const seededDefaultFoldersRef = useRef(Boolean(savedState?.folders?.length));
+  const seedFlagKey = `osgl-default-folders-seeded-${scopeKey || 'default'}`;
+  const seededDefaultFoldersRef = useRef(
+    typeof window !== 'undefined' && window.localStorage?.getItem(seedFlagKey) === '1'
+  );
   useEffect(() => {
     if (seededDefaultFoldersRef.current) return;
-    if (folders.length > 0 || !defaultFolders?.length || allowedSet.size === 0) return;
+    if (!defaultFolders?.length || allowedSet.size === 0) return;
     const sanitized = sanitizePersistedFolders(defaultFolders, allowedSet);
     if (sanitized.length > 0) {
       seededDefaultFoldersRef.current = true;
+      try {
+        window.localStorage?.setItem(seedFlagKey, '1');
+      } catch {
+        // ignore storage errors
+      }
       setFolders(sanitized);
+      setIconSlots(buildResetDesktopSlots(desktopApps, sanitized));
     }
-  }, [defaultFolders, allowedSet, folders.length]);
+  }, [defaultFolders, allowedSet, desktopApps, seedFlagKey, setIconSlots]);
   const [pinnedDockAppIds, setPinnedDockAppIds] = useState<string[] | undefined>(
     () => savedState?.pinnedDockAppIds
   );
@@ -213,8 +223,23 @@ export function useFoldersAndDockState({
     });
   };
 
+  const resetFoldersToDefault = () => {
+    if (!defaultFolders?.length || allowedSet.size === 0) return latestRef.current.folders;
+    const sanitized = sanitizePersistedFolders(defaultFolders, allowedSet);
+    seededDefaultFoldersRef.current = true;
+    try {
+      window.localStorage?.setItem(seedFlagKey, '1');
+    } catch {
+      // ignore storage errors
+    }
+    latestRef.current = { ...latestRef.current, folders: sanitized };
+    setFolders(sanitized);
+    return sanitized;
+  };
+
   return {
-    folders, setFolders, pinnedDockAppIds, effectiveDockIds, effectiveDockApps,
+    folders,
+    resetFoldersToDefault, setFolders, pinnedDockAppIds, effectiveDockIds, effectiveDockApps,
     openFolderId, setOpenFolderId, renamingFolderId, setRenamingFolderId,
     itemContextMenu, setItemContextMenu, dockCustomizerOpen, setDockCustomizerOpen,
     createFolder, renameFolder, recolorFolder, moveAppsToFolder, setFolderApps,

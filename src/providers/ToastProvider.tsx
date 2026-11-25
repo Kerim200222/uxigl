@@ -200,6 +200,10 @@ const ToastViewport: React.FC<ToastViewportProps> = ({ toasts, onDismiss }) => {
   );
 };
 
+export function useOptionalToast(): INotificationService | undefined {
+  return useContext(ToastContext);
+}
+
 export function useToast(): INotificationService {
   const ctx = useContext(ToastContext);
   if (!ctx) {

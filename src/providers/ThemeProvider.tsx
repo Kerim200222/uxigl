@@ -8,6 +8,7 @@ import React, {
 } from 'react';
 import type {
   BorderContrastPreset,
+  BuiltinSeedPaletteId,
   FontFamilyPreset,
   GoogleIconStyle,
   IThemeEngine,
@@ -50,10 +51,42 @@ export interface ThemeProviderProps {
   storageAdapter?: IThemeStorageAdapter;
   themeEngine?: IThemeEngine;
   initialPreferences?: Partial<ThemePreferences>;
+  /** Shorthand alias for initialPreferences.mode */
+  defaultMode?: ThemeMode;
+  /** Legacy alias for defaultMode */
+  defaultTheme?: ThemeMode;
+  /** Shorthand alias for initialPreferences.seedPalette (also resolves common aliases like 'ocean') */
+  defaultPalette?: SeedPaletteId;
+  /** Shorthand alias for initialPreferences.customRadiusPx */
+  defaultRadius?: number;
+  /** Shorthand alias for initialPreferences.workspaceShell */
+  defaultShell?: WorkspaceShellPreset;
   /** Optional custom palettes registered by the host application */
   extraPalettes?: SeedPaletteDefinition[];
   /** Optional initial per-user storage scope key */
   initialUserScopeKey?: string;
+}
+
+const PALETTE_ALIASES: Record<string, BuiltinSeedPaletteId> = {
+  ocean: 'cupertino-blue',
+  blue: 'cupertino-blue',
+  cupertino: 'cupertino-blue',
+  violet: 'material-violet',
+  iris: 'material-violet',
+  emerald: 'emerald-mint',
+  mint: 'emerald-mint',
+  coral: 'sunset-coral',
+  sunset: 'sunset-coral',
+  amber: 'amber-gold',
+  gold: 'amber-gold',
+  mono: 'graphite-mono',
+  graphite: 'graphite-mono',
+};
+
+function resolveSafePaletteAlias(palette?: SeedPaletteId): SeedPaletteId | undefined {
+  if (!palette) return undefined;
+  const key = String(palette).trim().toLowerCase();
+  return PALETTE_ALIASES[key] ?? palette;
 }
 
 function getSystemColorScheme(): ResolvedThemeMode {
@@ -70,6 +103,11 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
   storageAdapter = defaultThemeStorageAdapter,
   themeEngine = defaultThemeEngine,
   initialPreferences,
+  defaultMode,
+  defaultTheme,
+  defaultPalette,
+  defaultRadius,
+  defaultShell,
   extraPalettes,
   initialUserScopeKey,
 }) => {
@@ -97,11 +135,22 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
     return themeEngine;
   }, [extraPalettes, themeEngine]);
 
+  const mergedInitialPreferences = useMemo<Partial<ThemePreferences>>(
+    () => ({
+      ...(defaultMode ?? defaultTheme ? { mode: defaultMode ?? defaultTheme } : {}),
+      ...(defaultPalette ? { seedPalette: resolveSafePaletteAlias(defaultPalette) } : {}),
+      ...(typeof defaultRadius === 'number' ? { customRadiusPx: defaultRadius } : {}),
+      ...(defaultShell ? { workspaceShell: defaultShell } : {}),
+      ...initialPreferences,
+    }),
+    [defaultMode, defaultTheme, defaultPalette, defaultRadius, defaultShell, initialPreferences]
+  );
+
   const [preferences, setPreferences] = useState<ThemePreferences>(() => {
     const stored = storageAdapter.loadPreferences(initialUserScopeKey);
     const merged: ThemePreferences = {
       ...DEFAULT_THEME_PREFERENCES,
-      ...initialPreferences,
+      ...mergedInitialPreferences,
       ...(stored ?? {}),
     };
     const initialResolved: ResolvedThemeMode =
@@ -510,6 +559,10 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
     <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
   );
 };
+
+export function useOptionalTheme(): ThemeContextContract | undefined {
+  return useContext(ThemeContext);
+}
 
 export function useTheme(): ThemeContextContract {
   const ctx = useContext(ThemeContext);

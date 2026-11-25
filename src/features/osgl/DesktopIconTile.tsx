@@ -1,5 +1,6 @@
 import React from 'react';
 import { GoogleIcon } from '../../components/primitives';
+import { useOptionalTheme } from '../../providers/ThemeProvider';
 import { resolveIconSurface, type IconBgStyle, type OSWorkspaceApp } from './types';
 
 export function DesktopIconTile({
@@ -55,6 +56,10 @@ export function DesktopIconTile({
   onClick: (e: React.MouseEvent) => void;
   onContextMenu?: (e: React.MouseEvent) => void;
 }) {
+  const theme = useOptionalTheme();
+  const rawScale = (theme?.preferences as { fontScale?: number } | undefined)?.fontScale ?? 1;
+  const scaleFactor = rawScale > 3 ? rawScale / 100 : rawScale;
+  const labelFontSize = Math.max(9, Math.min(20, Math.round(12 * scaleFactor)));
   const hasBadge = Boolean(app.badge && String(app.badge).trim() !== '0');
   const iconSurf = resolveIconSurface(
     app,
@@ -151,7 +156,7 @@ export function DesktopIconTile({
       </div>
       <span
         style={{
-          fontSize: 12,
+          fontSize: labelFontSize,
           fontWeight: 600,
           letterSpacing: '-0.01em',
           color: '#ffffff',

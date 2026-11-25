@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useOptionalTheme } from '../../providers/ThemeProvider';
 import { FolderOpen } from 'lucide-react';
 import { GoogleIcon } from '../../components/primitives';
 import {
@@ -215,7 +216,11 @@ export function DesktopFolderTile({
       ) : (
         <span
           style={{
-            fontSize: 12,
+            fontSize: (() => {
+              const raw = (useOptionalTheme()?.preferences as { fontScale?: number } | undefined)?.fontScale ?? 1;
+              const f = raw > 3 ? raw / 100 : raw;
+              return Math.max(9, Math.min(20, Math.round(12 * f)));
+            })(),
             fontWeight: 700,
             letterSpacing: '-0.01em',
             color: '#ffffff',

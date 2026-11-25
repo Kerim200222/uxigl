@@ -86,7 +86,11 @@ export function useFoldersAndDockState({
     }
     prevScopeRef.current = scopeKey;
     const nextSaved = loadOSGLState(scopeKey);
-    setFolders(sanitizePersistedFolders(nextSaved?.folders, allowedSet));
+    const hasSavedFolders = Boolean(nextSaved?.folders?.length);
+    seededDefaultFoldersRef.current = hasSavedFolders;
+    setFolders(
+      sanitizePersistedFolders(hasSavedFolders ? nextSaved?.folders : defaultFolders, allowedSet)
+    );
     setPinnedDockAppIds(nextSaved?.pinnedDockAppIds);
     setOpenFolderId(null);
     setRenamingFolderId(null);

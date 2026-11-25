@@ -28,7 +28,7 @@ export const WorkspaceShellGallery: React.FC<{
           gap: 8, flexWrap: 'wrap',
         }}
       >
-        <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', lineHeight: 1.4 }}>
+        <span style={{ fontSize: '0.75rem', color: 'var(--uxu-text-secondary, var(--text-secondary))', lineHeight: 1.4 }}>
           Yetkili olduğunuz menüler sabit kalır; tüm uygulama seçtiğiniz <strong>uxiGL</strong> kabuğuna giydirilir.
         </span>
         <button
@@ -38,9 +38,9 @@ export const WorkspaceShellGallery: React.FC<{
           style={{
             display: 'inline-flex', alignItems: 'center', gap: 5,
             padding: '4px 10px', borderRadius: 999,
-            border: isAuto ? '1.5px solid var(--uxu-primary)' : '1px solid var(--border)',
-            background: isAuto ? 'var(--uxu-primary-container)' : 'var(--surface-subtle)',
-            color: isAuto ? 'var(--uxu-primary)' : 'var(--text-secondary)',
+            border: isAuto ? '1.5px solid var(--uxu-primary)' : '1px solid var(--uxu-border-subtle, rgba(148,163,184,0.28))',
+            background: isAuto ? 'var(--uxu-primary-container, rgba(59,130,246,0.16))' : 'var(--uxu-surface-tonal, rgba(148,163,184,0.12))',
+            color: isAuto ? 'var(--uxu-primary)' : 'var(--uxu-text-secondary, var(--text-secondary))',
             fontSize: 11.5, fontWeight: 700, cursor: 'pointer',
           }}
         >
@@ -49,7 +49,7 @@ export const WorkspaceShellGallery: React.FC<{
         </button>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(174px, 1fr))', gap: 8 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(185px, 1fr))', gap: 10 }}>
         {WORKSPACE_SHELL_CATALOG.map((item) => {
           const isSelected = !isAuto && effectiveConcrete === item.id;
           const isEffectiveViaAuto = isAuto && effectiveConcrete === item.id;
@@ -62,23 +62,23 @@ export const WorkspaceShellGallery: React.FC<{
               style={{
                 position: 'relative', display: 'flex', flexDirection: 'column',
                 minWidth: 0, overflow: 'hidden',
-                gap: 6, padding: 9, borderRadius: 12,
-                border: isSelected || isEffectiveViaAuto ? '2px solid var(--uxu-primary)' : '1px solid var(--border)',
+                gap: 7, padding: 10, borderRadius: 12,
+                border: isSelected || isEffectiveViaAuto ? '2px solid var(--uxu-primary)' : '1px solid var(--uxu-border-subtle, rgba(148,163,184,0.25))',
                 background:
                   isSelected || isEffectiveViaAuto
-                    ? 'color-mix(in srgb, var(--uxu-primary) 7%, var(--surface))'
-                    : 'var(--surface)',
-                color: 'var(--text)', textAlign: 'left', cursor: 'pointer',
+                    ? 'color-mix(in srgb, var(--uxu-primary) 10%, var(--uxu-bg-elevated, var(--surface)))'
+                    : 'var(--uxu-surface-tonal, rgba(148,163,184,0.06))',
+                color: 'var(--uxu-text-primary, var(--text))', textAlign: 'left', cursor: 'pointer',
                 transition: 'border-color 0.14s ease, transform 0.12s ease, box-shadow 0.14s ease',
               }}
             >
               <ShellMiniThumbnail id={item.id} />
 
-              <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: 4, minWidth: 0 }}>
-                <strong style={{ fontSize: 12.5, fontWeight: 800, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '100%' }}>
+              <div style={{ display: 'flex', flexWrap: 'nowrap', alignItems: 'center', justifyContent: 'space-between', gap: 4, minWidth: 0 }}>
+                <strong style={{ fontSize: 12, fontWeight: 800, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', minWidth: 0 }}>
                   {item.name}
                 </strong>
-                <span style={{ maxWidth: '100%', overflow: 'hidden', display: 'inline-flex' }}>
+                <span style={{ flexShrink: 0, display: 'inline-flex' }}>
                   <Badge size="xs" variant="tonal" tone={isSelected || isEffectiveViaAuto ? 'primary' : 'neutral'}>
                     {item.badge}
                   </Badge>

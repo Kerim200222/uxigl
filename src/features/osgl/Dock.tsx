@@ -70,6 +70,8 @@ export function Dock({
     visibleDockApps.length + visibleRunningUnpinned.length + (overflowApps.length > 0 ? 1 : 0)
   );
   const [dragOverDock, setDragOverDock] = useState(false);
+  const [dragOverAppId, setDragOverAppId] = useState<string | null>(null);
+  const draggedAppIdRef = React.useRef<string | null>(null);
   const [overflowOpen, setOverflowOpen] = useState(false);
 
   const renderDockTooltip = (label: string) => (
@@ -159,13 +161,34 @@ export function Dock({
             type="button"
             draggable
             aria-label={app.label}
-            onDragStart={(e) => e.dataTransfer?.setData('text/osgl-app-id', app.id)}
-            onDragOver={(e) => e.preventDefault()}
+            onDragStart={(e) => {
+              draggedAppIdRef.current = app.id;
+              if (e.dataTransfer) {
+                e.dataTransfer.setData('text/osgl-app-id', app.id);
+                e.dataTransfer.effectAllowed = 'move';
+              }
+            }}
+            onDragOver={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              if (e.dataTransfer) e.dataTransfer.dropEffect = 'move';
+              if (dragOverAppId !== app.id) setDragOverAppId(app.id);
+            }}
+            onDragLeave={() => {
+              if (dragOverAppId === app.id) setDragOverAppId(null);
+            }}
+            onDragEnd={() => {
+              draggedAppIdRef.current = null;
+              setDragOverAppId(null);
+              setDragOverDock(false);
+            }}
             onDrop={(e) => {
               e.preventDefault();
               e.stopPropagation();
               setDragOverDock(false);
-              const draggedId = e.dataTransfer?.getData('text/osgl-app-id');
+              setDragOverAppId(null);
+              const draggedId = e.dataTransfer?.getData('text/osgl-app-id') || draggedAppIdRef.current;
+              draggedAppIdRef.current = null;
               if (draggedId && onReorderDock) onReorderDock(draggedId, app.id);
             }}
             onContextMenu={(e) => {
@@ -185,6 +208,8 @@ export function Dock({
               backdropFilter: dockSurf.backdropFilter,
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               cursor: 'pointer', color: dockSurf.color,
+              outline: dragOverAppId === app.id ? `2px solid ${primaryColor}` : undefined,
+              outlineOffset: dragOverAppId === app.id ? 2 : undefined,
               boxShadow: '0 8px 18px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.4)',
               transition: 'width 0.1s ease-out, height 0.1s ease-out, border-radius 0.1s ease-out',
               flexShrink: 0,

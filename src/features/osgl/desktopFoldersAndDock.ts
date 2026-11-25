@@ -256,10 +256,18 @@ export function reorderDockPinnedApps(
   targetAppId: string
 ): string[] {
   if (!draggedAppId || draggedAppId === targetAppId) return currentIds;
-  const without = currentIds.filter((id) => id !== draggedAppId);
-  const targetIdx = without.indexOf(targetAppId);
-  if (targetIdx < 0) return [...without, draggedAppId];
-  const next = [...without];
-  next.splice(targetIdx, 0, draggedAppId);
+  const fromIdx = currentIds.indexOf(draggedAppId);
+  const toIdx = currentIds.indexOf(targetAppId);
+  if (fromIdx < 0) {
+    const without = currentIds.filter((id) => id !== draggedAppId);
+    if (toIdx < 0) return [...without, draggedAppId];
+    const next = [...without];
+    next.splice(toIdx, 0, draggedAppId);
+    return next;
+  }
+  if (toIdx < 0 || fromIdx === toIdx) return currentIds;
+  const next = [...currentIds];
+  const [moved] = next.splice(fromIdx, 1);
+  next.splice(toIdx, 0, moved);
   return next;
 }

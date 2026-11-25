@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { FolderOpen } from 'lucide-react';
 import { GoogleIcon } from '../../components/primitives';
 import {
@@ -130,7 +130,9 @@ export function DesktopFolderTile({
           background: isDark
             ? `linear-gradient(145deg, color-mix(in srgb, ${accent} 28%, rgba(30,41,59,0.78)), rgba(15,23,42,0.72))`
             : `linear-gradient(145deg, color-mix(in srgb, ${accent} 22%, rgba(255,255,255,0.82)), rgba(255,255,255,0.62))`,
-          border: `1.5px solid color-mix(in srgb, ${accent} 48%, rgba(255,255,255,0.52))`,
+          border: isDark
+            ? '1px solid rgba(255, 255, 255, 0.20)'
+            : '1px solid rgba(255, 255, 255, 0.55)',
           backdropFilter: 'blur(16px) saturate(165%)',
           WebkitBackdropFilter: 'blur(16px) saturate(165%)',
           display: 'flex',

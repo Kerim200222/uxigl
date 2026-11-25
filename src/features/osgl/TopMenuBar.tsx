@@ -31,6 +31,7 @@ export interface TopMenuBarProps {
   onOpenApp: (id: string) => void; onOpenGlobalThemeStudio?: () => void;
   onOpenSpotlight: () => void; onToggleMode: () => void;
   onSwitchToClassic?: () => void; isDark: boolean; effectiveIsLightBg?: boolean;
+  locale?: 'tr' | 'en' | 'ru';
 }
 
 export function TopMenuBar({
@@ -42,8 +43,14 @@ export function TopMenuBar({
   windowControlsSide = 'right', onToggleWindowControlsSide,
   dockVisible, onToggleDock, widgetsVisible, onToggleWidgets, enabledWidgets, onToggleWidgetItem,
   onCustomizeWidget, onResetWidgetPositions, onResetIcons, onCreateFolder, onOpenDockCustomizer, onOpenApp,
-  onOpenSpotlight, onToggleMode, onSwitchToClassic, isDark, effectiveIsLightBg = false,
+  onOpenSpotlight, onToggleMode, onSwitchToClassic, isDark, effectiveIsLightBg = false, locale = 'tr',
 }: TopMenuBarProps) {
+  const labels =
+    locale === 'en'
+      ? { modules: 'Modules', window: 'Window', view: 'View' }
+      : locale === 'ru'
+        ? { modules: 'Модули', window: 'Окно', view: 'Вид' }
+        : { modules: 'Modüller', window: 'Pencere', view: 'Görünüm' };
   const [openMenu, setOpenMenu] = useState<TopMenuKey>(null);
   const activeMenu: TopMenuKey = arrangeMenuOpen ? 'window' : openMenu;
   const topTextColor = effectiveIsLightBg ? '#0f172a' : '#f8fafc';
@@ -163,7 +170,7 @@ export function TopMenuBar({
                   onClick={(e) => toggleMenu('apps', e)}
                   style={menuBtnStyle(activeMenu === 'apps')}
                 >
-                  Modüller ({apps.filter((a) => a.id !== OS_THEME_STUDIO_APP_ID).length})
+                  {labels.modules} ({apps.filter((a) => a.id !== OS_THEME_STUDIO_APP_ID).length})
                 </button>
                 {activeMenu === 'apps' && (
                   <TopAppsDropdown appsByCategory={appsByCategory} isDark={isDark} dropdownStyle={dropdownStyle} onOpenApp={onOpenApp} closeAllMenus={closeAllMenus} />
@@ -180,7 +187,7 @@ export function TopMenuBar({
                   onClick={(e) => toggleMenu('window', e)}
                   style={menuBtnStyle(activeMenu === 'window')}
                 >
-                  Pencere
+                  {labels.window}
                 </button>
                 {activeMenu === 'window' && (
                   <TopWindowDropdown
@@ -202,7 +209,7 @@ export function TopMenuBar({
                   onClick={(e) => toggleMenu('view', e)}
                   style={menuBtnStyle(activeMenu === 'view')}
                 >
-                  Görünüm
+                  {labels.view}
                 </button>
                 {activeMenu === 'view' && (
                   <TopViewDropdown

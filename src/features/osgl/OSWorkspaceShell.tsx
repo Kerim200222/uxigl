@@ -35,6 +35,7 @@ export interface OSWorkspaceShellProps {
   enableBuiltInGlobalThemeStudio?: boolean;
   defaultOpenAppIds?: string[];
   externalOpenRequest?: { appId: string; nonce: number } | null;
+  locale?: 'tr' | 'en' | 'ru';
 }
 
 export const OSWorkspaceShell: React.FC<OSWorkspaceShellProps> = ({
@@ -42,7 +43,7 @@ export const OSWorkspaceShell: React.FC<OSWorkspaceShellProps> = ({
   storageScopeKey, initialWallpaper = 'dijios-oxford',
   brandLogo, brandTitle = 'uxiGL', brandSubtitle, onBrandClick, headerRightSlot, topBannerSlot,
   renderWindowContent, onSwitchToClassic, onOpenGlobalThemeStudio,
-  enableBuiltInGlobalThemeStudio = true, defaultOpenAppIds, externalOpenRequest,
+  enableBuiltInGlobalThemeStudio = true, defaultOpenAppIds, externalOpenRequest, locale = 'tr',
 }) => {
   const effectiveWidgets = useMemo<OSDesktopWidgetDefinition[]>(() => {
     const base = widgets ?? (includeDefaultWidgets ? createDefaultOSGLWidgets({ storageScopeKey }) : []);
@@ -186,6 +187,7 @@ export const OSWorkspaceShell: React.FC<OSWorkspaceShellProps> = ({
         onOpenApp={os.openApp} onOpenGlobalThemeStudio={handleOpenGlobalThemeStudio}
         onOpenSpotlight={() => setSpotlightOpen(true)} onToggleMode={os.theme.toggleMode}
         onSwitchToClassic={onSwitchToClassic} isDark={os.isDark} effectiveIsLightBg={os.effectiveIsLightBg}
+        locale={locale}
       />
 
       {topBannerSlot && <div style={{ position: 'relative', zIndex: 1990 }}>{topBannerSlot}</div>}

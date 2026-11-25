@@ -129,17 +129,7 @@ export function TopMenuBar({
             gap: 10,
             color: topTextColor,
             textShadow: topTextShadow,
-            background: effectiveIsLightBg
-              ? 'linear-gradient(180deg, rgba(255, 255, 255, 0.56) 0%, rgba(255, 255, 255, 0.28) 72%, rgba(255, 255, 255, 0.12) 100%)'
-              : 'linear-gradient(180deg, rgba(8, 13, 26, 0.48) 0%, rgba(8, 13, 26, 0.22) 72%, rgba(8, 13, 26, 0.08) 100%)',
-            backdropFilter: 'blur(24px) saturate(185%)',
-            WebkitBackdropFilter: 'blur(24px) saturate(185%)',
-            borderBottom: effectiveIsLightBg
-              ? '1px solid rgba(15, 23, 42, 0.08)'
-              : '1px solid rgba(255, 255, 255, 0.10)',
-            boxShadow: effectiveIsLightBg
-              ? '0 4px 18px rgba(15, 23, 42, 0.04)'
-              : '0 4px 20px rgba(2, 6, 23, 0.16)',
+            background: 'linear-gradient(180deg, rgba(0, 0, 0, 0.36) 0%, rgba(0, 0, 0, 0.14) 65%, rgba(0, 0, 0, 0) 100%)',
             zIndex: 2200,
             flexShrink: 0,
           } as React.CSSProperties

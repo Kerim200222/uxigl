@@ -134,7 +134,9 @@ export function ItemContextMenu({
         icon={<ExternalLink size={14} />}
         label={
           batchIds.length > 1
-            ? `Seçilenleri Aç (${batchIds.length})`
+            ? batchIds.length > 6
+              ? `Seçilenleri Aç (İlk 6 / ${batchIds.length})`
+              : `Seçilenleri Aç (${batchIds.length})`
             : openWin
               ? openWin.minimized
                 ? 'Pencereyi Göster'
@@ -142,7 +144,7 @@ export function ItemContextMenu({
               : 'Modülü Aç'
         }
         onClick={() => {
-          batchIds.forEach((id) => onOpenApp(id));
+          batchIds.slice(0, 6).forEach((id) => onOpenApp(id));
           onCloseMenu();
         }}
       />

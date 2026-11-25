@@ -15,6 +15,8 @@ import {
   type SnapZone,
 } from './windowGeometry';
 
+export const MAX_OPEN_WINDOWS = 8;
+
 export function sanitizePersistedWindows(params: {
   rawWindows?: FloatingWindowState[];
   allowedIds: Set<string>;
@@ -27,6 +29,7 @@ export function sanitizePersistedWindows(params: {
   const upgradeMaximized = (winMaxVer ?? 0) < CURRENT_WINDOW_MAX_VERSION;
   return rawWindows
     .filter((w) => allowedIds.has(w.appId))
+    .slice(-MAX_OPEN_WINDOWS)
     .map((w) => {
       const next =
         upgradeMaximized && w.appId !== OS_THEME_STUDIO_APP_ID && !w.maximized
@@ -90,7 +93,18 @@ export function buildOpenedWindowList(params: {
     params.vw,
     params.vh
   );
-  return [...params.prev, newWin];
+  let baseList = params.prev;
+  if (baseList.length >= MAX_OPEN_WINDOWS) {
+    // Evict the oldest/lowest-priority background window (minimized first, then lowest zIndex)
+    const sorted = [...baseList].sort((a, b) => {
+      if (a.minimized !== b.minimized) return a.minimized ? -1 : 1;
+      return a.zIndex - b.zIndex;
+    });
+    const evictCount = baseList.length - MAX_OPEN_WINDOWS + 1;
+    const evictIds = new Set(sorted.slice(0, evictCount).map((w) => w.id));
+    baseList = baseList.filter((w) => !evictIds.has(w.id));
+  }
+  return [...baseList, newWin];
 }
 
 export function buildSideBySideWindowList(params: {

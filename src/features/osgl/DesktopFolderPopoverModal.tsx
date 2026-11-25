@@ -1,6 +1,6 @@
 ﻿import { useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { FolderOutput, Plus, Trash2, X } from 'lucide-react';
+import { FolderOutput, Plus, Settings, Trash2, X } from 'lucide-react';
 import { GoogleIcon } from '../../components/primitives';
 import { FOLDER_COLOR_PRESETS } from './desktopFoldersAndDock';
 import { FolderAppCatalogEditor } from './FolderAppCatalogEditor';
@@ -27,6 +27,7 @@ export function DesktopFolderPopoverModal({
   onDissolveFolder: (folderId: string) => void;
 }) {
   const [editingApps, setEditingApps] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
   const [titleDraft, setTitleDraft] = useState(folder?.name ?? '');
   const [filterText, setFilterText] = useState('');
   const [draggingAppId, setDraggingAppId] = useState<string | null>(null);
@@ -36,6 +37,7 @@ export function DesktopFolderPopoverModal({
     if (folder) {
       setTitleDraft(folder.name);
       setEditingApps(folder.appIds.length === 0);
+      setSettingsOpen(false);
       setFilterText('');
       setDraggingAppId(null);
       setOutsideHover(false);
@@ -59,6 +61,22 @@ export function DesktopFolderPopoverModal({
 
   if (!folder) return null;
   const accent = folder.color || primaryColor;
+  const vw = typeof window !== 'undefined' ? window.innerWidth : 1280;
+  const vh = typeof window !== 'undefined' ? window.innerHeight : 800;
+  const popoverW = Math.min(360, vw - 24);
+  const anchorEl =
+    typeof document !== 'undefined'
+      ? document.querySelector(`[data-osgl-folder-id="${folder.id}"]`)
+      : null;
+  const anchorRect = anchorEl?.getBoundingClientRect();
+  const leftPos = anchorRect
+    ? anchorRect.right + 12 + popoverW <= vw - 12
+      ? anchorRect.right + 12
+      : Math.max(12, anchorRect.left - popoverW - 12)
+    : Math.round((vw - popoverW) / 2);
+  const topPos = anchorRect
+    ? Math.max(44, Math.min(vh - 380, anchorRect.top))
+    : Math.round((vh - 340) / 2);
 
   const modal = (
     <div
@@ -91,17 +109,16 @@ export function DesktopFolderPopoverModal({
       }}
       style={{
         position: 'fixed', inset: 0, zIndex: 2300,
-        background: outsideHover ? 'rgba(14, 165, 233, 0.16)' : 'rgba(15, 23, 42, 0.34)',
-        backdropFilter: draggingAppId ? 'blur(3px)' : 'blur(8px)',
+        background: outsideHover ? 'rgba(14, 165, 233, 0.12)' : 'transparent',
         boxShadow: outsideHover ? `inset 0 0 0 3px ${accent}` : 'none',
-        display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-        gap: 12, padding: 20, transition: 'background 0.15s ease, box-shadow 0.15s ease',
+        transition: 'background 0.15s ease, box-shadow 0.15s ease',
       }}
     >
       {draggingAppId && (
         <div
           data-testid="folder-drag-out-banner"
           style={{
+            position: 'fixed', top: 52, left: '50%', transform: 'translateX(-50%)',
             display: 'inline-flex', alignItems: 'center', gap: 8,
             padding: '7px 16px', borderRadius: 999,
             background: outsideHover ? accent : 'rgba(15, 23, 42, 0.88)',
@@ -133,86 +150,113 @@ export function DesktopFolderPopoverModal({
           setOutsideHover(false);
         }}
         style={{
-          width: 'min(660px, 94vw)', maxHeight: '80vh', borderRadius: 24,
-          background: isDark ? 'rgba(15, 23, 42, 0.88)' : 'rgba(255, 255, 255, 0.90)',
+          position: 'fixed', left: leftPos, top: topPos,
+          width: popoverW, maxHeight: 'min(420px, 72vh)', borderRadius: 18,
+          background: isDark ? 'rgba(15, 23, 42, 0.90)' : 'rgba(255, 255, 255, 0.92)',
           color: isDark ? '#f8fafc' : '#0f172a',
-          backdropFilter: 'blur(28px) saturate(175%)',
-          border: `1.5px solid color-mix(in srgb, ${accent} 42%, rgba(255,255,255,0.28))`,
-          boxShadow: '0 28px 72px rgba(0, 0, 0, 0.42)',
+          backdropFilter: 'blur(26px) saturate(175%)',
+          WebkitBackdropFilter: 'blur(26px) saturate(175%)',
+          border: `1px solid color-mix(in srgb, ${accent} 32%, rgba(255,255,255,0.22))`,
+          boxShadow: '0 22px 56px rgba(0, 0, 0, 0.38)',
           display: 'flex', flexDirection: 'column', overflow: 'hidden',
         }}
       >
         <div
           style={{
-            display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10,
-            padding: '14px 18px', borderBottom: isDark ? '1px solid rgba(255,255,255,0.12)' : '1px solid rgba(15,23,42,0.10)',
-            flexWrap: 'wrap',
+            display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8,
+            padding: '10px 12px', borderBottom: isDark ? '1px solid rgba(255,255,255,0.10)' : '1px solid rgba(15,23,42,0.08)',
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, flex: 1, minWidth: 200 }}>
-            <input
-              type="text"
-              aria-label="Klasör Adını Düzenle"
-              value={titleDraft}
-              onChange={(e) => setTitleDraft(e.target.value)}
-              onBlur={() => onRenameFolder(folder.id, titleDraft || folder.name)}
-              onKeyDown={(e) => { if (e.key === 'Enter') (e.target as HTMLInputElement).blur(); }}
+          <input
+            type="text"
+            aria-label="Klasör Adını Düzenle"
+            value={titleDraft}
+            onChange={(e) => setTitleDraft(e.target.value)}
+            onBlur={() => onRenameFolder(folder.id, titleDraft || folder.name)}
+            onKeyDown={(e) => { if (e.key === 'Enter') (e.target as HTMLInputElement).blur(); }}
+            style={{
+              fontSize: 14, fontWeight: 800, background: 'transparent',
+              border: '1px solid transparent', borderRadius: 6, padding: '2px 6px',
+              color: 'inherit', outline: 'none', flex: 1, minWidth: 0,
+            }}
+          />
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: 5, flexShrink: 0 }}>
+            <button
+              type="button"
+              aria-label="Klasör Ayarları"
+              title="Klasör Ayarları"
+              onClick={() => setSettingsOpen((v) => !v)}
               style={{
-                fontSize: 16.5, fontWeight: 800, background: 'transparent',
-                border: '1px solid transparent', borderRadius: 8, padding: '4px 8px',
-                color: 'inherit', outline: 'none', flex: 1, minWidth: 185,
+                width: 26, height: 26, borderRadius: '50%', border: 'none', cursor: 'pointer',
+                background: settingsOpen ? accent : isDark ? 'rgba(255,255,255,0.10)' : 'rgba(15,23,42,0.07)',
+                color: settingsOpen ? '#ffffff' : 'inherit',
+                display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
               }}
-            />
-            <div style={{ display: 'inline-flex', gap: 5 }}>
+            >
+              <Settings size={13} />
+            </button>
+            <button
+              type="button" aria-label="Klasörü Kapat" onClick={onClose}
+              style={{
+                width: 26, height: 26, borderRadius: '50%', border: 'none', cursor: 'pointer',
+                background: isDark ? 'rgba(255,255,255,0.10)' : 'rgba(15,23,42,0.07)',
+                color: 'inherit', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+              }}
+            >
+              <X size={13} />
+            </button>
+          </div>
+        </div>
+
+        {settingsOpen && (
+          <div
+            style={{
+              display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, flexWrap: 'wrap',
+              padding: '8px 12px',
+              background: isDark ? 'rgba(255,255,255,0.04)' : 'rgba(15,23,42,0.03)',
+              borderBottom: isDark ? '1px solid rgba(255,255,255,0.08)' : '1px solid rgba(15,23,42,0.08)',
+            }}
+          >
+            <div style={{ display: 'inline-flex', gap: 5, alignItems: 'center' }}>
               {FOLDER_COLOR_PRESETS.map((hex) => (
                 <button
                   key={hex} type="button" aria-label={`Klasör rengi ${hex}`}
                   onClick={() => onRecolorFolder(folder.id, hex)}
                   style={{
-                    width: 16, height: 16, borderRadius: '50%', background: hex, padding: 0, cursor: 'pointer',
+                    width: 14, height: 14, borderRadius: '50%', background: hex, padding: 0, cursor: 'pointer',
                     border: accent === hex ? '2px solid #ffffff' : '1px solid rgba(0,0,0,0.2)',
-                    boxShadow: accent === hex ? `0 0 0 2px ${hex}` : 'none',
+                    boxShadow: accent === hex ? `0 0 0 1.5px ${hex}` : 'none',
                   }}
                 />
               ))}
             </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <button
+                type="button" onClick={() => setEditingApps((v) => !v)}
+                style={{
+                  display: 'inline-flex', alignItems: 'center', gap: 4, padding: '4px 9px', borderRadius: 999, border: 'none',
+                  background: editingApps ? accent : isDark ? 'rgba(255,255,255,0.12)' : 'rgba(15,23,42,0.08)',
+                  color: editingApps ? '#ffffff' : 'inherit', fontSize: 11, fontWeight: 700, cursor: 'pointer',
+                }}
+              >
+                <Plus size={12} /> {editingApps ? 'Bitti' : 'Ekle / Çıkar'}
+              </button>
+              <button
+                type="button" title="Klasörü dağıt (modülleri masaüstüne geri çıkar)"
+                onClick={() => onDissolveFolder(folder.id)}
+                style={{
+                  display: 'inline-flex', alignItems: 'center', gap: 4, padding: '4px 8px', borderRadius: 999, border: 'none',
+                  background: 'rgba(239, 68, 68, 0.14)', color: '#ef4444', fontSize: 11, fontWeight: 700, cursor: 'pointer',
+                }}
+              >
+                <Trash2 size={12} /> Dağıt
+              </button>
+            </div>
           </div>
+        )}
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            <button
-              type="button" onClick={() => setEditingApps((v) => !v)}
-              style={{
-                display: 'inline-flex', alignItems: 'center', gap: 5, padding: '6px 11px', borderRadius: 999, border: 'none',
-                background: editingApps ? accent : isDark ? 'rgba(255,255,255,0.12)' : 'rgba(15,23,42,0.08)',
-                color: editingApps ? '#ffffff' : 'inherit', fontSize: 12, fontWeight: 700, cursor: 'pointer',
-              }}
-            >
-              <Plus size={13} /> {editingApps ? 'Bitti' : 'Modül Ekle / Çıkar'}
-            </button>
-            <button
-              type="button" title="Klasörü dağıt (modülleri masaüstüne geri çıkar)"
-              onClick={() => onDissolveFolder(folder.id)}
-              style={{
-                display: 'inline-flex', alignItems: 'center', gap: 4, padding: '6px 10px', borderRadius: 999, border: 'none',
-                background: 'rgba(239, 68, 68, 0.14)', color: '#ef4444', fontSize: 12, fontWeight: 700, cursor: 'pointer',
-              }}
-            >
-              <Trash2 size={13} /> Dağıt
-            </button>
-            <button
-              type="button" aria-label="Klasörü Kapat" onClick={onClose}
-              style={{
-                width: 28, height: 28, borderRadius: '50%', border: 'none', cursor: 'pointer',
-                background: isDark ? 'rgba(255,255,255,0.10)' : 'rgba(15,23,42,0.07)',
-                color: 'inherit', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-              }}
-            >
-              <X size={14} />
-            </button>
-          </div>
-        </div>
-
-        <div style={{ padding: 18, overflowY: 'auto', flex: 1 }}>
+        <div style={{ padding: 12, overflowY: 'auto', flex: 1 }}>
           {editingApps ? (
             <FolderAppCatalogEditor
               folder={folder} filteredCatalog={filteredCatalog}
@@ -220,12 +264,12 @@ export function DesktopFolderPopoverModal({
               isDark={isDark} accent={accent} onSetFolderApps={onSetFolderApps}
             />
           ) : folderApps.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: '28px 12px', opacity: 0.78, fontSize: 13 }}>
-              Bu klasörde henüz modül yok. Masaüstünden sürükleyip bırakabilir veya yukarıdan <strong>Modül Ekle / Çıkar</strong> diyebilirsiniz.
+            <div style={{ textAlign: 'center', padding: '20px 10px', opacity: 0.78, fontSize: 12 }}>
+              Bu klasörde henüz modül yok. Ayarlardan modül ekleyebilirsiniz.
             </div>
           ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(110px, 1fr))', gap: 14 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(76px, 1fr))', gap: 8 }}>
                 {folderApps.map((app) => {
                   const surf = resolveIconSurface(
                     app, iconBgStyle, primaryColor, isDark, iconColor, iconBgColor, iconGradColor1, iconGradColor2

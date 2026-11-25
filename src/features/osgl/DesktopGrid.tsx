@@ -68,7 +68,7 @@ export function DesktopGrid({
   const cellWidth = iconBoxSize + 40;
   const availableGridHeight = Math.max(cellHeight, viewportSize.h - 156);
   const rowsPerColumn = Math.max(1, Math.floor((availableGridHeight + 8) / (cellHeight + 8)));
-  const colsCount = Math.max(4, Math.floor((viewportSize.w - 36) / (cellWidth + 12)));
+  const colsCount = Math.max(4, Math.floor((viewportSize.w - 48 + 12) / (cellWidth + 12)));
   const totalGridSlots = Math.max(apps.length + folders.length, rowsPerColumn * colsCount);
 
   const slotToOccupant = useMemo(

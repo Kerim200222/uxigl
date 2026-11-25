@@ -29,6 +29,8 @@ export interface OSWorkspaceApp {
   googleIcon: string;
   /** Optional custom React icon node if host prefers Lucide/custom SVG */
   iconNode?: React.ReactNode;
+  /** Optional compact action buttons rendered on the window titlebar next to window controls */
+  headerActions?: React.ReactNode;
   badge?: string;
   category: string;
   gradient: string;

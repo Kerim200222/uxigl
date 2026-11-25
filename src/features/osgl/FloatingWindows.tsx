@@ -218,6 +218,15 @@ export function FloatingWindows({
                   </span>
                 </div>
               </div>
+              {app.headerActions && (
+                <div
+                  onPointerDown={(e) => e.stopPropagation()}
+                  onDoubleClick={(e) => e.stopPropagation()}
+                  style={{ display: 'inline-flex', alignItems: 'center', gap: 6, flexShrink: 0 }}
+                >
+                  {app.headerActions}
+                </div>
+              )}
               {windowControlsSide !== 'left' && (
                 <TrafficLights
                   side="right"

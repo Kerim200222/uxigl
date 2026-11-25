@@ -1,4 +1,4 @@
-﻿import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { FolderOutput, Plus, Settings, Trash2, X } from 'lucide-react';
 import { GoogleIcon } from '../../components/primitives';
@@ -299,7 +299,9 @@ export function DesktopFolderPopoverModal({
                           boxShadow: '0 8px 18px rgba(0,0,0,0.24)',
                         }}
                       >
-                        <GoogleIcon name={app.googleIcon} size={28} />
+                        <span className="osgl-folder-popover-glyph" style={{ width: 32, height: 32, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', pointerEvents: 'none' }}>
+                          {app.iconNode ?? <GoogleIcon name={app.googleIcon} size={28} />}
+                        </span>
                       </button>
                       <button
                         type="button" title="Masaüstüne Çıkar" aria-label={`${app.label} modülünü masaüstüne çıkar`}

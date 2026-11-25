@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { GripHorizontal } from 'lucide-react';
 import type {
   OSDesktopWidgetDefinition,
@@ -33,6 +33,17 @@ export function DesktopWidgetsHost({
   onOpenApp: (id: string) => void;
   onOpenSideBySide: (leftAppId: string, rightAppId: string) => void;
 }) {
+  const [maximizedId, setMaximizedId] = React.useState<string | null>(null);
+
+  React.useEffect(() => {
+    if (!maximizedId) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setMaximizedId(null);
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [maximizedId]);
+
   const {
     draggingId, dragPreviewPos, resizingId, resizePreviewSize,
     handlePointerDown, handlePointerMove, handlePointerUp,
@@ -73,15 +84,20 @@ export function DesktopWidgetsHost({
     });
 
   const resolved = resolveWidgetOverlaps(
-    visible.map((v) => ({ id: v.def.id, pos: v.pos, size: v.size, locked: v.isDragging || v.isResizing })),
+    visible
+      .filter((v) => v.def.id !== maximizedId)
+      .map((v) => ({ id: v.def.id, pos: v.pos, size: v.size, locked: v.isDragging || v.isResizing })),
     viewportSize.h
   );
 
   return (
     <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 2, overflow: 'hidden' }}>
       {visible.map(({ def, isDragging, isResizing, rawSize }) => {
-        const basePos = resolved[def.id];
-        const size = clampWidgetSize(rawSize.width, rawSize.height, basePos.x, basePos.y, viewportSize.w, viewportSize.h);
+        const isMaximized = maximizedId === def.id;
+        const basePos = isMaximized ? { x: 12, y: 12 } : (resolved[def.id] ?? { x: 20, y: 20 });
+        const size = isMaximized
+          ? { width: Math.max(220, viewportSize.w - 24), height: Math.max(96, viewportSize.h - 24) }
+          : clampWidgetSize(rawSize.width, rawSize.height, basePos.x, basePos.y, viewportSize.w, viewportSize.h);
         const scale = Math.max(0.85, Math.min(2.1, Math.min(size.width / def.defaultSize.width, size.height / def.defaultSize.height)));
         const prefs = widgetUserPrefs[def.id];
         const effectiveAccent = prefs?.accentHex || primaryColor;
@@ -119,18 +135,28 @@ export function DesktopWidgetsHost({
               data-desktop-widget={def.id}
               aria-label={locale === 'tr' ? def.labelTr : def.labelEn ?? def.labelTr}
               onMouseDown={(e) => e.stopPropagation()}
+              onDoubleClick={(e) => {
+                const target = e.target as HTMLElement | null;
+                if (target?.closest('button, a, input, select, textarea, [data-widget-resize="true"]')) return;
+                e.stopPropagation();
+                setMaximizedId((prev) => (prev === def.id ? null : def.id));
+              }}
               onContextMenu={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
                 onOpenCustomize?.(def.id, e.clientX, e.clientY);
               }}
-              onPointerDown={(e) => handlePointerDown(e, def, basePos, size)}
+              onPointerDown={(e) => {
+                if (isMaximized) return;
+                handlePointerDown(e, def, basePos, size);
+              }}
               onPointerMove={handlePointerMove}
               onPointerUp={handlePointerUp}
               style={{
                 position: 'absolute', left: 0, top: 0, width: size.width, height: size.height,
                 transform: `translate3d(${basePos.x}px, ${basePos.y}px, 0)`,
-                pointerEvents: 'auto', cursor: isDragging ? 'grabbing' : 'grab',
+                zIndex: isMaximized ? 20 : undefined,
+                pointerEvents: 'auto', cursor: isMaximized ? 'default' : isDragging ? 'grabbing' : 'grab',
                 userSelect: isDragging || isResizing ? 'none' : undefined,
                 opacity: isDragging ? 0.92 : 1,
                 transition: isDragging || isResizing

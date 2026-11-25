@@ -11,7 +11,7 @@ import {
 import type { SnapZone } from './windowGeometry';
 
 export interface TopMenuBarProps {
-  brandLogo?: React.ReactNode; brandTitle?: string; brandSubtitle?: string;
+  brandLogo?: React.ReactNode; brandTitle?: string; brandSubtitle?: string; onBrandClick?: () => void;
   headerRightSlot?: React.ReactNode; apps: OSWorkspaceApp[]; widgets: OSDesktopWidgetDefinition[];
   showMobileLayout: boolean; isMobileViewport: boolean;
   previewDevice: 'auto' | 'desktop' | 'mobile';
@@ -34,7 +34,7 @@ export interface TopMenuBarProps {
 }
 
 export function TopMenuBar({
-  brandLogo, brandTitle = 'uxiGL', brandSubtitle, headerRightSlot, apps, widgets,
+  brandLogo, brandTitle = 'uxiGL', brandSubtitle, onBrandClick, headerRightSlot, apps, widgets,
   showMobileLayout, isMobileViewport, previewDevice, setPreviewDevice,
   arrangeMenuOpen, setArrangeMenuOpen, arrangeWindows, closeAllWindows,
   activeWindowMaximized = false, activeWindowFullscreen = false,
@@ -146,7 +146,12 @@ export function TopMenuBar({
         }
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: 6, minWidth: 0, overflow: 'visible' }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '2px 6px 2px 2px', marginRight: 2, minWidth: 0 }}>
+          <div
+            onClick={onBrandClick ? (e) => { e.stopPropagation(); onBrandClick(); } : undefined}
+            role={onBrandClick ? 'button' : undefined}
+            tabIndex={onBrandClick ? 0 : undefined}
+            style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '2px 6px 2px 2px', marginRight: 2, minWidth: 0, cursor: onBrandClick ? 'pointer' : undefined }}
+          >
             {brandLogo}
             <span style={{ fontWeight: 800, fontSize: 13.5, letterSpacing: '-0.015em', whiteSpace: 'nowrap' }}>{brandTitle}</span>
             {brandSubtitle && !showMobileLayout && (

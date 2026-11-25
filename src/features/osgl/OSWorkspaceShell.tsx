@@ -26,7 +26,7 @@ export interface OSWorkspaceShellProps {
   /** When widgets prop is omitted, automatically includes the 6 built-in OSGL desktop widgets (default: true) */
   includeDefaultWidgets?: boolean;
   storageScopeKey?: string; initialWallpaper?: OSWallpaperId; brandLogo?: React.ReactNode;
-  brandTitle?: string; brandSubtitle?: string; headerRightSlot?: React.ReactNode;
+  brandTitle?: string; brandSubtitle?: string; onBrandClick?: () => void; headerRightSlot?: React.ReactNode;
   topBannerSlot?: React.ReactNode;
   /** Optional window content renderer; falls back to app.render?.() ?? app.element */
   renderWindowContent?: (appId: string) => React.ReactNode;
@@ -40,7 +40,7 @@ export interface OSWorkspaceShellProps {
 export const OSWorkspaceShell: React.FC<OSWorkspaceShellProps> = ({
   apps, dockAppIds, widgets, extraWidgets = [], includeDefaultWidgets = true,
   storageScopeKey, initialWallpaper = 'dijios-oxford',
-  brandLogo, brandTitle = 'uxiGL', brandSubtitle, headerRightSlot, topBannerSlot,
+  brandLogo, brandTitle = 'uxiGL', brandSubtitle, onBrandClick, headerRightSlot, topBannerSlot,
   renderWindowContent, onSwitchToClassic, onOpenGlobalThemeStudio,
   enableBuiltInGlobalThemeStudio = true, defaultOpenAppIds, externalOpenRequest,
 }) => {
@@ -149,7 +149,7 @@ export const OSWorkspaceShell: React.FC<OSWorkspaceShellProps> = ({
       )}
 
       <TopMenuBar
-        brandLogo={brandLogo} brandTitle={brandTitle} brandSubtitle={brandSubtitle}
+        brandLogo={brandLogo} brandTitle={brandTitle} brandSubtitle={brandSubtitle} onBrandClick={onBrandClick}
         headerRightSlot={headerRightSlot} apps={os.allApps} widgets={effectiveWidgets}
         showMobileLayout={os.showMobileLayout} isMobileViewport={os.isMobileViewport}
         previewDevice={os.previewDevice} setPreviewDevice={os.setPreviewDevice}

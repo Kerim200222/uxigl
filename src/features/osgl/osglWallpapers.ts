@@ -135,7 +135,8 @@ export function startOSWebGLWallpaper(
   canvas: HTMLCanvasElement,
   getPalette: () => WallpaperPalette,
   getIsDark: () => boolean = () => false,
-  onReady?: (active: boolean) => void
+  onReady?: (active: boolean) => void,
+  isPaused?: () => boolean
 ): () => void {
   const gl =
     canvas.getContext('webgl2', { antialias: false, powerPreference: 'high-performance' }) ||
@@ -196,13 +197,20 @@ export function startOSWebGLWallpaper(
   let rafId = 0;
   let lastW = 0;
   let lastH = 0;
+  let lastFrameTime = 0;
   const start = performance.now();
   onReady?.(true);
 
   const render = (now: number) => {
-    const dpr = Math.min(window.devicePixelRatio || 1, 1.25);
-    const w = Math.floor(canvas.clientWidth * dpr);
-    const h = Math.floor(canvas.clientHeight * dpr);
+    rafId = requestAnimationFrame(render);
+    if (typeof document !== 'undefined' && document.hidden) return;
+    if (isPaused?.()) return;
+    if (now - lastFrameTime < 45) return;
+    lastFrameTime = now;
+
+    // 0.25x resolution scale: GPU bilinear upscale gives smooth gradients at ~94% less fragment cost
+    const w = Math.max(320, Math.floor(canvas.clientWidth * 0.25));
+    const h = Math.max(180, Math.floor(canvas.clientHeight * 0.25));
     if (w > 0 && h > 0 && (w !== lastW || h !== lastH)) {
       canvas.width = w;
       canvas.height = h;
@@ -219,7 +227,6 @@ export function startOSWebGLWallpaper(
     gl.uniform3fv(uColorC, pal.colorC);
     gl.uniform3fv(uColorBg, pal.colorBg);
     gl.drawArrays(gl.TRIANGLES, 0, 6);
-    rafId = requestAnimationFrame(render);
   };
 
   rafId = requestAnimationFrame(render);

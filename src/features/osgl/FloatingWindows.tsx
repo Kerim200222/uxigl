@@ -141,6 +141,7 @@ export function FloatingWindows({
                       ? `0 22px 60px rgba(0, 0, 0, 0.36), inset 0 1px 0 ${paletteTokens.surfaceTonal}`
                       : `0 14px 36px rgba(0, 0, 0, 0.22)`,
                 transition: 'border-color 0.18s ease, box-shadow 0.22s ease',
+                contain: 'layout style',
                 display: 'flex',
                 flexDirection: 'column',
                 color: paletteTokens.textPrimary,

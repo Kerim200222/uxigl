@@ -49,6 +49,8 @@ export function DesktopGrid({
 
   const marqueeRef = useRef<{ startX: number; startY: number; active: boolean } | null>(null);
   const desktopIconRefs = useRef<Record<string, HTMLButtonElement | null>>({});
+  const cachedIconRectsRef = useRef<Array<{ id: string; rect: DOMRect }>>([]);
+  const lastHitsRef = useRef<string[]>([]);
 
   const iconBoxSize = Math.max(44, Math.min(84, iconSizePx));
   const iconGlyphSize = Math.round(iconBoxSize * 0.56);
@@ -100,6 +102,10 @@ export function DesktopGrid({
       'button, input, [data-osgl-folder-id], [data-macos-window="true"], [data-macos-dock="true"], [data-macos-context="true"], [data-desktop-widget]'
     )) return;
     setSelectedAppIds([]);
+    lastHitsRef.current = [];
+    cachedIconRectsRef.current = Object.entries(desktopIconRefs.current)
+      .filter((entry): entry is [string, HTMLButtonElement] => Boolean(entry[1]))
+      .map(([id, el]) => ({ id, rect: el.getBoundingClientRect() }));
     marqueeRef.current = { startX: e.clientX, startY: e.clientY, active: true };
   };
 
@@ -114,18 +120,21 @@ export function DesktopGrid({
     const box = { left, top, width, height };
     setSelectionBox(box);
     const hits: string[] = [];
-    Object.entries(desktopIconRefs.current).forEach(([id, el]) => {
-      if (!el) return;
-      const r = el.getBoundingClientRect();
+    for (const { id, rect: r } of cachedIconRectsRef.current) {
       if (!(r.right < box.left || r.left > box.left + box.width || r.bottom < box.top || r.top > box.top + box.height)) {
         hits.push(id);
       }
-    });
-    setSelectedAppIds(hits);
+    }
+    const prev = lastHitsRef.current;
+    if (hits.length !== prev.length || hits.some((id, i) => id !== prev[i])) {
+      lastHitsRef.current = hits;
+      setSelectedAppIds(hits);
+    }
   };
 
   const handlePointerUp = () => {
     if (marqueeRef.current) { marqueeRef.current.active = false; marqueeRef.current = null; }
+    cachedIconRectsRef.current = [];
     setSelectionBox(null);
   };
 

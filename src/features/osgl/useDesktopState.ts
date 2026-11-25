@@ -260,13 +260,17 @@ export function useDesktopState({
     windowMgr.windows, windowMgr.windowBoundsByApp, windowMgr.topZ,
   ]);
 
-  const useWebGLAurora = bgMode === 'aurora' && qualityMode === 'quality';
+  const useWebGLAurora = bgMode === 'aurora' && qualityMode === 'quality' && !theme.preferences.reducedMotion;
+  const hasExpandedWindowRef = useRef(false);
+  hasExpandedWindowRef.current = windowMgr.windows.some((w) => !w.minimized && (w.maximized || w.fullscreen));
   useEffect(() => {
     if (!canvasRef.current || !useWebGLAurora) return;
     return startOSWebGLWallpaper(
       canvasRef.current,
       () => OS_WALLPAPERS[wallpaperRef.current] ?? OS_WALLPAPERS['dijios-oxford'],
-      () => isDarkRef.current
+      () => isDarkRef.current,
+      undefined,
+      () => hasExpandedWindowRef.current
     );
   }, [useWebGLAurora]);
 

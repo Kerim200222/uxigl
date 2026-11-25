@@ -201,12 +201,19 @@ export function FloatingWindows({
                 <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', opacity: 0.92, flexShrink: 0 }}>
                   {app.iconNode ?? <GoogleIcon name={app.googleIcon} size={16} />}
                 </span>
-                <span style={{ fontSize: 13, fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                  {app.label}
-                </span>
-                <Badge size="sm" variant="tonal" tone="info">
-                  {app.category}
-                </Badge>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6, minWidth: 0, overflow: 'hidden' }}>
+                  {app.category && (
+                    <>
+                      <span style={{ fontSize: 12, fontWeight: 500, opacity: 0.62, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                        {app.category}
+                      </span>
+                      <span style={{ fontSize: 12, opacity: 0.4, flexShrink: 0 }} aria-hidden="true">/</span>
+                    </>
+                  )}
+                  <span style={{ fontSize: 13, fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    {app.label}
+                  </span>
+                </div>
               </div>
               {windowControlsSide !== 'left' && (
                 <TrafficLights

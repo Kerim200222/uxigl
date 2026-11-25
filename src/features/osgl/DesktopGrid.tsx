@@ -176,7 +176,8 @@ export function DesktopGrid({
         style={{
           display: 'grid', gridAutoFlow: 'column',
           gridTemplateRows: `repeat(${rowsPerColumn}, ${cellHeight}px)`,
-          gridTemplateColumns: `repeat(${colsCount}, ${cellWidth}px)`,
+          gridTemplateColumns: `repeat(${colsCount}, minmax(0, 1fr))`,
+          justifyItems: 'center',
           gap: '8px 12px', padding: '6px 4px', width: '100%',
           height: availableGridHeight + 12, overflow: 'hidden',
         }}

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { createElement, useEffect, useMemo, useRef, useState } from 'react';
 import { useTheme } from '../../providers/ThemeProvider';
 import { useToast } from '../../providers/ToastProvider';
 import {
@@ -33,6 +33,40 @@ import {
 } from './stateMigration';
 
 export { computeDesktopAppearance };
+
+function readImageFileAsDataUrl(file: File, maxDim: number, preferPng = false): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = () => reject(new Error('Dosya okunamadı'));
+    reader.onload = () => {
+      const rawUrl = String(reader.result || '');
+      if (file.type === 'image/svg+xml' || !rawUrl.startsWith('data:image/')) {
+        resolve(rawUrl);
+        return;
+      }
+      const img = new Image();
+      img.onerror = () => resolve(rawUrl);
+      img.onload = () => {
+        const scale = Math.min(1, maxDim / Math.max(img.width || 1, img.height || 1));
+        const w = Math.max(1, Math.round(img.width * scale));
+        const h = Math.max(1, Math.round(img.height * scale));
+        const canvas = document.createElement('canvas');
+        canvas.width = w;
+        canvas.height = h;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) {
+          resolve(rawUrl);
+          return;
+        }
+        ctx.drawImage(img, 0, 0, w, h);
+        const mime = preferPng || file.type === 'image/png' ? 'image/png' : 'image/jpeg';
+        resolve(canvas.toDataURL(mime, 0.88));
+      };
+      img.src = rawUrl;
+    };
+    reader.readAsDataURL(file);
+  });
+}
 
 export function useDesktopState({
   apps,
@@ -82,6 +116,7 @@ export function useDesktopState({
   const [bgGradColor2, setBgGradColor2] = useState<string>(savedState?.bgGradColor2 ?? '#457b9d');
   const [customBgUrl, setCustomBgUrl] = useState(savedState?.customBgUrl ?? '');
   const [uploadedBgDataUrl, setUploadedBgDataUrl] = useState<string>(savedState?.uploadedBgDataUrl ?? '');
+  const [customAppIcons, setCustomAppIcons] = useState<Record<string, string>>(savedState?.customAppIcons ?? {});
   const [qualityMode, setQualityMode] = useState<QualityMode>(savedState?.qualityMode ?? 'quality');
   const [dockVisible, setDockVisible] = useState<boolean>(savedState?.dockVisible ?? true);
   const [widgetsVisible, setWidgetsVisible] = useState<boolean>(savedState?.widgetsVisible ?? true);
@@ -247,7 +282,7 @@ export function useDesktopState({
   useEffect(() => {
     saveOSGLState(scopeKey, {
       locale, wallpaper, bgMode, solidBgColor, bgGradColor1, bgGradColor2, customBgUrl,
-      uploadedBgDataUrl, qualityMode, dockVisible, widgetsVisible, enabledWidgets,
+      uploadedBgDataUrl, customAppIcons, qualityMode, dockVisible, widgetsVisible, enabledWidgets,
       widgetPositions, widgetSizes, widgetUserPrefs, windowAnimation, windowControlsSide, iconBgStyle, iconBgColor,
       iconGradColor1, iconGradColor2, iconColor, iconSizePx, iconSlots,
       iconOrderVersion: CURRENT_ICON_ORDER_VERSION,
@@ -258,7 +293,7 @@ export function useDesktopState({
     });
   }, [
     scopeKey, locale, wallpaper, bgMode, solidBgColor, bgGradColor1, bgGradColor2, customBgUrl,
-    uploadedBgDataUrl, qualityMode, dockVisible, widgetsVisible, enabledWidgets, widgetPositions,
+    uploadedBgDataUrl, customAppIcons, qualityMode, dockVisible, widgetsVisible, enabledWidgets, widgetPositions,
     widgetSizes, widgetUserPrefs, windowAnimation, windowControlsSide, iconBgStyle, iconBgColor, iconGradColor1, iconGradColor2,
     iconColor, iconSizePx, iconSlots, foldersAndDock.folders, foldersAndDock.pinnedDockAppIds,
     windowMgr.windows, windowMgr.windowBoundsByApp, windowMgr.topZ,
@@ -292,8 +327,50 @@ export function useDesktopState({
     setIconSlots(buildResetDesktopSlots(apps, nextFolders));
   };
 
+  const applyCustomIcon = (list: OSWorkspaceApp[]) =>
+    list.map((app) =>
+      customAppIcons[app.id]
+        ? {
+            ...app,
+            iconNode: createElement('img', {
+              src: customAppIcons[app.id],
+              alt: app.label,
+              style: { width: '76%', height: '76%', objectFit: 'contain', borderRadius: 6 },
+            }),
+          }
+        : app
+    );
+
+  const resolvedApps = useMemo(() => applyCustomIcon(apps), [apps, customAppIcons]);
+  const resolvedAllApps = useMemo(() => applyCustomIcon(allApps), [allApps, customAppIcons]);
+
+  const dropImageFileOnDesktop = (file: File) => {
+    void readImageFileAsDataUrl(file, 1920, false)
+      .then((dataUrl) => {
+        setUploadedBgDataUrl(dataUrl);
+        setBgMode('image');
+        notify({ title: 'Arka Plan Güncellendi', description: file.name, tone: 'success' });
+      })
+      .catch(() => {
+        notify({ title: 'Yükleme Hatası', description: 'Görsel arka plan olarak yüklenemedi.', tone: 'danger' });
+      });
+  };
+
+  const dropImageFileOnApp = (appId: string, file: File) => {
+    void readImageFileAsDataUrl(file, 128, true)
+      .then((dataUrl) => {
+        setCustomAppIcons((prev) => ({ ...prev, [appId]: dataUrl }));
+        const appLabel = apps.find((a) => a.id === appId)?.label || appId;
+        notify({ title: 'Simge Güncellendi', description: `${appLabel} (${file.name})`, tone: 'success' });
+      })
+      .catch(() => {
+        notify({ title: 'Yükleme Hatası', description: 'Görsel simge olarak yüklenemedi.', tone: 'danger' });
+      });
+  };
+
   return {
-    desktopApps: apps, allApps, theme, locale, setLocale, isDark, paletteTokens, canvasRef, useWebGLAurora,
+    desktopApps: resolvedApps, allApps: resolvedAllApps, theme, locale, setLocale, isDark, paletteTokens, canvasRef, useWebGLAurora,
+    dropImageFileOnDesktop, dropImageFileOnApp, customAppIcons, setCustomAppIcons,
     ...appearance, showMobileLayout, isMobileViewport, previewDevice, setPreviewDevice, viewportSize,
     wallpaper, setWallpaper, bgMode, setBgMode, solidBgColor, setSolidBgColor, bgGradColor1, setBgGradColor1,
     bgGradColor2, setBgGradColor2, customBgUrl, setCustomBgUrl, uploadedBgDataUrl, setUploadedBgDataUrl,

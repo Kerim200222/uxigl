@@ -33,6 +33,8 @@ export interface DesktopGridProps {
   onOpenFolder?: (folderId: string) => void;
   onCommitRenameFolder?: (folderId: string, nextName: string) => void;
   onDropAppsIntoFolder?: (folderId: string, appIds: string[]) => void;
+  onDropImageOnDesktop?: (file: File) => void;
+  onDropImageOnApp?: (appId: string, file: File) => void;
   onOpenItemContextMenu?: (e: React.MouseEvent, kind: 'app' | 'folder', targetId: string) => void;
   children?: React.ReactNode;
 }
@@ -41,8 +43,16 @@ export function DesktopGrid({
   apps, folders = [], renamingFolderId = null, isDark, barTextColor, effectiveIsLightBg,
   primaryColor, iconBgStyle, iconBgColor, iconGradColor1, iconGradColor2, iconColor, iconSizePx,
   viewportSize, iconSlots, setIconSlots, selectedAppIds, setSelectedAppIds, windows,
-  onOpenApp, onOpenFolder, onCommitRenameFolder, onDropAppsIntoFolder, onOpenItemContextMenu, children,
+  onOpenApp, onOpenFolder, onCommitRenameFolder, onDropAppsIntoFolder, onDropImageOnDesktop, onDropImageOnApp, onOpenItemContextMenu, children,
 }: DesktopGridProps) {
+  const extractDroppedImageFile = (e: React.DragEvent): File | null => {
+    const file = e.dataTransfer?.files?.[0];
+    if (!file) return null;
+    if (file.type.startsWith('image/') || /\.(png|jpe?g|webp|gif|svg|ico)$/i.test(file.name)) {
+      return file;
+    }
+    return null;
+  };
   const [draggedSlotKey, setDraggedSlotKey] = useState<string | null>(null);
   const [dragOverSlot, setDragOverSlot] = useState<number | null>(null);
   const [selectionBox, setSelectionBox] = useState<{ left: number; top: number; width: number; height: number } | null>(null);
@@ -143,6 +153,19 @@ export function DesktopGrid({
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
+      onDragOver={(e) => {
+        if (e.dataTransfer?.types?.includes('Files')) {
+          e.preventDefault();
+        }
+      }}
+      onDrop={(e) => {
+        const imgFile = extractDroppedImageFile(e);
+        if (imgFile && onDropImageOnDesktop) {
+          e.preventDefault();
+          setDragOverSlot(null);
+          onDropImageOnDesktop(imgFile);
+        }
+      }}
       style={{
         position: 'relative', flex: 1, padding: '14px 24px 96px',
         overflow: 'hidden', userSelect: selectionBox ? 'none' : undefined,
@@ -167,12 +190,23 @@ export function DesktopGrid({
               <div
                 key={`slot-${slotIdx}`}
                 onDragOver={(e) => {
-                  if (!draggedSlotKey) return;
+                  const isFileDrag = e.dataTransfer?.types?.includes('Files');
+                  if (!draggedSlotKey && !isFileDrag) return;
                   e.preventDefault();
                   if (dragOverSlot !== slotIdx) setDragOverSlot(slotIdx);
                 }}
                 onDragLeave={() => { if (dragOverSlot === slotIdx) setDragOverSlot(null); }}
-                onDrop={(e) => { e.preventDefault(); handleDropOnSlot(slotIdx); }}
+                onDrop={(e) => {
+                  e.preventDefault();
+                  const imgFile = extractDroppedImageFile(e);
+                  if (imgFile && onDropImageOnDesktop) {
+                    e.stopPropagation();
+                    setDragOverSlot(null);
+                    onDropImageOnDesktop(imgFile);
+                    return;
+                  }
+                  handleDropOnSlot(slotIdx);
+                }}
                 style={{
                   width: cellWidth, height: cellHeight, borderRadius: 16,
                   border: isDropHighlight ? '1.5px dashed rgba(255,255,255,0.72)' : '1.5px solid transparent',
@@ -202,7 +236,17 @@ export function DesktopGrid({
                 onDragStart={() => { setSelectedAppIds([]); setDraggedSlotKey(occ.slotKey); }}
                 onDragOver={(e) => { e.preventDefault(); if (dragOverSlot !== slotIdx) setDragOverSlot(slotIdx); }}
                 onDragLeave={() => { if (dragOverSlot === slotIdx) setDragOverSlot(null); }}
-                onDrop={(e) => { e.preventDefault(); handleDropOnSlot(slotIdx); }}
+                onDrop={(e) => {
+                e.preventDefault();
+                const imgFile = extractDroppedImageFile(e);
+                if (imgFile && onDropImageOnApp) {
+                  e.stopPropagation();
+                  setDragOverSlot(null);
+                  onDropImageOnApp(app.id, imgFile);
+                  return;
+                }
+                handleDropOnSlot(slotIdx);
+              }}
                 onDragEnd={() => { setDraggedSlotKey(null); setDragOverSlot(null); }}
               />
             );
@@ -232,7 +276,17 @@ export function DesktopGrid({
               }}
               onDragOver={(e) => { e.preventDefault(); if (dragOverSlot !== slotIdx) setDragOverSlot(slotIdx); }}
               onDragLeave={() => { if (dragOverSlot === slotIdx) setDragOverSlot(null); }}
-              onDrop={(e) => { e.preventDefault(); handleDropOnSlot(slotIdx); }}
+              onDrop={(e) => {
+                e.preventDefault();
+                const imgFile = extractDroppedImageFile(e);
+                if (imgFile && onDropImageOnApp) {
+                  e.stopPropagation();
+                  setDragOverSlot(null);
+                  onDropImageOnApp(app.id, imgFile);
+                  return;
+                }
+                handleDropOnSlot(slotIdx);
+              }}
               onDragEnd={() => { setDraggedSlotKey(null); setDragOverSlot(null); }}
               onContextMenu={(e) => {
                 e.preventDefault(); e.stopPropagation();

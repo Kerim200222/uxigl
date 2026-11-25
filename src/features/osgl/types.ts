@@ -122,6 +122,7 @@ export interface PersistedOSGLState {
   bgGradColor2?: string;
   customBgUrl?: string;
   uploadedBgDataUrl?: string;
+  customAppIcons?: Record<string, string>;
   qualityMode?: QualityMode;
   dockVisible?: boolean;
   widgetsVisible?: boolean;

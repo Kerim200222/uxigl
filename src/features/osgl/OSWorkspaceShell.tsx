@@ -205,6 +205,8 @@ export const OSWorkspaceShell: React.FC<OSWorkspaceShellProps> = ({
           onOpenFolder={(folderId) => os.setOpenFolderId(folderId)}
           onCommitRenameFolder={os.renameFolder}
           onDropAppsIntoFolder={os.moveAppsToFolder}
+          onDropImageOnDesktop={os.dropImageFileOnDesktop}
+          onDropImageOnApp={os.dropImageFileOnApp}
           onOpenItemContextMenu={(e, kind, targetId) => {
             os.setContextMenu(null);
             os.setItemContextMenu({ x: e.clientX, y: e.clientY, kind, targetId });

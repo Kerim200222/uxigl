@@ -1,4 +1,4 @@
-﻿import type React from 'react';
+import type React from 'react';
 import type { OSWallpaperId } from './osglEngine';
 import type {
   WidgetCustomField,
@@ -36,6 +36,12 @@ export interface OSWorkspaceApp {
   fullBleed?: boolean;
   defaultSize?: { width: number; height: number };
   defaultMaximized?: boolean;
+  /** Optional declarative React node rendered inside the window when renderWindowContent is omitted */
+  element?: React.ReactNode;
+  /** Optional lazy render callback for the window content */
+  render?: () => React.ReactNode;
+  /** Automatically opens this module window on first visit when no persisted windows exist */
+  defaultOpen?: boolean;
 }
 
 export interface FloatingWindowState {

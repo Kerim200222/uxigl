@@ -5,8 +5,6 @@ export * from './desktopGridUtils';
 export * from './desktopFoldersAndDock';
 export * from './windowGeometry';
 export { OSWorkspaceShell, type OSWorkspaceShellProps } from './OSWorkspaceShell';
-export {
-  FocusTimerWidget,
-  FOCUS_TIMER_SIZE_PRESETS,
-  FOCUS_TIMER_CUSTOM_FIELDS,
-} from './widgets/FocusTimerWidget';
+export { OSGLApp, UXIAppShell, type OSGLAppProps } from './OSGLApp';
+export * from './stateMigration';
+export * from './widgets';

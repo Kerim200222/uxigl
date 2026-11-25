@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { CommandPalette } from '../../components/composites';
 import { ContextMenu } from './ContextMenu';
 import { DesktopFolderPopoverModal } from './DesktopFolderPopoverModal';
@@ -10,33 +10,70 @@ import { FloatingWindows } from './FloatingWindows';
 import { ItemContextMenu } from './ItemContextMenu';
 import { MobileLauncher } from './MobileLauncher';
 import { OSThemeStudioPanel } from './OSThemeStudioPanel';
+import { ThemeStudioDrawer } from '../theme-studio/ThemeStudioDrawer';
 import type { OSWallpaperId } from './osglEngine';
 import { buildSpotlightActions, OSGL_SHELL_CSS } from './osglShellStyles';
 import { TopMenuBar } from './TopMenuBar';
 import type { OSDesktopWidgetDefinition, OSWorkspaceApp } from './types';
 import { useDesktopState } from './useDesktopState';
 import { WidgetCustomizePopover } from './WidgetCustomizePopover';
+import { createDefaultOSGLWidgets } from './widgets';
 
 export interface OSWorkspaceShellProps {
   apps: OSWorkspaceApp[]; dockAppIds?: string[]; widgets?: OSDesktopWidgetDefinition[];
+  /** Extra host-specific widgets merged alongside default/custom widgets without collision */
+  extraWidgets?: OSDesktopWidgetDefinition[];
+  /** When widgets prop is omitted, automatically includes the 6 built-in OSGL desktop widgets (default: true) */
+  includeDefaultWidgets?: boolean;
   storageScopeKey?: string; initialWallpaper?: OSWallpaperId; brandLogo?: React.ReactNode;
   brandTitle?: string; brandSubtitle?: string; headerRightSlot?: React.ReactNode;
-  topBannerSlot?: React.ReactNode; renderWindowContent: (appId: string) => React.ReactNode;
+  topBannerSlot?: React.ReactNode;
+  /** Optional window content renderer; falls back to app.render?.() ?? app.element */
+  renderWindowContent?: (appId: string) => React.ReactNode;
   onSwitchToClassic?: () => void; onOpenGlobalThemeStudio?: () => void;
+  /** Automatically provides built-in ThemeStudioDrawer when onOpenGlobalThemeStudio is omitted (default: true) */
+  enableBuiltInGlobalThemeStudio?: boolean;
+  defaultOpenAppIds?: string[];
   externalOpenRequest?: { appId: string; nonce: number } | null;
 }
 
 export const OSWorkspaceShell: React.FC<OSWorkspaceShellProps> = ({
-  apps, dockAppIds, widgets = [], storageScopeKey, initialWallpaper = 'dijios-oxford',
+  apps, dockAppIds, widgets, extraWidgets = [], includeDefaultWidgets = true,
+  storageScopeKey, initialWallpaper = 'dijios-oxford',
   brandLogo, brandTitle = 'uxiGL', brandSubtitle, headerRightSlot, topBannerSlot,
-  renderWindowContent, onSwitchToClassic, onOpenGlobalThemeStudio, externalOpenRequest,
+  renderWindowContent, onSwitchToClassic, onOpenGlobalThemeStudio,
+  enableBuiltInGlobalThemeStudio = true, defaultOpenAppIds, externalOpenRequest,
 }) => {
+  const effectiveWidgets = useMemo<OSDesktopWidgetDefinition[]>(() => {
+    const base = widgets ?? (includeDefaultWidgets ? createDefaultOSGLWidgets({ storageScopeKey }) : []);
+    if (!extraWidgets.length) return base;
+    const seen = new Set(base.map((w) => w.id));
+    return [...base, ...extraWidgets.filter((w) => !seen.has(w.id))];
+  }, [widgets, includeDefaultWidgets, storageScopeKey, extraWidgets]);
+
+  const [internalStudioOpen, setInternalStudioOpen] = useState(false);
+  const handleOpenGlobalThemeStudio = onOpenGlobalThemeStudio
+    ?? (enableBuiltInGlobalThemeStudio ? () => setInternalStudioOpen(true) : undefined);
+
+  const resolvedRenderWindowContent = useMemo(() => {
+    return (appId: string): React.ReactNode => {
+      if (renderWindowContent) {
+        const custom = renderWindowContent(appId);
+        if (custom !== undefined) return custom;
+      }
+      const matched = apps.find((a) => a.id === appId);
+      if (matched?.render) return matched.render();
+      if (matched?.element !== undefined) return matched.element;
+      return null;
+    };
+  }, [renderWindowContent, apps]);
+
   const os = useDesktopState({
-    apps, dockAppIds, widgets, scopeKey: storageScopeKey, initialWallpaper,
+    apps, dockAppIds, widgets: effectiveWidgets, scopeKey: storageScopeKey, initialWallpaper, defaultOpenAppIds,
   });
   const [spotlightOpen, setSpotlightOpen] = useState(false);
   const [customizingWidget, setCustomizingWidget] = useState<{ id: string; x: number; y: number } | null>(null);
-  const activeCustomWidget = customizingWidget ? widgets.find((w) => w.id === customizingWidget.id) ?? null : null;
+  const activeCustomWidget = customizingWidget ? effectiveWidgets.find((w) => w.id === customizingWidget.id) ?? null : null;
 
   useEffect(() => {
     if (externalOpenRequest?.appId) os.openApp(externalOpenRequest.appId);
@@ -45,6 +82,7 @@ export const OSWorkspaceShell: React.FC<OSWorkspaceShellProps> = ({
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
+      if (e.defaultPrevented) return;
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault(); e.stopImmediatePropagation(); setSpotlightOpen((prev) => !prev);
       }
@@ -80,7 +118,7 @@ export const OSWorkspaceShell: React.FC<OSWorkspaceShellProps> = ({
       iconGradColor2={os.iconGradColor2} setIconGradColor2={os.setIconGradColor2} iconColor={os.iconColor} setIconColor={os.setIconColor}
       iconSizePx={os.iconSizePx} setIconSizePx={os.setIconSizePx} onResetIcons={os.resetIconSlots} onResetWidgets={os.resetWidgetPositions}
       onCreateFolder={() => os.createFolder()} onOpenDockCustomizer={() => os.setDockCustomizerOpen(true)} onResetDock={os.resetDockToDefault}
-      onSwitchToClassic={onSwitchToClassic} onOpenFullThemeStudio={onOpenGlobalThemeStudio}
+      onSwitchToClassic={onSwitchToClassic} onOpenFullThemeStudio={handleOpenGlobalThemeStudio}
     />
   );
 
@@ -96,6 +134,7 @@ export const OSWorkspaceShell: React.FC<OSWorkspaceShellProps> = ({
       }}
       style={{
         position: 'relative', width: '100%', height: '100dvh', maxHeight: '100dvh',
+        isolation: 'isolate',
         background: os.desktopBackground, color: os.barTextColor, fontFamily: 'var(--uxu-font-sans)',
         WebkitFontSmoothing: 'antialiased', overflow: 'hidden', display: 'flex', flexDirection: 'column',
       }}
@@ -111,7 +150,7 @@ export const OSWorkspaceShell: React.FC<OSWorkspaceShellProps> = ({
 
       <TopMenuBar
         brandLogo={brandLogo} brandTitle={brandTitle} brandSubtitle={brandSubtitle}
-        headerRightSlot={headerRightSlot} apps={os.allApps} widgets={widgets}
+        headerRightSlot={headerRightSlot} apps={os.allApps} widgets={effectiveWidgets}
         showMobileLayout={os.showMobileLayout} isMobileViewport={os.isMobileViewport}
         previewDevice={os.previewDevice} setPreviewDevice={os.setPreviewDevice}
         arrangeMenuOpen={os.arrangeMenuOpen} setArrangeMenuOpen={os.setArrangeMenuOpen}
@@ -134,7 +173,7 @@ export const OSWorkspaceShell: React.FC<OSWorkspaceShellProps> = ({
         onResetWidgetPositions={os.resetWidgetPositions} onResetIcons={os.resetIconSlots}
         onCreateFolder={() => os.createFolder()}
         onOpenDockCustomizer={() => os.setDockCustomizerOpen(true)}
-        onOpenApp={os.openApp} onOpenGlobalThemeStudio={onOpenGlobalThemeStudio}
+        onOpenApp={os.openApp} onOpenGlobalThemeStudio={handleOpenGlobalThemeStudio}
         onOpenSpotlight={() => setSpotlightOpen(true)} onToggleMode={os.theme.toggleMode}
         onSwitchToClassic={onSwitchToClassic} isDark={os.isDark} effectiveIsLightBg={os.effectiveIsLightBg}
       />
@@ -151,7 +190,7 @@ export const OSWorkspaceShell: React.FC<OSWorkspaceShellProps> = ({
           iconGradColor2={os.iconGradColor2} iconColor={os.iconColor} searchQuery={os.searchQuery}
           setSearchQuery={os.setSearchQuery} mobileOpenAppId={os.mobileOpenAppId}
           setMobileOpenAppId={os.setMobileOpenAppId} dockVisible={os.dockVisible}
-          onOpenApp={os.openApp} renderWindowContent={renderWindowContent} renderThemeStudio={renderThemeStudio}
+          onOpenApp={os.openApp} renderWindowContent={resolvedRenderWindowContent} renderThemeStudio={renderThemeStudio}
         />
       ) : (
         <DesktopGrid
@@ -172,11 +211,11 @@ export const OSWorkspaceShell: React.FC<OSWorkspaceShellProps> = ({
           }}
         >
           {os.widgetsVisible &&
-            widgets.length > 0 &&
+            effectiveWidgets.length > 0 &&
             !hasExpandedWindow &&
             !os.windows.some((w) => !w.minimized && w.x + w.width > os.viewportSize.w - 340) && (
               <DesktopWidgetsHost
-                widgets={widgets} locale={os.locale} isDark={os.isDark}
+                widgets={effectiveWidgets} locale={os.locale} isDark={os.isDark}
                 glassOpacity={os.glassOpacity} glassBlur={os.glassBlur} primaryColor={os.paletteTokens.primary}
                 enabledWidgets={os.enabledWidgets} widgetPositions={os.widgetPositions}
                 onMoveWidget={os.updateWidgetPosition} widgetSizes={os.widgetSizes}
@@ -195,7 +234,7 @@ export const OSWorkspaceShell: React.FC<OSWorkspaceShellProps> = ({
             dockVisible={os.dockVisible}
             onFocus={os.focusWindow} onClose={os.closeWindow} onMinimize={os.toggleMinimize}
             onMaximize={os.toggleMaximize} onFullscreen={os.toggleFullscreen} onSnapWindow={os.snapWindow}
-            renderWindowContent={renderWindowContent} renderThemeStudio={renderThemeStudio}
+            renderWindowContent={resolvedRenderWindowContent} renderThemeStudio={renderThemeStudio}
           />
 
           {os.contextMenu && (
@@ -286,6 +325,14 @@ export const OSWorkspaceShell: React.FC<OSWorkspaceShellProps> = ({
         open={spotlightOpen} onClose={() => setSpotlightOpen(false)}
         actions={spotlightActions} placeholder="Modül, pencere düzeni veya görünüm ara..."
       />
+
+      {!onOpenGlobalThemeStudio && enableBuiltInGlobalThemeStudio && (
+        <ThemeStudioDrawer
+          open={internalStudioOpen}
+          onClose={() => setInternalStudioOpen(false)}
+          defaultRoleShell="osgl"
+        />
+      )}
     </div>
   );
 };

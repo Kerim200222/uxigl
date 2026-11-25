@@ -1,4 +1,4 @@
-﻿import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTheme } from '../../providers/ThemeProvider';
 import { useToast } from '../../providers/ToastProvider';
 import {
@@ -26,6 +26,10 @@ import {
 } from './types';
 import { useFoldersAndDockState } from './useFoldersAndDockState';
 import { useWindowManager } from './useWindowManager';
+import {
+  reconcilePersistedOSGLState,
+  reconcileWidgetsOnUpgrade,
+} from './stateMigration';
 
 export { computeDesktopAppearance };
 
@@ -35,19 +39,21 @@ export function useDesktopState({
   widgets,
   scopeKey,
   initialWallpaper = 'dijios-oxford',
+  defaultOpenAppIds,
 }: {
   apps: OSWorkspaceApp[];
   dockAppIds?: string[];
   widgets: OSDesktopWidgetDefinition[];
   scopeKey?: string;
   initialWallpaper?: OSWallpaperId;
+  defaultOpenAppIds?: string[];
 }) {
   const theme = useTheme();
   const isDark = theme.resolvedMode === 'dark';
   const paletteTokens = isDark ? theme.activePalette.dark : theme.activePalette.light;
   const { notify } = useToast();
 
-  const savedState = useMemo(() => loadOSGLState(scopeKey), [scopeKey]);
+  const savedState = useMemo(() => reconcilePersistedOSGLState(loadOSGLState(scopeKey)), [scopeKey]);
 
   const allApps = useMemo<OSWorkspaceApp[]>(() => {
     if (apps.some((a) => a.id === OS_THEME_STUDIO_APP_ID)) return apps;
@@ -176,6 +182,37 @@ export function useDesktopState({
     apps: allApps, savedState, scopeKey, showMobileLayout, setMobileOpenAppId,
     windowAnimation, qualityMode, dockVisible, notify,
   });
+
+  // Open defaultOpenAppIds on first visit when no persisted windows exist
+  const initialOpenAppliedRef = useRef(false);
+  useEffect(() => {
+    if (initialOpenAppliedRef.current) return;
+    initialOpenAppliedRef.current = true;
+    if ((savedState?.windows?.length ?? 0) > 0) return;
+    const idsToOpen = defaultOpenAppIds?.length
+      ? defaultOpenAppIds
+      : apps.filter((a) => a.defaultOpen).map((a) => a.id);
+    idsToOpen.forEach((id) => windowMgr.openApp(id));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Reconcile newly introduced widgets on package upgrade without overwriting user layout
+  const widgetIdsKey = widgets.map((w) => w.id).join('|');
+  useEffect(() => {
+    const reconciled = reconcileWidgetsOnUpgrade(
+      widgets,
+      enabledWidgets,
+      widgetPositions,
+      widgetSizes,
+      viewportSize.w
+    );
+    if (Object.keys(reconciled.enabledWidgets).length !== Object.keys(enabledWidgets).length) {
+      setEnabledWidgets(reconciled.enabledWidgets);
+      setWidgetPositions(reconciled.widgetPositions);
+      setWidgetSizes(reconciled.widgetSizes);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [widgetIdsKey]);
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const wallpaperRef = useRef<OSWallpaperId>(wallpaper);

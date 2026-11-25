@@ -56,6 +56,9 @@ export {
   SynthGLDemo,
   type SynthGLDemoProps,
 } from './features/demos/SynthGLDemo';
+/**
+ * @deprecated Showcase demo only — use `OSGLApp` or `OSWorkspaceShell` for real applications.
+ */
 export {
   OSGLDemo as OSGLTemplate,
   OSGLDemo as MacOSGLTemplate,
@@ -81,8 +84,17 @@ export {
 } from './features/theme-studio/WorkspaceShellGallery';
 
 // 5. Providers & Hooks
-export { ThemeProvider, useTheme, type ThemeProviderProps } from './providers/ThemeProvider';
-export { ToastProvider, useToast } from './providers/ToastProvider';
+export {
+  ThemeProvider,
+  useTheme,
+  useOptionalTheme,
+  type ThemeProviderProps,
+} from './providers/ThemeProvider';
+export {
+  ToastProvider,
+  useToast,
+  useOptionalToast,
+} from './providers/ToastProvider';
 export { useKeyboardShortcut } from './hooks/useKeyboardShortcut';
 export { useCopyToClipboard } from './hooks/useCopyToClipboard';
 

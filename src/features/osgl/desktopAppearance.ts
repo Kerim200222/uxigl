@@ -1,5 +1,6 @@
-﻿import { isLightHex } from './desktopGridUtils';
+import { isLightHex } from './desktopGridUtils';
 import { OS_WALLPAPERS, type OSWallpaperId } from './osglEngine';
+import { reconcileIconSlotsWithNewApps } from './stateMigration';
 import {
   CURRENT_ICON_ORDER_VERSION,
   type BgMode,
@@ -25,7 +26,7 @@ export function resolvePersistedIconSlots(
     Object.keys(saved.iconSlots).length > 0 &&
     (saved.iconOrderVersion ?? 0) >= CURRENT_ICON_ORDER_VERSION
   ) {
-    return saved.iconSlots;
+    return reconcileIconSlotsWithNewApps(saved.iconSlots, appList, saved.folders ?? []);
   }
   return buildInitialSlots(appList);
 }

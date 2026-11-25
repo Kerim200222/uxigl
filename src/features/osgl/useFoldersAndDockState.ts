@@ -29,6 +29,7 @@ export interface ItemContextMenuState {
 export function useFoldersAndDockState({
   desktopApps,
   defaultDockAppIds,
+  defaultFolders,
   savedState,
   scopeKey,
   iconSlots,
@@ -37,6 +38,7 @@ export function useFoldersAndDockState({
 }: {
   desktopApps: OSWorkspaceApp[];
   defaultDockAppIds?: string[];
+  defaultFolders?: DesktopFolder[];
   savedState: PersistedOSGLState | null;
   scopeKey?: string;
   iconSlots: Record<string, number>;
@@ -50,8 +52,20 @@ export function useFoldersAndDockState({
   const allowedSet = useMemo(() => new Set(desktopApps.map((a) => a.id)), [desktopApps]);
 
   const [folders, setFolders] = useState<DesktopFolder[]>(() =>
-    sanitizePersistedFolders(savedState?.folders, allowedSet)
+    savedState?.folders?.length
+      ? sanitizePersistedFolders(savedState.folders, allowedSet)
+      : sanitizePersistedFolders(defaultFolders, allowedSet)
   );
+  const seededDefaultFoldersRef = useRef(Boolean(savedState?.folders?.length));
+  useEffect(() => {
+    if (seededDefaultFoldersRef.current) return;
+    if (folders.length > 0 || !defaultFolders?.length || allowedSet.size === 0) return;
+    const sanitized = sanitizePersistedFolders(defaultFolders, allowedSet);
+    if (sanitized.length > 0) {
+      seededDefaultFoldersRef.current = true;
+      setFolders(sanitized);
+    }
+  }, [defaultFolders, allowedSet, folders.length]);
   const [pinnedDockAppIds, setPinnedDockAppIds] = useState<string[] | undefined>(
     () => savedState?.pinnedDockAppIds
   );

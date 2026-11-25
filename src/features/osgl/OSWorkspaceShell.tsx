@@ -14,13 +14,13 @@ import { ThemeStudioDrawer } from '../theme-studio/ThemeStudioDrawer';
 import type { OSWallpaperId } from './osglEngine';
 import { buildSpotlightActions, OSGL_SHELL_CSS } from './osglShellStyles';
 import { TopMenuBar } from './TopMenuBar';
-import type { OSDesktopWidgetDefinition, OSWorkspaceApp } from './types';
+import type { DesktopFolder, OSDesktopWidgetDefinition, OSWorkspaceApp } from './types';
 import { useDesktopState } from './useDesktopState';
 import { WidgetCustomizePopover } from './WidgetCustomizePopover';
 import { createDefaultOSGLWidgets } from './widgets';
 
 export interface OSWorkspaceShellProps {
-  apps: OSWorkspaceApp[]; dockAppIds?: string[]; widgets?: OSDesktopWidgetDefinition[];
+  apps: OSWorkspaceApp[]; dockAppIds?: string[]; defaultFolders?: DesktopFolder[]; widgets?: OSDesktopWidgetDefinition[];
   /** Extra host-specific widgets merged alongside default/custom widgets without collision */
   extraWidgets?: OSDesktopWidgetDefinition[];
   /** When widgets prop is omitted, automatically includes the 6 built-in OSGL desktop widgets (default: true) */
@@ -38,7 +38,7 @@ export interface OSWorkspaceShellProps {
 }
 
 export const OSWorkspaceShell: React.FC<OSWorkspaceShellProps> = ({
-  apps, dockAppIds, widgets, extraWidgets = [], includeDefaultWidgets = true,
+  apps, dockAppIds, defaultFolders, widgets, extraWidgets = [], includeDefaultWidgets = true,
   storageScopeKey, initialWallpaper = 'dijios-oxford',
   brandLogo, brandTitle = 'uxiGL', brandSubtitle, onBrandClick, headerRightSlot, topBannerSlot,
   renderWindowContent, onSwitchToClassic, onOpenGlobalThemeStudio,
@@ -69,7 +69,7 @@ export const OSWorkspaceShell: React.FC<OSWorkspaceShellProps> = ({
   }, [renderWindowContent, apps]);
 
   const os = useDesktopState({
-    apps, dockAppIds, widgets: effectiveWidgets, scopeKey: storageScopeKey, initialWallpaper, defaultOpenAppIds,
+    apps, dockAppIds, defaultFolders, widgets: effectiveWidgets, scopeKey: storageScopeKey, initialWallpaper, defaultOpenAppIds,
   });
   const [spotlightOpen, setSpotlightOpen] = useState(false);
   const [customizingWidget, setCustomizingWidget] = useState<{ id: string; x: number; y: number } | null>(null);

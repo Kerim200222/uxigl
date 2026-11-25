@@ -15,6 +15,7 @@ import {
   OS_THEME_STUDIO_APP_ID,
   saveOSGLState,
   type BgMode,
+  type DesktopFolder,
   type IconBgStyle,
   type OSDesktopWidgetDefinition,
   type OSWorkspaceApp,
@@ -36,6 +37,7 @@ export { computeDesktopAppearance };
 export function useDesktopState({
   apps,
   dockAppIds,
+  defaultFolders,
   widgets,
   scopeKey,
   initialWallpaper = 'dijios-oxford',
@@ -43,6 +45,7 @@ export function useDesktopState({
 }: {
   apps: OSWorkspaceApp[];
   dockAppIds?: string[];
+  defaultFolders?: DesktopFolder[];
   widgets: OSDesktopWidgetDefinition[];
   scopeKey?: string;
   initialWallpaper?: OSWallpaperId;
@@ -134,6 +137,7 @@ export function useDesktopState({
   const foldersAndDock = useFoldersAndDockState({
     desktopApps: apps,
     defaultDockAppIds: dockAppIds,
+    defaultFolders,
     savedState,
     scopeKey,
     iconSlots,

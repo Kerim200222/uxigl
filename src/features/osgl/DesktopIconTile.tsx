@@ -155,7 +155,7 @@ export function DesktopIconTile({
           fontWeight: 600,
           letterSpacing: '-0.01em',
           color: '#ffffff',
-          textShadow: '0 1px 2px rgba(0, 0, 0, 0.85), 0 0 6px rgba(0, 0, 0, 0.45)',
+          textShadow: '0 1px 4px rgba(0, 0, 0, 0.55), 0 2px 10px rgba(0, 0, 0, 0.25)',
           WebkitFontSmoothing: 'antialiased',
           MozOsxFontSmoothing: 'grayscale',
           textRendering: 'optimizeLegibility',

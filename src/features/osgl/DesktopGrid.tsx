@@ -178,7 +178,7 @@ export function DesktopGrid({
           gridTemplateRows: `repeat(${rowsPerColumn}, ${cellHeight}px)`,
           gridTemplateColumns: `repeat(${colsCount}, ${cellWidth}px)`,
           gap: '8px 12px', padding: '6px 4px', width: '100%',
-          height: availableGridHeight + 12, overflow: 'hidden', transform: 'translateZ(0)',
+          height: availableGridHeight + 12, overflow: 'hidden',
         }}
       >
         {Array.from({ length: rowsPerColumn * colsCount }, (_, slotIdx) => {

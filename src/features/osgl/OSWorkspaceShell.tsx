@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { CommandPalette } from '../../components/composites';
 import { ContextMenu } from './ContextMenu';
 import { DesktopFolderPopoverModal } from './DesktopFolderPopoverModal';
@@ -74,6 +74,16 @@ export const OSWorkspaceShell: React.FC<OSWorkspaceShellProps> = ({
   const [spotlightOpen, setSpotlightOpen] = useState(false);
   const [customizingWidget, setCustomizingWidget] = useState<{ id: string; x: number; y: number } | null>(null);
   const activeCustomWidget = customizingWidget ? effectiveWidgets.find((w) => w.id === customizingWidget.id) ?? null : null;
+
+  const prevWorkspaceShellRef = useRef(os.theme.preferences.workspaceShell);
+  useEffect(() => {
+    const nextShell = os.theme.preferences.workspaceShell;
+    if (prevWorkspaceShellRef.current === nextShell) return;
+    prevWorkspaceShellRef.current = nextShell;
+    if (nextShell && nextShell !== 'auto' && nextShell !== 'osgl' && onSwitchToClassic) {
+      onSwitchToClassic();
+    }
+  }, [os.theme.preferences.workspaceShell, onSwitchToClassic]);
 
   useEffect(() => {
     if (externalOpenRequest?.appId) os.openApp(externalOpenRequest.appId);

@@ -42,16 +42,12 @@ export function DesktopWidgetsHost({
   const baseCardStyle: React.CSSProperties = {
     width: '100%', height: '100%', boxSizing: 'border-box', overflow: 'hidden',
     borderRadius: 16, padding: 13,
-    backgroundColor: isDark
-      ? `rgba(13, 19, 34, ${Math.max(0.80, Math.min(0.88, glassOpacity))})`
-      : `rgba(255, 255, 255, ${Math.max(0.86, Math.min(0.94, glassOpacity))})`,
+    backgroundColor: isDark ? '#0d1322' : '#ffffff',
     backgroundImage: isDark
-      ? 'linear-gradient(165deg, rgba(255,255,255,0.065) 0%, rgba(255,255,255,0.01) 45%, rgba(2,6,23,0.16) 100%)'
+      ? 'linear-gradient(165deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 45%, rgba(2,6,23,0.12) 100%)'
       : undefined,
     color: isDark ? '#f8fafc' : '#0f172a',
-    backdropFilter: glassBlur > 0 ? `blur(${Math.max(18, glassBlur)}px) saturate(165%)` : undefined,
-    WebkitBackdropFilter: glassBlur > 0 ? `blur(${Math.max(18, glassBlur)}px) saturate(165%)` : undefined,
-    border: isDark ? '1px solid rgba(255, 255, 255, 0.12)' : '1px solid rgba(255, 255, 255, 0.68)',
+    border: isDark ? '1px solid rgba(255, 255, 255, 0.14)' : '1px solid rgba(15, 23, 42, 0.10)',
     boxShadow: isDark
       ? '0 18px 40px rgba(0, 0, 0, 0.48), inset 0 1px 0 rgba(255, 255, 255, 0.12)'
       : '0 14px 34px rgba(15, 23, 42, 0.15)',

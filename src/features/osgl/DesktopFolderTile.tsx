@@ -183,30 +183,6 @@ export function DesktopFolderTile({
             })}
           </div>
         )}
-
-        {folder.appIds.length > 0 && (
-          <span
-            style={{
-              position: 'absolute',
-              top: -5,
-              right: -5,
-              minWidth: 19,
-              height: 19,
-              padding: '0 5px',
-              borderRadius: 999,
-              backgroundColor: accent,
-              color: '#ffffff',
-              fontSize: 10,
-              fontWeight: 800,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              border: '1.5px solid rgba(255,255,255,0.9)',
-            }}
-          >
-            {folder.appIds.length}
-          </span>
-        )}
       </div>
 
       {isRenaming ? (

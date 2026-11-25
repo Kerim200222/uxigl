@@ -144,7 +144,7 @@ export function Dock({
         boxShadow: useDarkDockGlass
           ? '0 22px 54px rgba(0, 0, 0, 0.48), inset 0 1px 0 rgba(255, 255, 255, 0.12)'
           : '0 20px 50px rgba(15, 23, 42, 0.22)',
-        display: 'flex', alignItems: 'flex-end', gap: 9, zIndex: 1950,
+        display: 'flex', alignItems: 'flex-end', gap: 11, zIndex: 1950,
       }}
     >
       {visibleDockApps.map((app, idx) => {
@@ -191,7 +191,10 @@ export function Dock({
             }}
           >
             {mag.hoveredIdx === idx && renderDockTooltip(app.label)}
-            <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'transform 0.1s ease-out', pointerEvents: 'none' }}>
+            <span
+              className="osgl-dock-app-glyph"
+              style={{ width: 28, height: 28, display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'transform 0.1s ease-out', pointerEvents: 'none' }}
+            >
               {app.iconNode ?? <GoogleIcon name={app.googleIcon} size={27} />}
             </span>
             {isRunning && (
@@ -248,7 +251,10 @@ export function Dock({
                 }}
               >
                 {mag.hoveredIdx === idx && renderDockTooltip(`${app.label} · Açık`)}
-                <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'transform 0.1s ease-out', pointerEvents: 'none' }}>
+                <span
+              className="osgl-dock-app-glyph"
+              style={{ width: 28, height: 28, display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'transform 0.1s ease-out', pointerEvents: 'none' }}
+            >
                   {app.iconNode ?? <GoogleIcon name={app.googleIcon} size={27} />}
                 </span>
                 <span
@@ -374,7 +380,10 @@ export function Dock({
             }}
           >
             {mag.hoveredIdx === idx && renderDockTooltip(action.label)}
-            <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'transform 0.1s ease-out', pointerEvents: 'none' }}>
+            <span
+              className="osgl-dock-app-glyph"
+              style={{ width: 28, height: 28, display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'transform 0.1s ease-out', pointerEvents: 'none' }}
+            >
               {action.iconNode ?? <GoogleIcon name={action.googleIcon} size={20} />}
             </span>
           </button>

@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { GoogleIcon } from '../../components/primitives';
 import { resolveIconSurface, type IconBgStyle, type OSWorkspaceApp } from './types';
 
@@ -155,12 +155,10 @@ export function DesktopIconTile({
           fontWeight: 600,
           letterSpacing: '-0.01em',
           color: '#ffffff',
-          backgroundColor: 'rgba(15, 23, 42, 0.54)',
-          backdropFilter: 'blur(6px)',
-          WebkitBackdropFilter: 'blur(6px)',
-          padding: '2px 7px',
-          borderRadius: 6,
-          textShadow: '0 1px 2px rgba(0, 0, 0, 0.75)',
+          textShadow: '0 1px 2px rgba(0, 0, 0, 0.85), 0 0 6px rgba(0, 0, 0, 0.45)',
+          WebkitFontSmoothing: 'antialiased',
+          MozOsxFontSmoothing: 'grayscale',
+          textRendering: 'optimizeLegibility',
           textAlign: 'center',
           lineHeight: 1.25,
           maxWidth: iconBoxSize + 34,

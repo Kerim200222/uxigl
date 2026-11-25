@@ -73,6 +73,12 @@ const OSGLAppInner: React.FC<OSGLAppProps> = ({
   );
 
   useEffect(() => {
+    if (theme.preferences.sidebarVariant) {
+      setSidebarVariant(theme.preferences.sidebarVariant);
+    }
+  }, [theme.preferences.sidebarVariant]);
+
+  useEffect(() => {
     if (!apps.some((a) => a.id === activeAppId) && apps[0]) {
       setActiveAppId(apps[0].id);
     }

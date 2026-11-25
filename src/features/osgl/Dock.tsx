@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { Plus } from 'lucide-react';
 import { GoogleIcon } from '../../components/primitives';
 import {
@@ -111,7 +111,7 @@ export function Dock({
       : []),
   ];
 
-  const useDarkDockGlass = isDark || !effectiveIsLightBg;
+  const useDarkDockGlass = isDark;
 
   return (
     <div

@@ -31,21 +31,33 @@ export function TopAppsDropdown({
         catApps.length === 1 ? (
           <ContextMenuItem
             key={catApps[0].id}
-            icon={<GoogleIcon name={catApps[0].googleIcon} size={15} />}
+            icon={
+              <span className="osgl-menu-glyph" style={{ width: 15, height: 15, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
+                {catApps[0].iconNode ?? <GoogleIcon name={catApps[0].googleIcon} size={15} />}
+              </span>
+            }
             label={catApps[0].label}
             onClick={() => { onOpenApp(catApps[0].id); closeAllMenus(); }}
           />
         ) : (
           <ContextSubMenu
             key={cat}
-            icon={<GoogleIcon name={catApps[0].googleIcon} size={15} />}
+            icon={
+              <span className="osgl-menu-glyph" style={{ width: 15, height: 15, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
+                {catApps[0].iconNode ?? <GoogleIcon name={catApps[0].googleIcon} size={15} />}
+              </span>
+            }
             label={cat}
             isDark={isDark}
           >
             {catApps.map((app) => (
               <ContextMenuItem
                 key={app.id}
-                icon={<GoogleIcon name={app.googleIcon} size={15} />}
+                icon={
+                  <span className="osgl-menu-glyph" style={{ width: 15, height: 15, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
+                    {app.iconNode ?? <GoogleIcon name={app.googleIcon} size={15} />}
+                  </span>
+                }
                 label={app.label}
                 onClick={() => { onOpenApp(app.id); closeAllMenus(); }}
               />

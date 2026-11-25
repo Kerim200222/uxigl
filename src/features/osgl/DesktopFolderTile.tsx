@@ -178,7 +178,19 @@ export function DesktopFolderTile({
                     boxShadow: '0 2px 4px rgba(0,0,0,0.22)',
                   }}
                 >
-                  <GoogleIcon name={app.googleIcon} size={Math.max(10, Math.round(miniSize * 0.62))} />
+                  <span
+                    className="osgl-folder-mini-glyph"
+                    style={{
+                      width: Math.max(10, Math.round(miniSize * 0.66)),
+                      height: Math.max(10, Math.round(miniSize * 0.66)),
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      overflow: 'hidden',
+                    }}
+                  >
+                    {app.iconNode ?? <GoogleIcon name={app.googleIcon} size={Math.max(10, Math.round(miniSize * 0.62))} />}
+                  </span>
                 </span>
               );
             })}

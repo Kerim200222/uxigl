@@ -198,7 +198,10 @@ export function FloatingWindows({
                 />
               )}
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 0, flex: 1, justifyContent: windowControlsSide === 'left' ? 'flex-start' : undefined }}>
-                <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', opacity: 0.92, flexShrink: 0 }}>
+                <span
+                  className="osgl-window-titlebar-icon"
+                  style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 18, height: 18, opacity: 0.92, flexShrink: 0, overflow: 'hidden' }}
+                >
                   {app.iconNode ?? <GoogleIcon name={app.googleIcon} size={16} />}
                 </span>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 6, minWidth: 0, overflow: 'hidden' }}>

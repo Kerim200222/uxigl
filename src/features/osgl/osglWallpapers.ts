@@ -1,4 +1,4 @@
-﻿/**
+/**
  * uxiGL OSGL — WebGL GPU Wallpaper Engine & Palettes
  */
 

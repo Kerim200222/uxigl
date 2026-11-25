@@ -1,4 +1,4 @@
-﻿import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { LayoutGrid, Moon, Palette, Search, Sun } from 'lucide-react';
 import {
   TopAppsDropdown, TopViewDropdown, TopWidgetsDropdown, TopWindowDropdown, type TopMenuKey,

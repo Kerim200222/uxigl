@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { Badge } from '../../components/primitives';
 import { GoogleIcon } from '../../components/primitives';
 import { TrafficLights } from './WindowChrome';

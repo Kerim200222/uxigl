@@ -1,4 +1,4 @@
-﻿import React, { useMemo, useRef, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import { DesktopFolderTile } from './DesktopFolderTile';
 import { DesktopIconTile } from './DesktopIconTile';
 import { fromFolderSlotKey } from './desktopFoldersAndDock';

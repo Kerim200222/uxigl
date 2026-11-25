@@ -1,0 +1,36 @@
+# truncgil-uxigl — AI & Developer Integration Contract
+
+> When a user asks to "use uxiGL OSGL theme" or "use uxiGL desktop workspace" in any React project, follow these rules strictly so that ALL OSGL capabilities (WASM window manager, folders, Dock, 6 built-in widgets, WebGL wallpapers, Spotlight ⌘K, OS Theme Studio, Global Theme Studio, and Classic Sidebar switching) work out of the box.
+
+## Rule 1: Use `<OSGLApp />` (Turnkey) or `<OSWorkspaceShell />`
+- **NEVER** import only `ThemeProvider` + CSS tokens and claim OSGL is active.
+- **NEVER** use `OSGLTemplate` (it is a static showcase demo).
+- Map the host project's existing pages/routes into an `OSWorkspaceApp[]` array (using `element` or `render`, or `renderWindowContent`), and render:
+
+```tsx
+import { OSGLApp, type OSWorkspaceApp } from 'truncgil-uxigl';
+import 'truncgil-uxigl/styles';
+
+const APPS: OSWorkspaceApp[] = [
+  {
+    id: 'dashboard',
+    label: 'Dashboard',
+    shortLabel: 'Home',
+    googleIcon: 'dashboard',
+    category: 'Workspace',
+    gradient: 'linear-gradient(135deg, #2563eb, #06b6d4)',
+    defaultOpen: true,
+    element: <MyDashboardPage />,
+  },
+];
+
+export function App() {
+  return <OSGLApp apps={APPS} storageScopeKey="my-project-osgl" brandTitle="MyApp" />;
+}
+```
+
+## Rule 2: Zero-Collision Host Extensions
+- To add project-specific desktop widgets alongside the 6 built-in OSGL widgets without losing future `truncgil-uxigl` updates, pass `extraWidgets={[...]}` to `<OSGLApp />` or `<OSWorkspaceShell />`.
+- To add custom brand palettes, pass `extraPalettes` to `ThemeProvider`.
+- All core window physics, drag/resize, WebGL/WASM engines, and Theme Studio updates are inherited automatically on `npm update truncgil-uxigl`.
+

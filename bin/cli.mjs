@@ -116,6 +116,71 @@ function normalizeTemplateId(raw) {
 }
 
 function buildTemplateComponentCode(templateId, componentName) {
+  if (templateId === 'osgl') {
+    return `import React from 'react';
+import {
+  OSGLApp,
+  Card,
+  SheetGLGridAdapter,
+  FileManGLExplorerAdapter,
+  type OSWorkspaceApp,
+} from 'truncgil-uxigl';
+import 'truncgil-uxigl/styles';
+
+const APPS: OSWorkspaceApp[] = [
+  {
+    id: 'overview',
+    label: 'Genel Bakış',
+    shortLabel: 'Özet',
+    googleIcon: 'dashboard',
+    category: 'Genel',
+    gradient: 'linear-gradient(135deg, #2563eb, #06b6d4)',
+    defaultOpen: true,
+    element: (
+      <Card variant="glass" title="uxiGL OSGL Çalışma Alanı">
+        <p style={{ margin: 0, color: 'var(--uxu-text-secondary)' }}>
+          WASM pencere yöneticisi, klasörler, Dock, 6 yerleşik widget, Spotlight (⌘K) ve Tema Stüdyosu hazır.
+        </p>
+      </Card>
+    ),
+  },
+  {
+    id: 'sheet',
+    label: 'SheetGL DataGrid',
+    shortLabel: 'Tablo',
+    googleIcon: 'table_chart',
+    category: 'Veri',
+    gradient: 'linear-gradient(135deg, #10b981, #059669)',
+    fullBleed: true,
+    element: <SheetGLGridAdapter scenario="saas_finance" />,
+  },
+  {
+    id: 'files',
+    label: 'FileManGL VFS',
+    shortLabel: 'Dosyalar',
+    googleIcon: 'folder_open',
+    category: 'Depolama',
+    gradient: 'linear-gradient(135deg, #f59e0b, #ea580c)',
+    fullBleed: true,
+    element: <FileManGLExplorerAdapter initialPath="/workspace/projects" />,
+  },
+];
+
+export function ${componentName}() {
+  return (
+    <OSGLApp
+      apps={APPS}
+      storageScopeKey="my-osgl-app"
+      brandTitle="${componentName}"
+      brandSubtitle="OSGL"
+    />
+  );
+}
+
+export default ${componentName};
+`;
+  }
+
   const entry = TEMPLATE_REGISTRY[templateId];
   if (!entry) return STARTER_COMPONENT_TEMPLATE.replace(/UXIWorkspace/g, componentName);
 
@@ -134,7 +199,7 @@ import 'truncgil-uxigl/styles';
 
 export function ${componentName}() {
   return (
-    <ThemeProvider defaultTheme="system" defaultRadius={12}>
+    <ThemeProvider defaultMode="dark" defaultPalette="cupertino-blue" defaultRadius={12}>
       <ToastProvider>
         <${entry.importSymbol}${renderProps}
         />
@@ -167,7 +232,7 @@ export function UXIWorkspace() {
   const [metricEnabled, setMetricEnabled] = useState(true);
 
   return (
-    <ThemeProvider defaultTheme="system" defaultRadius={12}>
+    <ThemeProvider defaultMode="dark" defaultPalette="cupertino-blue" defaultRadius={12}>
       <ToastProvider>
         <div
           style={{

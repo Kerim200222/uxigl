@@ -14,6 +14,8 @@ import { FloatingWindows } from './osgl/FloatingWindows';
 import { ContextMenu } from './osgl/ContextMenu';
 import { DesktopWidgets } from './osgl/DesktopWidgets';
 import { Dock } from './osgl/Dock';
+import { OSGLApp } from '../osgl/OSGLApp';
+import type { OSWorkspaceApp } from '../osgl/types';
 
 export type { IconBgStyle, OSWallpaperId };
 
@@ -22,13 +24,27 @@ export interface OSGLDemoProps {
   onOpenThemeStudio?: () => void;
   initialWallpaper?: OSWallpaperId;
   renderWindowContent?: (appId: string) => React.ReactNode;
+  /** When provided, delegates to the full parametric v4 OSGLApp engine */
+  apps?: OSWorkspaceApp[];
 }
 
 export function OSGLDemo({
   onNavigate,
+  onOpenThemeStudio,
   initialWallpaper = 'sequoia',
   renderWindowContent,
+  apps,
 }: OSGLDemoProps) {
+  if (apps && apps.length > 0) {
+    return (
+      <OSGLApp
+        apps={apps}
+        initialWallpaper={initialWallpaper}
+        renderWindowContent={renderWindowContent}
+        onOpenGlobalThemeStudio={onOpenThemeStudio}
+      />
+    );
+  }
   const os = useDesktopState(initialWallpaper);
   const [spotlightOpen, setSpotlightOpen] = useState(false);
 
@@ -182,7 +198,7 @@ export function OSGLDemo({
           os.setIconSlots(reset);
         }}
         onOpenApp={os.openApp}
-        onOpenThemeStudio={() => os.openApp('os-theme-studio')}
+        onOpenThemeStudio={() => (onOpenThemeStudio ? onOpenThemeStudio() : os.openApp('os-theme-studio'))}
         onOpenSpotlight={() => setSpotlightOpen(true)}
         sharedStudioProps={os.sharedStudioProps}
         isDark={os.isDark}

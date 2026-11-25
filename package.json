@@ -43,12 +43,15 @@
     "./styles": "./dist/lib/style.css",
     "./style.css": "./dist/lib/style.css",
     "./uxu-tokens.css": "./dist/lib/style.css",
+    "./llms.txt": "./llms.txt",
+    "./osgl-guide": "./docs/OSGL_GUIDE.md",
     "./package.json": "./package.json"
   },
   "files": [
     "dist/lib",
     "bin",
     "README.md",
+    "llms.txt",
     "docs"
   ],
   "scripts": {

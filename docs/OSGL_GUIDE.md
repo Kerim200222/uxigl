@@ -17,6 +17,33 @@ To carry all OSGL desktop capabilities (WASM window manager, desktop folders, Do
 
 ## 2. Hızlı Kurulum / Quick Start
 
+### Tek Satır Anahtar Teslim Kurulum (`<OSGLApp />`)
+`ThemeProvider`, `ToastProvider`, 6 yerleşik masaüstü widget'ı, Global Tema Stüdyosu ve Klasik Sidebar geçişi otomatik dahildir:
+
+```tsx
+import { OSGLApp, type OSWorkspaceApp } from 'truncgil-uxigl';
+import 'truncgil-uxigl/styles';
+
+const APPS: OSWorkspaceApp[] = [
+  {
+    id: 'analytics',
+    label: 'Canlı Telemetri',
+    shortLabel: 'Telemetri',
+    googleIcon: 'monitoring',
+    category: 'Operasyon',
+    gradient: 'linear-gradient(135deg, #2563eb, #06b6d4)',
+    defaultOpen: true,
+    element: <div>Analytics Content</div>,
+  },
+];
+
+export function App() {
+  return <OSGLApp apps={APPS} storageScopeKey="my-app-os" brandTitle="MyWorkspace" />;
+}
+```
+
+### İleri Seviye Parametrik Kurulum (`<OSWorkspaceShell />`)
+
 ```tsx
 import React, { useState } from 'react';
 import {
@@ -68,7 +95,7 @@ export function App() {
   const [openReq, setOpenReq] = useState<{ appId: string; nonce: number } | null>(null);
 
   return (
-    <ThemeProvider defaultMode="dark" defaultPalette="ocean">
+    <ThemeProvider defaultMode="dark" defaultPalette="cupertino-blue">
       <ToastProvider>
         <OSWorkspaceShell
           apps={APPS}

@@ -98,6 +98,43 @@ npx truncgil-uxigl init
 
 ### 3. Usage Example
 
+#### Option A: Full OSGL Desktop & Multi-Shell Application (`<OSGLApp />`)
+
+```tsx
+import React from 'react';
+import { OSGLApp, Card, SheetGLGridAdapter, type OSWorkspaceApp } from 'truncgil-uxigl';
+import 'truncgil-uxigl/styles';
+
+const APPS: OSWorkspaceApp[] = [
+  {
+    id: 'overview',
+    label: 'Overview',
+    shortLabel: 'Home',
+    googleIcon: 'dashboard',
+    category: 'Workspace',
+    gradient: 'linear-gradient(135deg, #2563eb, #06b6d4)',
+    defaultOpen: true,
+    element: <Card variant="glass" title="OSGL Ready">Full desktop + classic shell</Card>,
+  },
+  {
+    id: 'sheet',
+    label: 'SheetGL',
+    shortLabel: 'Sheet',
+    googleIcon: 'table_chart',
+    category: 'Data',
+    gradient: 'linear-gradient(135deg, #10b981, #059669)',
+    fullBleed: true,
+    element: <SheetGLGridAdapter scenario="saas_finance" />,
+  },
+];
+
+export default function App() {
+  return <OSGLApp apps={APPS} storageScopeKey="my-app-osgl" brandTitle="MyApp" />;
+}
+```
+
+#### Option B: Standard Component Usage
+
 ```tsx
 import React from 'react';
 import {
@@ -112,7 +149,7 @@ import 'truncgil-uxigl/styles';
 
 export default function App() {
   return (
-    <ThemeProvider defaultTheme="system" defaultRadius={12}>
+    <ThemeProvider defaultMode="dark" defaultPalette="cupertino-blue" defaultRadius={12}>
       <ToastProvider>
         <Card variant="glass" title="uxiGL Enterprise Dashboard">
           <SheetGLGridAdapter datasetPreset="finance-erp" />

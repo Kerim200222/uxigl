@@ -58,7 +58,7 @@ export function DesktopGrid({
   const [selectionBox, setSelectionBox] = useState<{ left: number; top: number; width: number; height: number } | null>(null);
 
   const marqueeRef = useRef<{ startX: number; startY: number; active: boolean } | null>(null);
-  const desktopIconRefs = useRef<Record<string, HTMLButtonElement | null>>({});
+  const desktopIconRefs = useRef<Record<string, HTMLElement | null>>({});
   const cachedIconRectsRef = useRef<Array<{ id: string; rect: DOMRect }>>([]);
   const lastHitsRef = useRef<string[]>([]);
 
@@ -114,7 +114,7 @@ export function DesktopGrid({
     setSelectedAppIds([]);
     lastHitsRef.current = [];
     cachedIconRectsRef.current = Object.entries(desktopIconRefs.current)
-      .filter((entry): entry is [string, HTMLButtonElement] => Boolean(entry[1]))
+      .filter((entry): entry is [string, HTMLElement] => Boolean(entry[1]))
       .map(([id, el]) => ({ id, rect: el.getBoundingClientRect() }));
     marqueeRef.current = { startX: e.clientX, startY: e.clientY, active: true };
   };
@@ -221,12 +221,15 @@ export function DesktopGrid({
             const folderApps = occ.folder.appIds
               .map((id) => apps.find((a) => a.id === id))
               .filter((a): a is OSWorkspaceApp => Boolean(a));
+            const isFolderPartOfDrag = draggedSlotKey === occ.slotKey ||
+              (draggedSlotKey !== null && selectedAppIds.length > 1 && selectedAppIds.includes(draggedSlotKey) && selectedAppIds.includes(occ.slotKey));
             return (
               <DesktopFolderTile
                 key={occ.slotKey} folder={occ.folder} folderApps={folderApps} slotIdx={slotIdx}
-                isRenaming={renamingFolderId === occ.folder.id} isSelected={false}
-                isDragged={draggedSlotKey === occ.slotKey}
-                isDropHighlight={isDropHighlight && draggedSlotKey !== occ.slotKey}
+                tileRef={(el) => { desktopIconRefs.current[occ.slotKey] = el; }}
+                isRenaming={renamingFolderId === occ.folder.id} isSelected={selectedAppIds.includes(occ.slotKey)}
+                isDragged={isFolderPartOfDrag}
+                isDropHighlight={isDropHighlight && !isFolderPartOfDrag}
                 iconBoxSize={iconBoxSize} barTextColor={barTextColor}
                 effectiveIsLightBg={effectiveIsLightBg} isDark={isDark} primaryColor={primaryColor}
                 iconBgStyle={iconBgStyle} iconBgColor={iconBgColor}
@@ -234,7 +237,10 @@ export function DesktopGrid({
                 onOpenFolder={() => onOpenFolder?.(occ.folder.id)}
                 onCommitRename={(nextName) => onCommitRenameFolder?.(occ.folder.id, nextName)}
                 onContextMenu={(e) => { e.preventDefault(); e.stopPropagation(); onOpenItemContextMenu?.(e, 'folder', occ.folder.id); }}
-                onDragStart={() => { setSelectedAppIds([]); setDraggedSlotKey(occ.slotKey); }}
+                onDragStart={() => {
+                  if (!selectedAppIds.includes(occ.slotKey)) setSelectedAppIds([occ.slotKey]);
+                  setDraggedSlotKey(occ.slotKey);
+                }}
                 onDragOver={(e) => { e.preventDefault(); if (dragOverSlot !== slotIdx) setDragOverSlot(slotIdx); }}
                 onDragLeave={() => { if (dragOverSlot === slotIdx) setDragOverSlot(null); }}
                 onDrop={(e) => {

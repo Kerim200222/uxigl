@@ -86,9 +86,8 @@ function resolveMovingKeysAndDelta(params: {
   const anchorSlot = slotByKey.get(draggedSlotKey);
   if (anchorSlot === undefined) return null;
 
-  const isFolderDrag = Boolean(fromFolderSlotKey(draggedSlotKey));
   const movingKeys =
-    !isFolderDrag && selectedAppIds.length > 1 && selectedAppIds.includes(draggedSlotKey)
+    selectedAppIds.length > 1 && selectedAppIds.includes(draggedSlotKey)
       ? selectedAppIds.filter((id) => slotByKey.has(id))
       : [draggedSlotKey];
 

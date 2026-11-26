@@ -35,6 +35,7 @@ export function DesktopFolderTile({
   onDragLeave,
   onDrop,
   onDragEnd,
+  tileRef,
 }: {
   folder: DesktopFolder;
   folderApps: OSWorkspaceApp[];
@@ -61,6 +62,7 @@ export function DesktopFolderTile({
   onDragLeave: () => void;
   onDrop: (e: React.DragEvent) => void;
   onDragEnd: () => void;
+  tileRef?: (el: HTMLDivElement | null) => void;
 }) {
   const [draftName, setDraftName] = useState(folder.name);
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -98,6 +100,7 @@ export function DesktopFolderTile({
 
   return (
     <div
+      ref={tileRef}
       key={`folder-${folder.id}-${slotIdx}`}
       data-osgl-folder-id={folder.id}
       draggable={!isRenaming}

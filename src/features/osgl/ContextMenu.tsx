@@ -71,30 +71,36 @@ export function ContextMenu({
         zIndex: 2200,
       }}
     >
-      {onCreateFolder && (
+      {onCreateFolder && (() => {
+        const selectableApps = selectedAppIds.filter((id) => !id.startsWith('folder:'));
+        return (
         <ContextMenuItem
           icon={<FolderPlus size={14} />}
           label={
-            selectedAppIds.length > 0
-              ? `Seçilenlerle Klasör Oluştur (${selectedAppIds.length})`
+            selectableApps.length > 0
+              ? `Seçilenlerle Klasör Oluştur (${selectableApps.length})`
               : 'Yeni Klasör Oluştur'
           }
           onClick={() => {
-            onCreateFolder(selectedAppIds.length > 0 ? selectedAppIds : undefined);
+            onCreateFolder(selectableApps.length > 0 ? selectableApps : undefined);
             onCloseMenu();
           }}
         />
-      )}
-      {selectedAppIds.length > 0 && (
+        );
+      })()}
+      {selectedAppIds.some((id) => !id.startsWith('folder:')) && (() => {
+        const selectableApps = selectedAppIds.filter((id) => !id.startsWith('folder:'));
+        return (
         <ContextMenuItem
           icon={<Sparkles size={14} />}
-          label={`Seçili Modülleri Aç (${selectedAppIds.length})`}
+          label={`Seçili Modülleri Aç (${selectableApps.length})`}
           onClick={() => {
-            selectedAppIds.forEach((id) => onOpenApp(id));
+            selectableApps.forEach((id) => onOpenApp(id));
             onCloseMenu();
           }}
         />
-      )}
+        );
+      })()}
       {onOpenDockCustomizer && (
         <ContextMenuItem
           icon={<SlidersHorizontal size={14} />}

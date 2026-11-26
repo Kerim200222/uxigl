@@ -1,4 +1,4 @@
-﻿import { useState } from 'react';
+import { useState } from 'react';
 import { GoogleIcon } from '../../components/primitives';
 import { AppearanceTab, WallpaperTab } from './theme-studio/AppearanceAndWallpaperTabs';
 import { DesktopDockTab, IconsTab } from './theme-studio/DesktopAndIconsTabs';

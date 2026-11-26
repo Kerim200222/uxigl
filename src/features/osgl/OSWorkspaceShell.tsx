@@ -263,7 +263,7 @@ export const OSWorkspaceShell: React.FC<OSWorkspaceShellProps> = ({
             !hasExpandedWindow &&
             !os.windows.some((w) => !w.minimized && w.x + w.width > os.viewportSize.w - 340) && (
               <DesktopWidgetsHost
-                widgets={effectiveWidgets} locale={os.locale} isDark={os.isDark}
+                widgets={effectiveWidgets} locale={locale} isDark={os.isDark}
                 glassOpacity={os.glassOpacity} glassBlur={os.glassBlur} primaryColor={os.paletteTokens.primary}
                 enabledWidgets={os.enabledWidgets} widgetPositions={os.widgetPositions}
                 onMoveWidget={os.updateWidgetPosition} widgetSizes={os.widgetSizes}
@@ -360,7 +360,7 @@ export const OSWorkspaceShell: React.FC<OSWorkspaceShellProps> = ({
           widget={activeCustomWidget}
           currentSize={os.widgetSizes[activeCustomWidget.id] ?? activeCustomWidget.defaultSize}
           prefs={os.widgetUserPrefs[activeCustomWidget.id] ?? {}}
-          isDark={os.isDark} primaryColor={os.paletteTokens.primary}
+          isDark={os.isDark} primaryColor={os.paletteTokens.primary} locale={locale}
           onUpdatePrefs={(patch) => os.updateWidgetUserPrefs(activeCustomWidget.id, patch)}
           onResize={(sz) => os.updateWidgetSize(activeCustomWidget.id, sz)}
           onHideWidget={() => os.toggleWidgetItem(activeCustomWidget.id)}
@@ -371,7 +371,14 @@ export const OSWorkspaceShell: React.FC<OSWorkspaceShellProps> = ({
 
       <CommandPalette
         open={spotlightOpen} onClose={() => setSpotlightOpen(false)}
-        actions={spotlightActions} placeholder="Modül, pencere düzeni veya görünüm ara..."
+        actions={spotlightActions}
+        placeholder={
+          locale === 'en'
+            ? 'Search module, window layout or view...'
+            : locale === 'ru'
+              ? 'Поиск модуля, окна или вида...'
+              : 'Modül, pencere düzeni veya görünüm ara...'
+        }
       />
 
       {!onOpenGlobalThemeStudio && enableBuiltInGlobalThemeStudio && (

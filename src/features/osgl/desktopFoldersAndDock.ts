@@ -49,6 +49,7 @@ export function sanitizePersistedFolders(
     cleaned.push({
       id: raw.id,
       name: (raw.name || 'Yeni Klasör').trim() || 'Yeni Klasör',
+      ...(raw.customName ? { customName: true } : {}),
       appIds: uniqueApps,
       color: raw.color || FOLDER_COLOR_PRESETS[cleaned.length % FOLDER_COLOR_PRESETS.length],
       ...(raw.gradient ? { gradient: raw.gradient } : {}),
@@ -146,7 +147,7 @@ export function renameDesktopFolderState(
 ): DesktopFolder[] {
   const trimmed = nextName.trim();
   if (!trimmed) return prevFolders;
-  return prevFolders.map((f) => (f.id === folderId ? { ...f, name: trimmed } : f));
+  return prevFolders.map((f) => (f.id === folderId ? { ...f, name: trimmed, customName: true } : f));
 }
 
 export function recolorDesktopFolderState(

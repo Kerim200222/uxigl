@@ -238,11 +238,9 @@ export function useFoldersAndDockState({
   };
 
   const defaultFolderMetaMap = useMemo(() => {
-    const map = new Map<string, { iconNode?: React.ReactNode; gradient?: string }>();
+    const map = new Map<string, { name?: string; iconNode?: React.ReactNode; gradient?: string }>();
     defaultFolders?.forEach((df) => {
-      if (df.iconNode || df.gradient) {
-        map.set(df.id, { iconNode: df.iconNode, gradient: df.gradient });
-      }
+      map.set(df.id, { name: df.name, iconNode: df.iconNode, gradient: df.gradient });
     });
     return map;
   }, [defaultFolders]);
@@ -254,6 +252,7 @@ export function useFoldersAndDockState({
         if (!meta) return f;
         return {
           ...f,
+          name: f.customName ? f.name : (meta.name ?? f.name),
           iconNode: meta.iconNode ?? f.iconNode,
           gradient: meta.gradient ?? f.gradient,
         };

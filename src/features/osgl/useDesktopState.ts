@@ -108,7 +108,7 @@ export function useDesktopState({
     ];
   }, [apps]);
 
-  const [locale, setLocale] = useState<'tr' | 'en'>(savedState?.locale ?? 'tr');
+  const [locale, setLocale] = useState<'tr' | 'en' | 'ru'>(savedState?.locale ?? 'tr');
   const [wallpaper, setWallpaper] = useState<OSWallpaperId>(savedState?.wallpaper ?? initialWallpaper);
   const [bgMode, setBgMode] = useState<BgMode>(savedState?.bgMode ?? 'aurora');
   const [solidBgColor, setSolidBgColor] = useState<string>(savedState?.solidBgColor ?? '#0f172a');

@@ -1,11 +1,12 @@
 import React from 'react';
 import { GripHorizontal } from 'lucide-react';
-import type {
-  OSDesktopWidgetDefinition,
-  WidgetPosition,
-  WidgetRenderContext,
-  WidgetSize,
-  WidgetUserPrefs,
+import {
+  resolveWidgetLabel,
+  type OSDesktopWidgetDefinition,
+  type WidgetPosition,
+  type WidgetRenderContext,
+  type WidgetSize,
+  type WidgetUserPrefs,
 } from './types';
 import { useWidgetDragResize } from './useWidgetDragResize';
 import { resolveCustomizedWidgetCardStyle } from './widgetCustomization';
@@ -21,7 +22,7 @@ export function DesktopWidgetsHost({
   enabledWidgets, widgetPositions, onMoveWidget, widgetSizes, onResizeWidget,
   widgetUserPrefs = {}, onOpenCustomize, viewportSize, onOpenApp, onOpenSideBySide,
 }: {
-  widgets: OSDesktopWidgetDefinition[]; locale: 'tr' | 'en'; isDark: boolean;
+  widgets: OSDesktopWidgetDefinition[]; locale: 'tr' | 'en' | 'ru'; isDark: boolean;
   glassOpacity: number; glassBlur: number; primaryColor: string;
   enabledWidgets: Record<string, boolean>; widgetPositions: Record<string, WidgetPosition>;
   onMoveWidget: (id: string, pos: WidgetPosition) => void;
@@ -133,7 +134,7 @@ export function DesktopWidgetsHost({
 
             <div
               data-desktop-widget={def.id}
-              aria-label={locale === 'tr' ? def.labelTr : def.labelEn ?? def.labelTr}
+              aria-label={resolveWidgetLabel(def, locale)}
               onMouseDown={(e) => e.stopPropagation()}
               onDoubleClick={(e) => {
                 const target = e.target as HTMLElement | null;

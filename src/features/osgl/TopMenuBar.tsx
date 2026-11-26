@@ -265,7 +265,7 @@ export function TopMenuBar({
               </button>
               {activeMenu === 'widgets' && (
                 <TopWidgetsDropdown
-                  dropdownStyle={dropdownStyle} isDark={isDark} widgets={widgets} widgetsVisible={widgetsVisible}
+                  dropdownStyle={dropdownStyle} isDark={isDark} locale={locale} widgets={widgets} widgetsVisible={widgetsVisible}
                   enabledWidgets={enabledWidgets} onToggleWidgets={onToggleWidgets}
                   onToggleWidgetItem={onToggleWidgetItem} onCustomizeWidget={onCustomizeWidget}
                   onResetWidgetPositions={onResetWidgetPositions} closeAllMenus={closeAllMenus}

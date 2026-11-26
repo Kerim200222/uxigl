@@ -275,7 +275,7 @@ export function ClockCalendarWidget({
         createPortal(
           <CalendarTaskModal
             open={modalOpen}
-            locale={ctx.locale}
+            locale={ctx.locale === 'tr' ? 'tr' : 'en'}
             initialDraft={draftEvent}
             editingEventId={editingEventId}
             onClose={() => setModalOpen(false)}

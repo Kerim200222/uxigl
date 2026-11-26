@@ -76,7 +76,7 @@ export interface WidgetRenderContext {
   subtleBg: string;
   primaryColor: string;
   isDark: boolean;
-  locale: 'tr' | 'en';
+  locale: 'tr' | 'en' | 'ru';
   width: number;
   height: number;
   scale: number;
@@ -90,11 +90,21 @@ export interface OSDesktopWidgetDefinition {
   id: string;
   labelTr: string;
   labelEn?: string;
+  labelRu?: string;
   defaultEnabled?: boolean;
   defaultSize: WidgetSize;
   sizePresets?: ReadonlyArray<WidgetSizePreset>;
   customFields?: ReadonlyArray<WidgetCustomField>;
   render: (ctx: WidgetRenderContext) => React.ReactNode;
+}
+
+export function resolveWidgetLabel(
+  widget: Pick<OSDesktopWidgetDefinition, 'labelTr' | 'labelEn' | 'labelRu'>,
+  locale: 'tr' | 'en' | 'ru' = 'tr'
+): string {
+  if (locale === 'ru') return widget.labelRu ?? widget.labelEn ?? widget.labelTr;
+  if (locale === 'en') return widget.labelEn ?? widget.labelTr;
+  return widget.labelTr;
 }
 
 export const WIDGET_GRID_STEP = 20;
@@ -111,6 +121,7 @@ export const FOLDER_SLOT_PREFIX = 'folder:';
 export interface DesktopFolder {
   id: string;
   name: string;
+  customName?: boolean;
   appIds: string[];
   color?: string;
   gradient?: string;
@@ -118,7 +129,7 @@ export interface DesktopFolder {
 }
 
 export interface PersistedOSGLState {
-  locale?: 'tr' | 'en';
+  locale?: 'tr' | 'en' | 'ru';
   wallpaper?: OSWallpaperId;
   bgMode?: BgMode;
   solidBgColor?: string;

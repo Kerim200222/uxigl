@@ -1,11 +1,12 @@
 ﻿import React from 'react';
 import { Check, Eye, EyeOff, RotateCcw, SlidersHorizontal } from 'lucide-react';
 import { ContextMenuItem } from './WindowChrome';
-import type { OSDesktopWidgetDefinition } from './types';
+import { resolveWidgetLabel, type OSDesktopWidgetDefinition } from './types';
 
 export function TopWidgetsDropdown({
   dropdownStyle,
   isDark = false,
+  locale = 'tr',
   widgets,
   widgetsVisible,
   enabledWidgets,
@@ -17,6 +18,7 @@ export function TopWidgetsDropdown({
 }: {
   dropdownStyle: React.CSSProperties;
   isDark?: boolean;
+  locale?: 'tr' | 'en' | 'ru';
   widgets: OSDesktopWidgetDefinition[];
   widgetsVisible: boolean;
   enabledWidgets: Record<string, boolean>;
@@ -26,6 +28,26 @@ export function TopWidgetsDropdown({
   onResetWidgetPositions: () => void;
   closeAllMenus: () => void;
 }) {
+  const txt = locale === 'en'
+    ? {
+        heading: 'Desktop Widgets',
+        hideAll: 'Hide All Widgets',
+        showAll: 'Show Widgets',
+        settingsSuffix: 'Settings',
+      }
+    : locale === 'ru'
+      ? {
+          heading: 'Виджеты рабочего стола',
+          hideAll: 'Скрыть все виджеты',
+          showAll: 'Показать виджеты',
+          settingsSuffix: 'Настройки',
+        }
+      : {
+          heading: "Masaüstü Widget'ları",
+          hideAll: "Tüm Widget'ları Gizle",
+          showAll: "Widget'ları Göster",
+          settingsSuffix: 'Ayarları',
+        };
   return (
     <div
       role="menu"
@@ -34,11 +56,11 @@ export function TopWidgetsDropdown({
       style={{ ...dropdownStyle, left: 'auto', right: 0, width: 274, transformOrigin: 'top right' }}
     >
       <div style={{ padding: '5px 10px 3px', fontSize: 10.5, fontWeight: 750, opacity: 0.58, letterSpacing: '0.03em', textTransform: 'uppercase' }}>
-        Masaüstü Widget&apos;ları
+        {txt.heading}
       </div>
       <ContextMenuItem
         icon={widgetsVisible ? <EyeOff size={14} /> : <Eye size={14} />}
-        label={widgetsVisible ? "Tüm Widget'ları Gizle" : "Widget'ları Göster"}
+        label={widgetsVisible ? txt.hideAll : txt.showAll}
         onClick={onToggleWidgets}
       />
       <div style={{ height: 1, backgroundColor: 'rgba(148,163,184,0.2)', margin: '4px 0' }} />
@@ -96,15 +118,15 @@ export function TopWidgetsDropdown({
                 >
                   <Check size={13.5} strokeWidth={2.5} />
                 </span>
-                <span style={{ lineHeight: 1.25 }}>{w.labelTr}</span>
+                <span style={{ lineHeight: 1.25 }}>{resolveWidgetLabel(w, locale)}</span>
               </button>
 
               {onCustomizeWidget && (
                 <button
                   type="button"
                   data-menu-widget-settings={w.id}
-                  title={`${w.labelTr} Ayarları`}
-                  aria-label={`${w.labelTr} Ayarları`}
+                  title={`${resolveWidgetLabel(w, locale)} ${txt.settingsSuffix}`}
+                  aria-label={`${resolveWidgetLabel(w, locale)} ${txt.settingsSuffix}`}
                   onClick={(e) => {
                     e.stopPropagation();
                     const rect = e.currentTarget.getBoundingClientRect();

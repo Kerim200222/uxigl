@@ -1,6 +1,6 @@
 ﻿import { createPortal } from 'react-dom';
 import { EyeOff, RotateCcw, SlidersHorizontal, X } from 'lucide-react';
-import type { OSDesktopWidgetDefinition, WidgetSize } from './types';
+import { resolveWidgetLabel, type OSDesktopWidgetDefinition, type WidgetSize } from './types';
 import {
   buildDefaultSizePresets,
   WIDGET_ACCENT_SWATCHES,
@@ -15,6 +15,7 @@ export function WidgetCustomizePopover({
   prefs,
   isDark,
   primaryColor,
+  locale = 'tr',
   onUpdatePrefs,
   onResize,
   onHideWidget,
@@ -27,12 +28,14 @@ export function WidgetCustomizePopover({
   prefs: WidgetUserPrefs;
   isDark: boolean;
   primaryColor: string;
+  locale?: 'tr' | 'en' | 'ru';
   onUpdatePrefs: (patch: Partial<WidgetUserPrefs>) => void;
   onResize: (size: WidgetSize) => void;
   onHideWidget: () => void;
   onResetWidget: () => void;
   onClose: () => void;
 }) {
+  const widgetTitle = resolveWidgetLabel(widget, locale);
   const vw = typeof window !== 'undefined' ? window.innerWidth : 1366;
   const vh = typeof window !== 'undefined' ? window.innerHeight : 860;
   const popW = 304;
@@ -66,7 +69,7 @@ export function WidgetCustomizePopover({
     >
       <div
         role="dialog"
-        aria-label={`${widget.labelTr} Özelleştirme`}
+        aria-label={`${widgetTitle} ${locale === 'en' ? 'Customization' : locale === 'ru' ? 'Настройка' : 'Özelleştirme'}`}
         data-testid="osgl-widget-customize-popover"
         onClick={(e) => e.stopPropagation()}
         style={{
@@ -84,7 +87,7 @@ export function WidgetCustomizePopover({
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
           <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 800 }}>
             <SlidersHorizontal size={14} color={accent} />
-            <span>{widget.labelTr}</span>
+            <span>{widgetTitle}</span>
           </span>
           <button
             type="button" aria-label="Özelleştirme panelini kapat" onClick={onClose}

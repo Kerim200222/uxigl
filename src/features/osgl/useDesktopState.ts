@@ -287,7 +287,7 @@ export function useDesktopState({
       iconGradColor1, iconGradColor2, iconColor, iconSizePx, iconSlots,
       iconOrderVersion: CURRENT_ICON_ORDER_VERSION,
       windowMaxVersion: CURRENT_WINDOW_MAX_VERSION,
-      folders: foldersAndDock.folders,
+      folders: foldersAndDock.folders.map(({ iconNode: _iconNode, ...rest }) => rest),
       pinnedDockAppIds: foldersAndDock.pinnedDockAppIds,
       windows: windowMgr.windows, windowBoundsByApp: windowMgr.windowBoundsByApp, topZ: windowMgr.topZ,
     });

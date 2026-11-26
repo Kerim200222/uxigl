@@ -237,8 +237,32 @@ export function useFoldersAndDockState({
     return sanitized;
   };
 
+  const defaultFolderMetaMap = useMemo(() => {
+    const map = new Map<string, { iconNode?: React.ReactNode; gradient?: string }>();
+    defaultFolders?.forEach((df) => {
+      if (df.iconNode || df.gradient) {
+        map.set(df.id, { iconNode: df.iconNode, gradient: df.gradient });
+      }
+    });
+    return map;
+  }, [defaultFolders]);
+
+  const hydratedFolders = useMemo(
+    () =>
+      folders.map((f) => {
+        const meta = defaultFolderMetaMap.get(f.id);
+        if (!meta) return f;
+        return {
+          ...f,
+          iconNode: meta.iconNode ?? f.iconNode,
+          gradient: meta.gradient ?? f.gradient,
+        };
+      }),
+    [folders, defaultFolderMetaMap]
+  );
+
   return {
-    folders,
+    folders: hydratedFolders,
     resetFoldersToDefault, setFolders, pinnedDockAppIds, effectiveDockIds, effectiveDockApps,
     openFolderId, setOpenFolderId, renamingFolderId, setRenamingFolderId,
     itemContextMenu, setItemContextMenu, dockCustomizerOpen, setDockCustomizerOpen,

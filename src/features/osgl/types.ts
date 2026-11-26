@@ -113,6 +113,7 @@ export interface DesktopFolder {
   name: string;
   appIds: string[];
   color?: string;
+  gradient?: string;
   iconNode?: React.ReactNode;
 }
 

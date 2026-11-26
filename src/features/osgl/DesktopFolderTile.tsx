@@ -79,6 +79,22 @@ export function DesktopFolderTile({
 
   const previewApps = folderApps.slice(0, 4);
   const miniSize = Math.max(16, Math.floor((iconBoxSize - 18) / 2));
+  const folderIconSurf = folder.iconNode
+    ? resolveIconSurface(
+        {
+          gradient:
+            folder.gradient ||
+            `linear-gradient(135deg, ${accent}, color-mix(in srgb, ${accent} 65%, #0f172a))`,
+        } as OSWorkspaceApp,
+        iconBgStyle,
+        accent,
+        isDark,
+        iconColor,
+        iconBgColor,
+        iconGradColor1,
+        iconGradColor2
+      )
+    : null;
 
   return (
     <div
@@ -128,20 +144,25 @@ export function DesktopFolderTile({
           width: iconBoxSize,
           height: iconBoxSize,
           borderRadius: Math.round(iconBoxSize * 0.26),
-          background: isDark
-            ? `linear-gradient(145deg, color-mix(in srgb, ${accent} 28%, rgba(30,41,59,0.78)), rgba(15,23,42,0.72))`
-            : `linear-gradient(145deg, color-mix(in srgb, ${accent} 22%, rgba(255,255,255,0.82)), rgba(255,255,255,0.62))`,
-          border: isDark
-            ? '1px solid rgba(255, 255, 255, 0.20)'
-            : '1px solid rgba(255, 255, 255, 0.55)',
-          backdropFilter: 'blur(16px) saturate(165%)',
-          WebkitBackdropFilter: 'blur(16px) saturate(165%)',
+          background: folderIconSurf
+            ? folderIconSurf.background
+            : isDark
+              ? `linear-gradient(145deg, color-mix(in srgb, ${accent} 28%, rgba(30,41,59,0.78)), rgba(15,23,42,0.72))`
+              : `linear-gradient(145deg, color-mix(in srgb, ${accent} 22%, rgba(255,255,255,0.82)), rgba(255,255,255,0.62))`,
+          border: folderIconSurf?.border
+            ? folderIconSurf.border
+            : isDark
+              ? '1px solid rgba(255, 255, 255, 0.20)'
+              : '1px solid rgba(255, 255, 255, 0.55)',
+          backdropFilter: folderIconSurf?.backdropFilter ?? 'blur(16px) saturate(165%)',
+          WebkitBackdropFilter: folderIconSurf?.backdropFilter ?? 'blur(16px) saturate(165%)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          padding: 6,
+          padding: folder.iconNode ? 0 : 6,
           boxShadow:
             '0 12px 26px rgba(0, 0, 0, 0.30), inset 0 1px 0 rgba(255, 255, 255, 0.45)',
+          color: folderIconSurf?.color,
         }}
       >
         {folder.iconNode ? (
@@ -150,9 +171,9 @@ export function DesktopFolderTile({
               display: 'inline-flex',
               alignItems: 'center',
               justifyContent: 'center',
-              width: Math.round(iconBoxSize * 0.56),
-              height: Math.round(iconBoxSize * 0.56),
-              color: accent,
+              width: Math.round(iconBoxSize * 0.58),
+              height: Math.round(iconBoxSize * 0.58),
+              color: folderIconSurf?.color ?? '#ffffff',
             }}
           >
             {folder.iconNode}

@@ -51,6 +51,8 @@ export function sanitizePersistedFolders(
       name: (raw.name || 'Yeni Klasör').trim() || 'Yeni Klasör',
       appIds: uniqueApps,
       color: raw.color || FOLDER_COLOR_PRESETS[cleaned.length % FOLDER_COLOR_PRESETS.length],
+      ...(raw.gradient ? { gradient: raw.gradient } : {}),
+      ...(raw.iconNode ? { iconNode: raw.iconNode } : {}),
     });
   }
   return cleaned;

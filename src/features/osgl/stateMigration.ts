@@ -19,13 +19,14 @@ export function reconcileIconSlotsWithNewApps(
   folders: DesktopFolder[] = []
 ): Record<string, number> {
   const validAppIds = new Set(appList.map((a) => a.id));
+  const validFolderKeys = new Set(folders.map((f) => `folder:${f.id}`));
   const folderedAppIds = new Set(folders.flatMap((f) => f.appIds));
   const nextSlots: Record<string, number> = {};
   const occupied = new Set<number>();
 
   for (const [id, slot] of Object.entries(savedSlots)) {
     const isFolder = id.startsWith('folder:');
-    if (isFolder || (validAppIds.has(id) && !folderedAppIds.has(id))) {
+    if ((isFolder && validFolderKeys.has(id)) || (!isFolder && validAppIds.has(id) && !folderedAppIds.has(id))) {
       nextSlots[id] = slot;
       occupied.add(slot);
     }
@@ -41,6 +42,32 @@ export function reconcileIconSlotsWithNewApps(
   }
 
   return nextSlots;
+}
+
+/**
+ * Compacts desktop icon & folder slots sequentially (0, 1, 2, ...) preserving relative order
+ * so removing unauthorized/hidden items never leaves empty gaps on the desktop.
+ */
+export function compactDesktopSlots(
+  prevSlots: Record<string, number>,
+  appList: OSWorkspaceApp[],
+  folders: DesktopFolder[] = []
+): Record<string, number> {
+  const folderedAppIds = new Set(folders.flatMap((f) => f.appIds));
+  const validKeys: string[] = [
+    ...folders.map((f) => `folder:${f.id}`),
+    ...appList.filter((a) => !folderedAppIds.has(a.id)).map((a) => a.id),
+  ];
+  const sorted = [...validKeys].sort((a, b) => {
+    const sa = prevSlots[a] ?? Number.MAX_SAFE_INTEGER;
+    const sb = prevSlots[b] ?? Number.MAX_SAFE_INTEGER;
+    return sa - sb;
+  });
+  const next: Record<string, number> = {};
+  sorted.forEach((key, idx) => {
+    next[key] = idx;
+  });
+  return next;
 }
 
 /**

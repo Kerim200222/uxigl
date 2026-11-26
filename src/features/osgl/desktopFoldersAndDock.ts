@@ -46,6 +46,9 @@ export function sanitizePersistedFolders(
         uniqueApps.push(appId);
       }
     }
+    if (uniqueApps.length === 0 && (!raw.customName || (Array.isArray(raw.appIds) && raw.appIds.length > 0))) {
+      continue;
+    }
     cleaned.push({
       id: raw.id,
       name: (raw.name || 'Yeni Klasör').trim() || 'Yeni Klasör',

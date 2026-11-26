@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { compactDesktopSlots } from './stateMigration';
 import { buildResetDesktopSlots } from './desktopGridUtils';
 import {
   createDesktopFolderState,
@@ -89,23 +90,36 @@ export function useFoldersAndDockState({
   latestRef.current = { folders, iconSlots };
 
   const prevScopeRef = useRef(scopeKey);
+  const prevAllowedKeyRef = useRef(desktopApps.map((a) => a.id).sort().join(','));
   useEffect(() => {
+    const nextAllowedKey = desktopApps.map((a) => a.id).sort().join(',');
     if (prevScopeRef.current === scopeKey) {
-      setFolders((prev) => sanitizePersistedFolders(prev, allowedSet));
+      if (prevAllowedKeyRef.current !== nextAllowedKey) {
+        prevAllowedKeyRef.current = nextAllowedKey;
+        const sanitized = sanitizePersistedFolders(latestRef.current.folders, allowedSet);
+        setFolders(sanitized);
+        setIconSlots((prev) => compactDesktopSlots(prev, desktopApps, sanitized));
+      }
       return;
     }
     prevScopeRef.current = scopeKey;
+    prevAllowedKeyRef.current = nextAllowedKey;
     const nextSaved = loadOSGLState(scopeKey);
     const hasSavedFolders = Boolean(nextSaved?.folders?.length);
     seededDefaultFoldersRef.current = hasSavedFolders;
-    setFolders(
-      sanitizePersistedFolders(hasSavedFolders ? nextSaved?.folders : defaultFolders, allowedSet)
+    const sanitized = sanitizePersistedFolders(
+      hasSavedFolders ? nextSaved?.folders : defaultFolders,
+      allowedSet
     );
+    setFolders(sanitized);
+    if (nextSaved?.iconSlots) {
+      setIconSlots(compactDesktopSlots(nextSaved.iconSlots, desktopApps, sanitized));
+    }
     setPinnedDockAppIds(nextSaved?.pinnedDockAppIds);
     setOpenFolderId(null);
     setRenamingFolderId(null);
     setItemContextMenu(null);
-  }, [scopeKey, allowedSet]);
+  }, [scopeKey, allowedSet, desktopApps, defaultFolders, setIconSlots]);
 
   const effectiveDockIds = useMemo(
     () => resolveEffectiveDockAppIds(desktopApps, defaultDockAppIds, pinnedDockAppIds),

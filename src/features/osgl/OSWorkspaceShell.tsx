@@ -47,6 +47,15 @@ export interface OSWorkspaceShellProps {
     bgGradColor2?: string;
     customBgUrl?: string;
   };
+  /** Called when user changes wallpaper or background settings from inside OSWorkspaceShell */
+  onExternalBackgroundChange?: (bg: {
+    wallpaper: OSWallpaperId;
+    bgMode: BgMode;
+    solidBgColor: string;
+    bgGradColor1: string;
+    bgGradColor2: string;
+    customBgUrl: string;
+  }) => void;
 }
 
 export const OSWorkspaceShell: React.FC<OSWorkspaceShellProps> = ({
@@ -55,7 +64,7 @@ export const OSWorkspaceShell: React.FC<OSWorkspaceShellProps> = ({
   brandLogo, brandTitle = 'uxiGL', brandSubtitle, onBrandClick, headerRightSlot, topBannerSlot,
   renderWindowContent, onSwitchToClassic, onOpenGlobalThemeStudio,
   enableBuiltInGlobalThemeStudio = true, defaultOpenAppIds, externalOpenRequest, locale = 'tr',
-  loginBgUrl, externalBackground,
+  loginBgUrl, externalBackground, onExternalBackgroundChange,
 }) => {
   const effectiveWidgets = useMemo<OSDesktopWidgetDefinition[]>(() => {
     const base = widgets ?? (includeDefaultWidgets ? createDefaultOSGLWidgets({ storageScopeKey }) : []);
@@ -103,14 +112,19 @@ export const OSWorkspaceShell: React.FC<OSWorkspaceShellProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [externalOpenRequest?.nonce]);
 
+  const isSyncingExternalBgRef = useRef(false);
   useEffect(() => {
     if (!externalBackground) return;
+    isSyncingExternalBgRef.current = true;
     if (externalBackground.wallpaper !== undefined) os.setWallpaper(externalBackground.wallpaper);
     if (externalBackground.bgMode !== undefined) os.setBgMode(externalBackground.bgMode);
     if (externalBackground.solidBgColor !== undefined) os.setSolidBgColor(externalBackground.solidBgColor);
     if (externalBackground.bgGradColor1 !== undefined) os.setBgGradColor1(externalBackground.bgGradColor1);
     if (externalBackground.bgGradColor2 !== undefined) os.setBgGradColor2(externalBackground.bgGradColor2);
-    if (externalBackground.customBgUrl !== undefined) {
+    if (
+      externalBackground.customBgUrl !== undefined &&
+      externalBackground.customBgUrl !== (os.uploadedBgDataUrl || os.customBgUrl)
+    ) {
       os.setUploadedBgDataUrl('');
       os.setCustomBgUrl(externalBackground.customBgUrl);
     }
@@ -122,6 +136,50 @@ export const OSWorkspaceShell: React.FC<OSWorkspaceShellProps> = ({
     externalBackground?.bgGradColor1,
     externalBackground?.bgGradColor2,
     externalBackground?.customBgUrl,
+  ]);
+
+  const hasMountedBgSyncRef = useRef(false);
+  useEffect(() => {
+    if (!hasMountedBgSyncRef.current) {
+      hasMountedBgSyncRef.current = true;
+      isSyncingExternalBgRef.current = false;
+      return;
+    }
+    if (isSyncingExternalBgRef.current) {
+      isSyncingExternalBgRef.current = false;
+      return;
+    }
+    if (!onExternalBackgroundChange) return;
+    const effectiveCustomUrl = os.uploadedBgDataUrl || os.customBgUrl;
+    if (
+      externalBackground &&
+      externalBackground.wallpaper === os.wallpaper &&
+      externalBackground.bgMode === os.bgMode &&
+      externalBackground.solidBgColor === os.solidBgColor &&
+      externalBackground.bgGradColor1 === os.bgGradColor1 &&
+      externalBackground.bgGradColor2 === os.bgGradColor2 &&
+      (externalBackground.customBgUrl || '') === (effectiveCustomUrl || '')
+    ) {
+      return;
+    }
+    onExternalBackgroundChange({
+      wallpaper: os.wallpaper,
+      bgMode: os.bgMode,
+      solidBgColor: os.solidBgColor,
+      bgGradColor1: os.bgGradColor1,
+      bgGradColor2: os.bgGradColor2,
+      customBgUrl: effectiveCustomUrl,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    os.wallpaper,
+    os.bgMode,
+    os.solidBgColor,
+    os.bgGradColor1,
+    os.bgGradColor2,
+    os.customBgUrl,
+    os.uploadedBgDataUrl,
+    onExternalBackgroundChange,
   ]);
 
   useEffect(() => {

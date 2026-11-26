@@ -14,7 +14,7 @@ import { ThemeStudioDrawer } from '../theme-studio/ThemeStudioDrawer';
 import type { OSWallpaperId } from './osglEngine';
 import { buildSpotlightActions, OSGL_SHELL_CSS } from './osglShellStyles';
 import { TopMenuBar } from './TopMenuBar';
-import type { DesktopFolder, OSDesktopWidgetDefinition, OSWorkspaceApp } from './types';
+import type { BgMode, DesktopFolder, OSDesktopWidgetDefinition, OSWorkspaceApp } from './types';
 import { useDesktopState } from './useDesktopState';
 import { WidgetCustomizePopover } from './WidgetCustomizePopover';
 import { createDefaultOSGLWidgets } from './widgets';
@@ -36,6 +36,17 @@ export interface OSWorkspaceShellProps {
   defaultOpenAppIds?: string[];
   externalOpenRequest?: { appId: string; nonce: number } | null;
   locale?: 'tr' | 'en' | 'ru';
+  /** Optional project login background URL exposed as a quick background option in OS Theme Studio */
+  loginBgUrl?: string;
+  /** Optional external background state synced from host Theme Studio */
+  externalBackground?: {
+    wallpaper?: OSWallpaperId;
+    bgMode?: BgMode;
+    solidBgColor?: string;
+    bgGradColor1?: string;
+    bgGradColor2?: string;
+    customBgUrl?: string;
+  };
 }
 
 export const OSWorkspaceShell: React.FC<OSWorkspaceShellProps> = ({
@@ -44,6 +55,7 @@ export const OSWorkspaceShell: React.FC<OSWorkspaceShellProps> = ({
   brandLogo, brandTitle = 'uxiGL', brandSubtitle, onBrandClick, headerRightSlot, topBannerSlot,
   renderWindowContent, onSwitchToClassic, onOpenGlobalThemeStudio,
   enableBuiltInGlobalThemeStudio = true, defaultOpenAppIds, externalOpenRequest, locale = 'tr',
+  loginBgUrl, externalBackground,
 }) => {
   const effectiveWidgets = useMemo<OSDesktopWidgetDefinition[]>(() => {
     const base = widgets ?? (includeDefaultWidgets ? createDefaultOSGLWidgets({ storageScopeKey }) : []);
@@ -92,6 +104,27 @@ export const OSWorkspaceShell: React.FC<OSWorkspaceShellProps> = ({
   }, [externalOpenRequest?.nonce]);
 
   useEffect(() => {
+    if (!externalBackground) return;
+    if (externalBackground.wallpaper !== undefined) os.setWallpaper(externalBackground.wallpaper);
+    if (externalBackground.bgMode !== undefined) os.setBgMode(externalBackground.bgMode);
+    if (externalBackground.solidBgColor !== undefined) os.setSolidBgColor(externalBackground.solidBgColor);
+    if (externalBackground.bgGradColor1 !== undefined) os.setBgGradColor1(externalBackground.bgGradColor1);
+    if (externalBackground.bgGradColor2 !== undefined) os.setBgGradColor2(externalBackground.bgGradColor2);
+    if (externalBackground.customBgUrl !== undefined) {
+      os.setUploadedBgDataUrl('');
+      os.setCustomBgUrl(externalBackground.customBgUrl);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    externalBackground?.wallpaper,
+    externalBackground?.bgMode,
+    externalBackground?.solidBgColor,
+    externalBackground?.bgGradColor1,
+    externalBackground?.bgGradColor2,
+    externalBackground?.customBgUrl,
+  ]);
+
+  useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.defaultPrevented) return;
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
@@ -130,6 +163,7 @@ export const OSWorkspaceShell: React.FC<OSWorkspaceShellProps> = ({
       iconSizePx={os.iconSizePx} setIconSizePx={os.setIconSizePx} onResetIcons={os.resetIconSlots} onResetWidgets={os.resetWidgetPositions}
       onCreateFolder={() => os.createFolder()} onOpenDockCustomizer={() => os.setDockCustomizerOpen(true)} onResetDock={os.resetDockToDefault}
       onSwitchToClassic={onSwitchToClassic} onOpenFullThemeStudio={handleOpenGlobalThemeStudio}
+      loginBgUrl={loginBgUrl}
     />
   );
 

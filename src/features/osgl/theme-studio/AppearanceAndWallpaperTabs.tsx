@@ -148,6 +148,7 @@ export function WallpaperTab({
   setCustomBgUrl,
   uploadedBgDataUrl,
   setUploadedBgDataUrl,
+  loginBgUrl,
 }: Pick<
   OSThemeStudioProps,
   | 'wallpaper'
@@ -164,7 +165,15 @@ export function WallpaperTab({
   | 'setCustomBgUrl'
   | 'uploadedBgDataUrl'
   | 'setUploadedBgDataUrl'
+  | 'loginBgUrl'
 >) {
+  const normalizedLoginBg = (loginBgUrl || '').trim();
+  const isLoginBgActive =
+    Boolean(normalizedLoginBg) &&
+    bgMode === 'image' &&
+    !uploadedBgDataUrl &&
+    customBgUrl.trim() === normalizedLoginBg;
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
       <div>
@@ -188,6 +197,52 @@ export function WallpaperTab({
           ))}
         </div>
       </div>
+
+      {normalizedLoginBg && (
+        <div>
+          <StudioFieldLabel>Giriş Ekranı Arka Planı</StudioFieldLabel>
+          <button
+            type="button"
+            onClick={() => {
+              setUploadedBgDataUrl('');
+              setCustomBgUrl(normalizedLoginBg);
+              setBgMode('image');
+            }}
+            style={{
+              width: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 12,
+              padding: 8,
+              borderRadius: 12,
+              border: isLoginBgActive
+                ? '2px solid var(--uxu-primary)'
+                : '1px solid var(--uxu-border-subtle)',
+              background: 'var(--uxu-bg-elevated)',
+              color: 'var(--uxu-text-primary)',
+              cursor: 'pointer',
+              textAlign: 'left',
+            }}
+          >
+            <div
+              style={{
+                width: 72,
+                height: 42,
+                borderRadius: 8,
+                flexShrink: 0,
+                background: `url("${normalizedLoginBg}") center / cover no-repeat`,
+                border: '1px solid var(--uxu-border-subtle)',
+              }}
+            />
+            <div style={{ minWidth: 0, flex: 1 }}>
+              <div style={{ fontSize: 12.5, fontWeight: 700 }}>Login Background</div>
+              <div style={{ fontSize: 11, color: 'var(--uxu-text-muted)' }}>
+                {isLoginBgActive ? 'Aktif masaüstü arka planı' : 'Giriş arka planını kullan'}
+              </div>
+            </div>
+          </button>
+        </div>
+      )}
 
       {bgMode === 'aurora' && (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(124px, 1fr))', gap: 10 }}>

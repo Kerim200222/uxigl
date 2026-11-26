@@ -110,4 +110,5 @@ export interface OSThemeStudioProps {
   onResetDock?: () => void;
   onSwitchToClassic?: () => void;
   onOpenFullThemeStudio?: () => void;
+  loginBgUrl?: string;
 }

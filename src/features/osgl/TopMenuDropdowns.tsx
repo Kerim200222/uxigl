@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import {
   ArrowLeftRight, Columns2, Eye, EyeOff, FolderPlus, Grid2x2, Layers, LayoutGrid,
   LayoutPanelLeft, Maximize2, Monitor, Moon, RotateCcw, SlidersHorizontal, Smartphone, Square, Sun, X,

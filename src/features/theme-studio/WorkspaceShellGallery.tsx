@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { Check, Sparkles } from 'lucide-react';
 import { Badge } from '../../components/primitives';
 import type {

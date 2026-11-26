@@ -144,7 +144,20 @@ export function DesktopFolderTile({
             '0 12px 26px rgba(0, 0, 0, 0.30), inset 0 1px 0 rgba(255, 255, 255, 0.45)',
         }}
       >
-        {previewApps.length === 0 ? (
+        {folder.iconNode ? (
+          <span
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: Math.round(iconBoxSize * 0.56),
+              height: Math.round(iconBoxSize * 0.56),
+              color: accent,
+            }}
+          >
+            {folder.iconNode}
+          </span>
+        ) : previewApps.length === 0 ? (
           <FolderOpen size={Math.round(iconBoxSize * 0.46)} style={{ color: accent }} />
         ) : (
           <div

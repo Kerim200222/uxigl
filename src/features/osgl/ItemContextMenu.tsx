@@ -1,4 +1,4 @@
-﻿import {
+import {
   ExternalLink,
   FolderInput,
   FolderOpen,

@@ -113,6 +113,7 @@ export interface DesktopFolder {
   name: string;
   appIds: string[];
   color?: string;
+  iconNode?: React.ReactNode;
 }
 
 export interface PersistedOSGLState {

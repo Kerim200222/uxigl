@@ -1,4 +1,4 @@
-﻿import {
+import {
   FOLDER_SLOT_PREFIX,
   OS_THEME_STUDIO_APP_ID,
   type DesktopFolder,

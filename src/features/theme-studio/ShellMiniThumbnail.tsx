@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import type { ConcreteWorkspaceShellId } from '../../core/contracts/ThemeContract';
 
 const C_BORDER = 'var(--uxu-border-subtle, rgba(148, 163, 184, 0.28))';

@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Check, Clock, Minus, Pause, Play, Plus, RotateCcw } from 'lucide-react';
 import { loadOSGLWidgetData, saveOSGLWidgetData, type WidgetCustomField, type WidgetRenderContext, type WidgetSizePreset } from '..';
 
@@ -137,14 +137,33 @@ export function FocusTimerWidget({ ctx, storageScopeKey = 'default' }: { ctx: Wi
           onPointerDown={(e) => e.stopPropagation()}
           style={{ display: 'inline-flex', alignItems: 'center', gap: 2, padding: 2, borderRadius: 999, backgroundColor: ctx.subtleBg, border: `1px solid ${ctx.subtleBorder}`, flexShrink: 0 }}
         >
-          {PRESET_MINUTES.map((mins) => (
-            <button key={mins} type="button" onClick={() => { setEditingCustom(false); applyDurationSeconds(mins * 60); }} style={pillBtnStyle(!editingCustom && totalSeconds === mins * 60)}>
-              {mins}m
-            </button>
-          ))}
+          {PRESET_MINUTES.map((mins) => {
+            const isPresetActive = !editingCustom && totalSeconds === mins * 60;
+            return (
+              <button
+                key={mins}
+                type="button"
+                aria-pressed={isPresetActive}
+                onClick={() => {
+                  setEditingCustom(false);
+                  applyDurationSeconds(mins * 60);
+                }}
+                style={pillBtnStyle(isPresetActive)}
+              >
+                {mins}m
+              </button>
+            );
+          })}
           <button
-            type="button" data-testid="focus-timer-custom-btn" title="İstediğiniz dakikayı (1–480 dk) belirleyin"
-            onClick={() => { setIsRunning(false); setDraftMinutes(String(Math.max(1, Math.round(totalSeconds / 60)))); setEditingCustom((v) => !v); }}
+            type="button"
+            data-testid="focus-timer-custom-btn"
+            title="İstediğiniz dakikayı (1–480 dk) belirleyin"
+            aria-pressed={editingCustom || isCustomActive}
+            onClick={() => {
+              setIsRunning(false);
+              setDraftMinutes(String(Math.max(1, Math.round(totalSeconds / 60))));
+              setEditingCustom((v) => !v);
+            }}
             style={pillBtnStyle(editingCustom || isCustomActive)}
           >
             {isCustomActive ? `${totalMinutesExact}m` : ctx.width < 252 ? '+' : 'Özel'}
@@ -196,6 +215,7 @@ export function FocusTimerWidget({ ctx, storageScopeKey = 'default' }: { ctx: Wi
                 <button
                   type="button"
                   title="Süreyi istediğiniz dakikaya ayarlamak için tıklayın"
+                  aria-label={`Kalan süre ${mm}:${ss} — süreyi düzenlemek için tıklayın`}
                   onPointerDown={(e) => e.stopPropagation()}
                   onClick={() => {
                     if (isRunning) return;

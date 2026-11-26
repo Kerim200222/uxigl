@@ -67,6 +67,7 @@ export function QuickNotesWidget({
               type="button"
               onClick={() => handleChange('')}
               title={isTR ? 'Notu Temizle' : 'Clear Note'}
+              aria-label={isTR ? 'Notu Temizle' : 'Clear Note'}
               style={{
                 border: 'none',
                 background: 'transparent',
@@ -88,6 +89,7 @@ export function QuickNotesWidget({
         value={noteText}
         onChange={(e) => handleChange(e.target.value)}
         placeholder={isTR ? 'Buraya hızlı not alabilirsiniz...' : 'Jot down a quick note...'}
+        aria-label={isTR ? 'Hızlı Notlar' : 'Quick Notes'}
         style={{
           width: '100%',
           flex: 1,

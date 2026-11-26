@@ -96,6 +96,7 @@ export function TodoListWidget({
             if (e.key === 'Enter') addTodo();
           }}
           placeholder={isTR ? 'Yeni görev ekle...' : 'Add a task...'}
+          aria-label={isTR ? 'Yeni görev ekle' : 'Add a task'}
           style={{
             flex: 1,
             minWidth: 0,
@@ -149,6 +150,9 @@ export function TodoListWidget({
           >
             <button
               type="button"
+              role="checkbox"
+              aria-checked={item.done}
+              aria-label={isTR ? `${item.text} görevini tamamlandı olarak işaretle` : `Toggle ${item.text}`}
               onClick={() =>
                 updateTodos((prev) => prev.map((t) => (t.id === item.id ? { ...t, done: !t.done } : t)))
               }
@@ -185,7 +189,7 @@ export function TodoListWidget({
             <button
               type="button"
               onClick={() => updateTodos((prev) => prev.filter((t) => t.id !== item.id))}
-              aria-label={isTR ? 'Sil' : 'Delete'}
+              aria-label={isTR ? `${item.text} görevini sil` : `Delete ${item.text}`}
               style={{
                 border: 'none',
                 background: 'transparent',

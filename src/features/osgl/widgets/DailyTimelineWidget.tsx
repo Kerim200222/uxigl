@@ -122,6 +122,8 @@ export function DailyTimelineWidget({
           onPointerDown={(e) => e.stopPropagation()}
           onClick={() => setAdding((v) => !v)}
           title={isTR ? 'Dilim Ekle' : 'Add Slot'}
+          aria-label={isTR ? 'Dilim Ekle' : 'Add Slot'}
+          aria-expanded={adding}
           style={{
             border: 'none',
             backgroundColor: ctx.subtleBg,
@@ -157,11 +159,30 @@ export function DailyTimelineWidget({
             value={draftTitle}
             onChange={(e) => setDraftTitle(e.target.value)}
             placeholder={isTR ? 'Başlık...' : 'Title...'}
+            aria-label={isTR ? 'Dilim Başlığı' : 'Slot Title'}
             style={{ flex: 1, minWidth: 0, padding: '3px 6px', borderRadius: 6, border: `1px solid ${ctx.subtleBorder}`, backgroundColor: ctx.subtleBg, color: 'inherit', fontSize: 11 }}
           />
-          <input type="time" value={draftStart} onChange={(e) => setDraftStart(e.target.value)} style={{ width: 64, padding: '2px 4px', borderRadius: 6, border: `1px solid ${ctx.subtleBorder}`, backgroundColor: ctx.subtleBg, color: 'inherit', fontSize: 10 }} />
-          <input type="time" value={draftEnd} onChange={(e) => setDraftEnd(e.target.value)} style={{ width: 64, padding: '2px 4px', borderRadius: 6, border: `1px solid ${ctx.subtleBorder}`, backgroundColor: ctx.subtleBg, color: 'inherit', fontSize: 10 }} />
-          <button type="submit" style={{ border: 'none', borderRadius: 6, backgroundColor: ctx.primaryColor, color: '#fff', padding: '0 8px', fontSize: 10.5, fontWeight: 700, cursor: 'pointer' }}>+</button>
+          <input
+            type="time"
+            value={draftStart}
+            onChange={(e) => setDraftStart(e.target.value)}
+            aria-label={isTR ? 'Başlangıç Saati' : 'Start Time'}
+            style={{ width: 64, padding: '2px 4px', borderRadius: 6, border: `1px solid ${ctx.subtleBorder}`, backgroundColor: ctx.subtleBg, color: 'inherit', fontSize: 10 }}
+          />
+          <input
+            type="time"
+            value={draftEnd}
+            onChange={(e) => setDraftEnd(e.target.value)}
+            aria-label={isTR ? 'Bitiş Saati' : 'End Time'}
+            style={{ width: 64, padding: '2px 4px', borderRadius: 6, border: `1px solid ${ctx.subtleBorder}`, backgroundColor: ctx.subtleBg, color: 'inherit', fontSize: 10 }}
+          />
+          <button
+            type="submit"
+            aria-label={isTR ? 'Dilimi Kaydet' : 'Save Slot'}
+            style={{ border: 'none', borderRadius: 6, backgroundColor: ctx.primaryColor, color: '#fff', padding: '0 8px', fontSize: 10.5, fontWeight: 700, cursor: 'pointer' }}
+          >
+            +
+          </button>
         </form>
       )}
 

@@ -1,4 +1,5 @@
-﻿import { createPortal } from 'react-dom';
+import { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { EyeOff, RotateCcw, SlidersHorizontal, X } from 'lucide-react';
 import { resolveWidgetLabel, type OSDesktopWidgetDefinition, type WidgetSize } from './types';
 import {
@@ -45,6 +46,16 @@ export function WidgetCustomizePopover({
   const activeSurface: WidgetSurfaceStyle = prefs.surfaceStyle ?? 'glass';
   const accent = prefs.accentHex || primaryColor;
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
+
   const pillStyle = (active: boolean) => ({
     padding: '5px 10px',
     borderRadius: 8,
@@ -69,6 +80,7 @@ export function WidgetCustomizePopover({
     >
       <div
         role="dialog"
+        aria-modal="true"
         aria-label={`${widgetTitle} ${locale === 'en' ? 'Customization' : locale === 'ru' ? 'Настройка' : 'Özelleştirme'}`}
         data-testid="osgl-widget-customize-popover"
         onClick={(e) => e.stopPropagation()}
@@ -109,7 +121,13 @@ export function WidgetCustomizePopover({
                 Math.abs(currentSize.width - p.size.width) <= 24 &&
                 Math.abs(currentSize.height - p.size.height) <= 24;
               return (
-                <button key={p.id} type="button" onClick={() => onResize(p.size)} style={pillStyle(isMatch)}>
+                <button
+                  key={p.id}
+                  type="button"
+                  aria-pressed={isMatch}
+                  onClick={() => onResize(p.size)}
+                  style={pillStyle(isMatch)}
+                >
                   {p.label}
                 </button>
               );
@@ -128,7 +146,9 @@ export function WidgetCustomizePopover({
               ] as Array<{ id: WidgetSurfaceStyle; label: string }>
             ).map((s) => (
               <button
-                key={s.id} type="button"
+                key={s.id}
+                type="button"
+                aria-pressed={activeSurface === s.id}
                 onClick={() => onUpdatePrefs({ surfaceStyle: s.id })}
                 style={pillStyle(activeSurface === s.id)}
               >
@@ -146,7 +166,11 @@ export function WidgetCustomizePopover({
               const bg = sw.hex || primaryColor;
               return (
                 <button
-                  key={sw.label} type="button" title={sw.label} aria-label={sw.label}
+                  key={sw.label}
+                  type="button"
+                  title={sw.label}
+                  aria-label={sw.label}
+                  aria-pressed={active}
                   onClick={() => onUpdatePrefs({ accentHex: sw.hex || undefined })}
                   style={{
                     width: sw.hex ? 22 : 'auto', height: 22, padding: sw.hex ? 0 : '0 8px',
@@ -171,7 +195,9 @@ export function WidgetCustomizePopover({
               <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
                 {field.options.map((opt) => (
                   <button
-                    key={opt.value} type="button"
+                    key={opt.value}
+                    type="button"
+                    aria-pressed={curVal === opt.value}
                     onClick={() =>
                       onUpdatePrefs({ options: { ...(prefs.options ?? {}), [field.key]: opt.value } })
                     }

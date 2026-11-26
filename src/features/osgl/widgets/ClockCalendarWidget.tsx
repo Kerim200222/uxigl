@@ -156,6 +156,7 @@ export function ClockCalendarWidget({
                 type="button"
                 onClick={() => openCreateModal(selectedIso)}
                 title={isTR ? 'Etkinlik Ekle' : 'Add Event'}
+                aria-label={isTR ? 'Etkinlik Ekle' : 'Add Event'}
                 style={{
                   border: 'none',
                   backgroundColor: ctx.subtleBg,
@@ -190,6 +191,8 @@ export function ClockCalendarWidget({
                   <button
                     key={iso}
                     type="button"
+                    aria-pressed={isSelected}
+                    aria-current={isToday ? 'date' : undefined}
                     onClick={() => setSelectedIso(iso)}
                     style={{
                       border: isToday && !isSelected ? `1px solid ${ctx.primaryColor}` : 'none',

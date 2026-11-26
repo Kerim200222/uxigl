@@ -1,4 +1,5 @@
-﻿import {
+﻿import { useLayoutEffect, useRef, useState } from 'react';
+import {
   Columns2,
   FolderPlus,
   Grid2x2,
@@ -47,15 +48,37 @@ export function ContextMenu({
   onSwitchToClassic?: () => void;
   onCloseMenu: () => void;
 }) {
+  const menuRef = useRef<HTMLDivElement | null>(null);
+  const [coords, setCoords] = useState<{ left: number; top: number }>({
+    left: position.x,
+    top: position.y,
+  });
+
+  useLayoutEffect(() => {
+    const el = menuRef.current;
+    if (!el || typeof window === 'undefined') return;
+    const rect = el.getBoundingClientRect();
+    const maxLeft = Math.max(8, window.innerWidth - rect.width - 8);
+    const maxTop = Math.max(8, window.innerHeight - rect.height - 8);
+    setCoords({
+      left: Math.max(8, Math.min(position.x, maxLeft)),
+      top: Math.max(8, Math.min(position.y, maxTop)),
+    });
+  }, [position.x, position.y, selectedAppIds.length, dockVisible]);
+
   return (
     <div
+      ref={menuRef}
+      className="macosgl-scroll"
       data-macos-context="true"
       onClick={(e) => e.stopPropagation()}
       style={{
         position: 'fixed',
-        left: position.x,
-        top: position.y,
+        left: coords.left,
+        top: coords.top,
         width: 248,
+        maxHeight: 'calc(100dvh - 16px)',
+        overflowY: 'auto',
         padding: 6,
         borderRadius: 14,
         backgroundColor: isDark ? 'rgba(15, 23, 42, 0.98)' : 'rgba(255, 255, 255, 0.99)',
@@ -174,7 +197,7 @@ export function ContextMenu({
       />
       <ContextMenuItem
         icon={<RotateCcw size={14} />}
-        label="Simge Sıralamasını Sıfırla"
+        label="Simgeleri İlk Haline Sıfırla"
         onClick={() => { onResetIcons(); onCloseMenu(); }}
       />
       <ContextMenuItem

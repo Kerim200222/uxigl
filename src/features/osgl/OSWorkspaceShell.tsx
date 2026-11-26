@@ -175,7 +175,7 @@ export const OSWorkspaceShell: React.FC<OSWorkspaceShellProps> = ({
         e.preventDefault(); os.setArrangeMenuOpen(false); os.setItemContextMenu(null);
         const vw = typeof window !== 'undefined' ? window.innerWidth : 1280;
         const vh = typeof window !== 'undefined' ? window.innerHeight : 820;
-        os.setContextMenu({ x: Math.min(e.clientX, vw - 256), y: Math.min(e.clientY, vh - 380) });
+        os.setContextMenu({ x: Math.max(8, Math.min(e.clientX, vw - 260)), y: Math.max(8, Math.min(e.clientY, vh - 520)) });
       }}
       style={{
         position: 'relative', width: '100%', height: '100dvh', maxHeight: '100dvh',

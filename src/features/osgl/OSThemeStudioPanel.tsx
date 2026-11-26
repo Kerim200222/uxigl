@@ -30,9 +30,10 @@ export function OSThemeStudioPanel(props: OSThemeStudioProps) {
       style={{
         display: 'grid',
         gridTemplateColumns: '204px minmax(0, 1fr)',
-        minHeight: 440,
-        margin: -8,
-        borderRadius: 12,
+        alignItems: 'stretch',
+        flex: 1,
+        minHeight: 'calc(100% + 24px)',
+        margin: -12,
         overflow: 'hidden',
       }}
     >
@@ -96,7 +97,7 @@ export function OSThemeStudioPanel(props: OSThemeStudioProps) {
       </aside>
 
       {/* SAĞ AYAR SAHNESİ */}
-      <section className="osgl-theme-studio-main" style={{ padding: '18px 22px', display: 'flex', flexDirection: 'column', gap: 18, minWidth: 0 }}>
+      <section className="osgl-theme-studio-main macosgl-scroll" style={{ padding: '18px 22px', display: 'flex', flexDirection: 'column', gap: 18, minWidth: 0, minHeight: 0, overflowY: 'auto' }}>
         <div>
           <h3
             style={{

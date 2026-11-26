@@ -275,9 +275,7 @@ export const Input: React.FC<InputProps> = ({
           required={required}
           maxLength={maxLength}
           placeholder={placeholder}
-          aria-label={
-            ariaLabel ?? (typeof label === 'string' ? undefined : placeholder)
-          }
+          aria-label={ariaLabel ?? (label ? undefined : placeholder)}
           autoFocus={autoFocus}
           aria-invalid={hasError}
           onChange={handleInputChange}

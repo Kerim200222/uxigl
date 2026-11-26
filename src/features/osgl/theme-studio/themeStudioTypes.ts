@@ -1,4 +1,4 @@
-﻿import type { ThemeContextContract } from '../../../core/contracts/ThemeContract';
+import type { ThemeContextContract } from '../../../core/contracts/ThemeContract';
 import type { OSWallpaperId } from '../osglEngine';
 import type { BgMode, IconBgStyle, QualityMode, WindowControlsSide } from '../types';
 

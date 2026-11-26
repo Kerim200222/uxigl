@@ -1,4 +1,5 @@
-﻿import { Button, Input, Slider } from '../../../components/primitives';
+import { useRef, type ChangeEvent } from 'react';
+import { Button, GoogleIcon, Input, Slider } from '../../../components/primitives';
 import type { ThemeMode } from '../../../core/contracts/ThemeContract';
 import { WorkspaceShellGallery } from '../../theme-studio/WorkspaceShellGallery';
 import { OS_WALLPAPERS, type OSWallpaperId } from '../osglEngine';
@@ -167,12 +168,28 @@ export function WallpaperTab({
   | 'setUploadedBgDataUrl'
   | 'loginBgUrl'
 >) {
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
   const normalizedLoginBg = (loginBgUrl || '').trim();
   const isLoginBgActive =
     Boolean(normalizedLoginBg) &&
     bgMode === 'image' &&
     !uploadedBgDataUrl &&
     customBgUrl.trim() === normalizedLoginBg;
+  const activeImageSrc = uploadedBgDataUrl || customBgUrl.trim();
+
+  const handleImageUpload = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (typeof reader.result === 'string') {
+        setUploadedBgDataUrl(reader.result);
+        setBgMode('image');
+      }
+    };
+    reader.readAsDataURL(file);
+    e.target.value = '';
+  };
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
@@ -315,16 +332,56 @@ export function WallpaperTab({
       )}
 
       {bgMode === 'image' && (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              style={{ display: 'none' }}
+              onChange={handleImageUpload}
+            />
+            <Button
+              size="sm"
+              variant="tonal"
+              leadingIcon={<GoogleIcon name="upload" size={15} />}
+              onClick={() => fileInputRef.current?.click()}
+            >
+              Bilgisayardan Görsel Yükle
+            </Button>
+            {(uploadedBgDataUrl || customBgUrl) && (
+              <Button
+                size="sm"
+                variant="outlined"
+                onClick={() => {
+                  setUploadedBgDataUrl('');
+                  setCustomBgUrl('');
+                }}
+              >
+                Görseli Temizle
+              </Button>
+            )}
+          </div>
+
           <Input
             placeholder="https://... görsel adresi"
             value={customBgUrl}
-            onChange={setCustomBgUrl}
+            onChange={(val) => {
+              if (uploadedBgDataUrl) setUploadedBgDataUrl('');
+              setCustomBgUrl(val);
+            }}
           />
-          {uploadedBgDataUrl && (
-            <Button size="sm" variant="outlined" onClick={() => setUploadedBgDataUrl('')}>
-              Görseli Temizle
-            </Button>
+
+          {activeImageSrc && (
+            <div
+              style={{
+                height: 96,
+                borderRadius: 10,
+                overflow: 'hidden',
+                border: '1px solid var(--uxu-border-subtle)',
+                background: `url("${activeImageSrc}") center / cover no-repeat`,
+              }}
+            />
           )}
         </div>
       )}
